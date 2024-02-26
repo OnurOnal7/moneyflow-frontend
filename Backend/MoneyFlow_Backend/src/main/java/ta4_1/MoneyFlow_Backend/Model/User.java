@@ -1,4 +1,4 @@
-package ta4_1.MoneyFlow_Backend.model;
+package ta4_1.MoneyFlow_Backend.Model;
 
 import java.util.UUID;
 
