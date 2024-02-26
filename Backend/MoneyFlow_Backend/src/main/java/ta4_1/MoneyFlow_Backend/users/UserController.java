@@ -1,7 +1,6 @@
-package ta4_1.MoneyFlow_Backend.controller;
+package ta4_1.MoneyFlow_Backend.users;
 
 import org.springframework.web.bind.annotation.*;
-import ta4_1.MoneyFlow_Backend.model.User;
 import java.util.HashMap;
 
 /**
@@ -38,8 +37,8 @@ public class UserController {
     }
 
     // Gets a user.
-    @GetMapping("/users/type/{userType}/{username}")
-    public User getUser(@PathVariable String userType, @PathVariable String username) {
+    @GetMapping("/users/type/{userType}/{email}")
+    public User getUser(@PathVariable String userType, @PathVariable String email) {
         HashMap<String, User> selectedUsers = new HashMap<>();
 
         if ("regular".equals(userType)) {
@@ -55,7 +54,7 @@ public class UserController {
             throw new IllegalArgumentException("Invalid user type: " + userType);
         }
 
-        return selectedUsers.get(username);
+        return selectedUsers.get(email);
     }
 
     // Gets all users.
@@ -74,7 +73,7 @@ public class UserController {
     // Sign up operation.
     @PostMapping("/signup/{userType}")
     public String signup(@RequestBody User user, @PathVariable String userType) {
-        user.setUniqueId();
+        user.setId();
         System.out.println(user);
 
         HashMap<String, User> selectedUsers;
@@ -92,13 +91,13 @@ public class UserController {
             throw new IllegalArgumentException("Invalid user type: " + userType);
         }
 
-        selectedUsers.put(user.getUsername(), user);
+        selectedUsers.put(user.getEmail(), user);
         return "Hello " + user.getFirstName() + ", welcome to MoneyFlow Insight!";
     }
 
     // Login operation.
     @GetMapping("/login/{userType}")
-    public String login(@RequestParam String username, @RequestParam String password, @PathVariable String userType) {
+    public String login(@RequestParam String email, @RequestParam String password, @PathVariable String userType) {
         HashMap<String, User> selectedUsers = new HashMap<>();
 
         if ("regular".equals(userType)) {
@@ -114,7 +113,7 @@ public class UserController {
             throw new IllegalArgumentException("Invalid user type: " + userType);
         }
 
-        User user = selectedUsers.get(username);
+        User user = selectedUsers.get(email);
         if ((user != null) && (user.getPassword().equals(password))) {
             return "Welcome back, " + user.getFirstName() + "!";
         }
@@ -127,8 +126,8 @@ public class UserController {
     }
 
     // Updates a user.
-    @PutMapping("/users/type/{userType}/{username}")
-    public String updateUser(@PathVariable String userType, @PathVariable String username, @RequestBody User u) {
+    @PutMapping("/users/type/{userType}/{email}")
+    public String updateUser(@PathVariable String userType, @PathVariable String email, @RequestBody User u) {
         HashMap<String, User> selectedUsers;
 
         if ("regular".equals(userType)) {
@@ -144,9 +143,10 @@ public class UserController {
             throw new IllegalArgumentException("Invalid user type: " + userType);
         }
 
-        if (selectedUsers.containsKey(username)) {
-            u.setId(selectedUsers.get(username).getId());
-            selectedUsers.put(username, u);
+        if (selectedUsers.containsKey(email)) {
+            u.id = selectedUsers.get(email).getId();
+            selectedUsers.remove(email, selectedUsers.get(email));
+            selectedUsers.put(u.getEmail(), u);
             return "User credentials successfully updated.";
         }
         else {
@@ -155,8 +155,8 @@ public class UserController {
     }
 
     // Deletes a user.
-    @DeleteMapping("/users/type/{userType}/{username}")
-    public String deleteUser(@PathVariable String userType, @PathVariable String username) {
+    @DeleteMapping("/users/type/{userType}/{email}")
+    public String deleteUser(@PathVariable String userType, @PathVariable String email) {
         HashMap<String, User> selectedUsers;
 
         if ("regular".equals(userType)) {
@@ -169,9 +169,9 @@ public class UserController {
             throw new IllegalArgumentException("Invalid user type: " + userType);
         }
 
-        if (selectedUsers.containsKey(username)) {
-            String response = selectedUsers.get(username).getFirstName();
-            selectedUsers.remove(username);
+        if (selectedUsers.containsKey(email)) {
+            String response = selectedUsers.get(email).getFirstName();
+            selectedUsers.remove(email);
             return "User " +  response + " has been successfully removed.";
         } else {
             return "User not found.";
