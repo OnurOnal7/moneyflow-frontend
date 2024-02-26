@@ -1,4 +1,4 @@
-package ta4_1.MoneyFlow_Backend.Users;
+package ta4_1.MoneyFlow_Backend.Expenses;
 
 public class Expenses {
     private int id;
