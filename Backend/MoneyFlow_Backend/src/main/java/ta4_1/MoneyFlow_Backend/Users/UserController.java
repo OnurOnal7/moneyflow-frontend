@@ -1,7 +1,7 @@
-package ta4_1.MoneyFlow_Backend.controller;
+package ta4_1.MoneyFlow_Backend.Users;
 
 import org.springframework.web.bind.annotation.*;
-import ta4_1.MoneyFlow_Backend.model.User;
+
 import java.util.HashMap;
 
 /**
