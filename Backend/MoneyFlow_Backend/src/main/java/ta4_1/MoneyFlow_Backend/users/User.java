@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     protected UUID id = UUID.randomUUID();
 
