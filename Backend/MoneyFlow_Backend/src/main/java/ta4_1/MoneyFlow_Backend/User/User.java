@@ -1,4 +1,4 @@
-package ta4_1.MoneyFlow_Backend.users;
+package ta4_1.MoneyFlow_Backend.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
