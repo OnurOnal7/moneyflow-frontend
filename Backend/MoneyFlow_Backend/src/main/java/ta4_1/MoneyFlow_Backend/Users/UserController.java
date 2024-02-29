@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
@@ -11,6 +12,8 @@ import java.util.HashMap;
 
 @RestController
 public class UserController {
+    @Autowired
+    UserRepository userRepository;
 
     HashMap<String, User> regularUserList = new HashMap<>();
     HashMap<String, User> premiumUserList = new HashMap<>();
