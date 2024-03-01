@@ -1,8 +1,9 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Controller used to showcase Create and Read from a LIST
@@ -15,149 +16,70 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    HashMap<String, User> regularUserList = new HashMap<>();
-    HashMap<String, User> premiumUserList = new HashMap<>();
-    HashMap<String, User> guestUserList = new HashMap<>();
-
     // Gets all users of any type.
-    @GetMapping("/users/type/{userType}")
-    public HashMap<String, User> getUsersByType(@PathVariable String userType) {
-        HashMap<String, User> selectedUsers = new HashMap<>();
-
-        if ("regular".equals(userType)) {
-            selectedUsers.putAll(regularUserList);
-        }
-        else if ("premium".equals(userType)) {
-            selectedUsers.putAll(premiumUserList);
-        }
-        else if ("guest".equals(userType)) {
-            selectedUsers.putAll(guestUserList);
-        }
-        else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
-        return selectedUsers;
+    @GetMapping("/users/{userType}")
+    public List<User> getUsersByType(@PathVariable String userType) {
+        return userRepository.findByType(userType);
     }
 
     // Gets a user.
-    @GetMapping("/users/type/{userType}/{email}")
-    public User getUser(@PathVariable String userType, @PathVariable String email) {
-        HashMap<String, User> selectedUsers = new HashMap<>();
-
-        if ("regular".equals(userType)) {
-            selectedUsers.putAll(regularUserList);
-        }
-        else if ("premium".equals(userType)) {
-            selectedUsers.putAll(premiumUserList);
-        }
-        else if ("guest".equals(userType)) {
-            selectedUsers.putAll(guestUserList);
-        }
-        else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
-
-        return selectedUsers.get(email);
+    @GetMapping("/users/{id}")
+    public Optional<User> getUser(@PathVariable UUID id) {
+        return userRepository.findById(id);
     }
 
     // Gets all users.
     @GetMapping("/users")
-    public HashMap<String, User>[] getAllUsers() {
-        HashMap<String, User>[] users;
-        users = new HashMap[3];
-
-        users[0] = regularUserList;
-        users[1] = premiumUserList;
-        users[2] = guestUserList;
-
-        return users;
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     // Sign up operation.
-    @PostMapping("/signup/{userType}")
-    public String signup(@RequestBody User user, @PathVariable String userType) {
-        user.setId();
-        System.out.println(user);
-
-        HashMap<String, User> selectedUsers;
-
-        if ("regular".equals(userType)) {
-            selectedUsers = regularUserList;
-        }
-        else if ("premium".equals(userType)) {
-            selectedUsers = premiumUserList;
-        }
-        else if ("guest".equals(userType)) {
-            selectedUsers = guestUserList;
-        }
-        else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
-
-        selectedUsers.put(user.getEmail(), user);
-        return "Hello " + user.getFirstName() + ", welcome to MoneyFlow Insight!";
+    @PostMapping("/signup")
+    public String signup(@RequestBody User u) {
+        u.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
+        userRepository.save(u);
+        return "Success";
     }
 
     // Login operation.
-    @GetMapping("/login/{userType}")
-    public String login(@RequestParam String email, @RequestParam String password, @PathVariable String userType) {
-        HashMap<String, User> selectedUsers = new HashMap<>();
+    @PostMapping("/login/")
+    public String login(@RequestParam String email, @RequestParam String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
-        if ("regular".equals(userType)) {
-            selectedUsers.putAll(regularUserList);
-        }
-        else if ("premium".equals(userType)) {
-            selectedUsers.putAll(premiumUserList);
-        }
-        else if ("guest".equals(userType)) {
-            selectedUsers.putAll(guestUserList);
-        }
-        else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
-
-        User user = selectedUsers.get(email);
-        if ((user != null) && (user.getPassword().equals(password))) {
-            return "Welcome back, " + user.getFirstName() + "!";
-        }
-        else {
-            if (user == null) {
-                return "No such user";
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (encoder.matches(password, user.getPassword())) {
+                return "Welcome back, " + user.getFirstName() + "!";
             }
-            return "Incorrect password, Access Denied";
+            else {
+                return "Incorrect password, Access Denied";
+            }
+        }
+        else {
+            return "No such user";
         }
     }
 
     // Updates a user.
-    @PutMapping("/users/type/{userType}/{email}")
-    public String updateUser(@PathVariable String userType, @PathVariable String email, @RequestBody User u) {
-        HashMap<String, User> selectedUsers;
+    @PutMapping("/users/{id}")
+    public Optional<User> updateUser(@PathVariable UUID id, @RequestBody User u) {
+        Optional<User> userOptional = userRepository.findById(id);
 
-        if ("regular".equals(userType)) {
-            selectedUsers = regularUserList;
-        }
-        else if ("premium".equals(userType)) {
-            selectedUsers = premiumUserList;
-        }
-        else if ("guest".equals(userType)) {
-            selectedUsers = guestUserList;
-        }
-        else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setFirstName(u.getFirstName());
+            user.setLastName(u.getLastName());
+            user.setEmail(u.getEmail());
+            user.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
 
-        if (selectedUsers.containsKey(email)) {
-            u.id = selectedUsers.get(email).getId();
-            selectedUsers.remove(email, selectedUsers.get(email));
-            selectedUsers.put(u.getEmail(), u);
-            return "User credentials successfully updated.";
+            userRepository.save(user);
         }
-        else {
-            return "User not found.";
-        }
+        return userOptional;
     }
 
-    // Deletes a user.
+    /* Deletes a user.
     @DeleteMapping("/users/type/{userType}/{email}")
     public String deleteUser(@PathVariable String userType, @PathVariable String email) {
         HashMap<String, User> selectedUsers;
@@ -180,5 +102,6 @@ public class UserController {
             return "User not found.";
         }
     }
+     */
 }
 

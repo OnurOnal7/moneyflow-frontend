@@ -1,9 +1,7 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
 /**
@@ -17,7 +15,8 @@ import java.util.UUID;
 public class User {
 
     @Id
-    protected UUID id = UUID.randomUUID();
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -30,6 +29,9 @@ public class User {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "type")
+    private String type = "regular";
     public User(){
 
     }
@@ -80,6 +82,10 @@ public class User {
     public void setId() {
         this.id = UUID.randomUUID();
     }
+
+    public String getType() { return this.type; }
+
+    public void setType(String type) { this.type = type; }
 
     @Override
     public String toString() {
