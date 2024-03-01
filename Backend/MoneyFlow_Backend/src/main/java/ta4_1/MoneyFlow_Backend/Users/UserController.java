@@ -16,6 +16,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     // Gets all users of any type.
     @GetMapping("/users/{userType}")
     public List<User> getUsersByType(@PathVariable String userType) {
@@ -37,27 +40,24 @@ public class UserController {
     // Sign up operation.
     @PostMapping("/signup")
     public String signup(@RequestBody User u) {
-        u.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
+        u.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
         userRepository.save(u);
         return "Success";
     }
 
     // Login operation.
-    @PostMapping("/login/")
+    @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (encoder.matches(password, user.getPassword())) {
+            if (passwordEncoder.matches(password, user.getPassword())) { // Use the autowired encoder for password matching
                 return "Welcome back, " + user.getFirstName() + "!";
-            }
-            else {
+            } else {
                 return "Incorrect password, Access Denied";
             }
-        }
-        else {
+        } else {
             return "No such user";
         }
     }
@@ -72,36 +72,19 @@ public class UserController {
             user.setFirstName(u.getFirstName());
             user.setLastName(u.getLastName());
             user.setEmail(u.getEmail());
-            user.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
+            user.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
 
             userRepository.save(user);
+            return Optional.of(user);
         }
-        return userOptional;
+        return userOptional; // Return the original Optional<User> if the user was not found
     }
 
-    /* Deletes a user.
-    @DeleteMapping("/users/type/{userType}/{email}")
-    public String deleteUser(@PathVariable String userType, @PathVariable String email) {
-        HashMap<String, User> selectedUsers;
-
-        if ("regular".equals(userType)) {
-            selectedUsers = regularUserList;
-        } else if ("premium".equals(userType)) {
-            selectedUsers = premiumUserList;
-        } else if ("guest".equals(userType)) {
-            selectedUsers = guestUserList;
-        } else {
-            throw new IllegalArgumentException("Invalid user type: " + userType);
-        }
-
-        if (selectedUsers.containsKey(email)) {
-            String response = selectedUsers.get(email).getFirstName();
-            selectedUsers.remove(email);
-            return "User " +  response + " has been successfully removed.";
-        } else {
-            return "User not found.";
-        }
+    // Deletes a user.
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable UUID id) {
+        userRepository.deleteById(id);
+        return "Success";
     }
-     */
 }
 
