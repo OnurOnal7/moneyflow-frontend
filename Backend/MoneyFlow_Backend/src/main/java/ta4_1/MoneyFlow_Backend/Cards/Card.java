@@ -14,11 +14,8 @@ public class Card {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "card_number", unique = true, nullable = false)
     private String cardNumber;
@@ -38,30 +35,20 @@ public class Card {
 
     }
 
-    public Card(String firstName, String lastName, String cardNumber, String expirationDate, String cvv){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Card(String name, String cardNumber, String expirationDate, String cvv){
+        this.name = name;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
         this.cvv = cvv;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getCardNumber() {
         return this.cardNumber;
     }
@@ -95,8 +82,7 @@ public class Card {
     @Override
     public String toString() {
         return id + " "
-                + firstName + " "
-                + lastName + " "
+                + name + " "
                 + cardNumber + " "
                 + expirationDate + " "
                 + cvv;

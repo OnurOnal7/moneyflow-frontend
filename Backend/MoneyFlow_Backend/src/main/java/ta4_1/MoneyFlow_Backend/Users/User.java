@@ -33,11 +33,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", unique = true) // Change nullable to true
     private String email;
 
     @Column(name = "type")
-    private String type = "regular";
+    private String type;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Card> cards;

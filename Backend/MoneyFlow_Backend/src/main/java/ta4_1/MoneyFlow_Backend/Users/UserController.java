@@ -1,8 +1,11 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.*;
 
 /**
@@ -38,26 +41,32 @@ public class UserController {
     // Sign up operation.
     @PostMapping("/signup")
     public String signup(@RequestBody User u) {
+        u.setType("regular");
         u.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
+        userRepository.save(u);
+        return "Success";
+    }
+
+    // Login operation for guest.
+    @PostMapping("/login/guest")
+    public String loginGuest() {
+        User u = new User();
+        u.setType("guest");
         userRepository.save(u);
         return "Success";
     }
 
     // Login operation.
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
+    public UUID login(@RequestParam String email, @RequestParam String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user"));
 
-        
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (passwordEncoder.matches(password, user.getPassword())) { // Use the autowired encoder for password matching
-                return "Welcome back, " + user.getFirstName() + "!";
-            } else {
-                return "Incorrect password, Access Denied";
-            }
-        } else {
-            return "No such user";
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return user.getId();
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password, Access Denied");
         }
     }
 
