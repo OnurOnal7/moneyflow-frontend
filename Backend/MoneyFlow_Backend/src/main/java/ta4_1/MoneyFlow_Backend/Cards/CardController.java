@@ -27,6 +27,7 @@ public class CardController {
         for (User u : users) {
             allCards.add(u.getCards());
         }
+        
 
         return allCards;
     }
