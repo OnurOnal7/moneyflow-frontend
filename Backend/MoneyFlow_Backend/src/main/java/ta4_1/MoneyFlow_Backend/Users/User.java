@@ -2,6 +2,7 @@ package ta4_1.MoneyFlow_Backend.Users;
 
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
+import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,9 @@ public class User {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
+
+    @OneToOne(mappedBy = "user")
+    private Expenses expenses;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -101,6 +105,17 @@ public class User {
             for (Card card : cards) {
                 card.setUser(this);
             }
+        }
+    }
+
+    public Expenses getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(Expenses expenses) {
+        this.expenses = expenses;
+        if (expenses != null) {
+            expenses.setUser(this); // Set the user in the Expenses entity
         }
     }
 
