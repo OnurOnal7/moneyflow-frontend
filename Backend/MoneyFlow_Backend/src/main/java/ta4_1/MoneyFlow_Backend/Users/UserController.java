@@ -123,7 +123,6 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     /**
      * Generates a financial report for a user.
      *

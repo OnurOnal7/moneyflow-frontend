@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Expenses;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,15 +50,16 @@ public class ExpensesController {
     }
 
     /**
-     * Get expenses by ID.
+     * Get an expense of a user.
      *
-     * @param id The ID of the expenses.
+     * @param id The ID of the user.
      * @return ResponseEntity with the found expenses.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Expenses> getExpensesById(@PathVariable UUID id) {
-        Optional<Expenses> expenses = expensesRepository.findById(id);
-        return expenses.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Expenses> getExpensesOfUser(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> ResponseEntity.ok(user.getExpenses()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -71,27 +73,30 @@ public class ExpensesController {
     }
 
     /**
-     * Update expenses by ID.
+     * Update expenses by user ID.
      *
-     * @param id             The ID of the expenses to update.
+     * @param id             The ID of the user whose expenses to update.
      * @param updatedExpenses The updated expenses object.
      * @return ResponseEntity with the updated expenses.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Expenses> updateExpenses(@PathVariable UUID id, @RequestBody Expenses updatedExpenses) {
-        return expensesRepository.findById(id)
-                .map(expenses -> {
-                    expenses.setPersonal(updatedExpenses.getPersonal());
-                    expenses.setWork(updatedExpenses.getWork());
-                    expenses.setHome(updatedExpenses.getHome());
-                    expenses.setOther(updatedExpenses.getOther());
-                    //expenses.setDate(LocalDate.now()); // Update the date
-                    return ResponseEntity.ok(expensesRepository.save(expenses));
+    @Transactional
+    public ResponseEntity<Expenses> updateExpensesOfUser(@PathVariable UUID id, @RequestBody Expenses updatedExpenses) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Expenses currentExpenses = user.getExpenses();
+                    currentExpenses.setPersonal(currentExpenses.getPersonal() + updatedExpenses.getPersonal());
+                    currentExpenses.setWork(currentExpenses.getWork() + updatedExpenses.getWork());
+                    currentExpenses.setHome(currentExpenses.getHome() + updatedExpenses.getHome());
+                    currentExpenses.setOther(currentExpenses.getOther() + updatedExpenses.getOther());
+
+                    return ResponseEntity.ok(currentExpenses); // Return the updated expenses
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
+
+    /*
      * Add extra expenses to a user's existing expenses based on the expense type.
      *
      * @param userId      The ID of the user.
@@ -99,6 +104,7 @@ public class ExpensesController {
      * @param amount      The amount to add to the specified expense type.
      * @return ResponseEntity with the updated expenses.
      */
+    /*
     @PostMapping("/add/{userId}/{expenseType}")
     public ResponseEntity<Expenses> addExtraExpenses(@PathVariable UUID userId, @PathVariable String expenseType, @RequestBody Double amount) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -130,7 +136,7 @@ public class ExpensesController {
         Expenses savedExpenses = expensesRepository.save(expenses);
         return ResponseEntity.ok(savedExpenses);
     }
-
+*/
     /**
      * Delete expenses by ID.
      *

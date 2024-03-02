@@ -88,4 +88,34 @@ public class CardController {
 
         return null;
     }
+/*
+    @PutMapping("/cards/{id}")
+    public ResponseEntity<Card> updateCard(@PathVariable UUID id, @RequestBody Card card) {
+        return cardRepository.findById(id)
+                .map(user -> {
+                    user.setFirstName(u.getFirstName());
+                    user.setLastName(u.getLastName());
+                    user.setEmail(u.getEmail());
+                    user.setIncome(u.getIncome());
+                    user.setPassword(passwordEncoder.encode(u.getPassword()));
+                    return ResponseEntity.ok(userRepository.save(user));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+*/
+    /**
+     * Deletes a card by its unique ID.
+     *
+     * @param id the ID of the card to be deleted
+     * @return  a success message
+     */
+    @DeleteMapping("/cards/{id}")
+    public ResponseEntity<String> deleteCard(@PathVariable UUID id) {
+        return cardRepository.findById(id)
+                .map(card -> {
+                    cardRepository.deleteById(id);
+                    return ResponseEntity.ok("Card deleted successfully");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
