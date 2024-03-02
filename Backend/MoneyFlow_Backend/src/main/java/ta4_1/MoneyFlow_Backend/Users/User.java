@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
@@ -33,7 +34,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", unique = true) // Change nullable to true
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "type")
@@ -43,6 +44,7 @@ public class User {
     private double income;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Card> cards;
 
     public User(){
@@ -111,16 +113,16 @@ public class User {
 
     public List<Card> getCards() { return this.cards; }
 
-    public void setCards(List<Card> cards) {
+    public void addCards(List<Card> cards) {
         this.cards.clear();
         if (cards != null) {
             for (Card card : cards) {
-                setCard(card);
+                addCard(card);
             }
         }
     }
 
-    public void setCard(Card card) {
+    public void addCard(Card card) {
         if (cards != null) {
             this.cards.add(card);
             card.setUser(this);

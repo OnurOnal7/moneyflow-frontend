@@ -28,7 +28,7 @@ public class Card {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     public Card(){

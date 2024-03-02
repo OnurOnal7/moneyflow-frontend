@@ -20,7 +20,7 @@ public class CardController {
     private UserRepository userRepository;
 
     // Gets all cards of all users.
-    @GetMapping("/card")
+    @GetMapping("/cards")
     public List<List<Card>> getAllCards() {
         List<User> users = userRepository.findAll();
         List<List<Card>> allCards = new ArrayList<>();
@@ -33,26 +33,28 @@ public class CardController {
     }
 
     // Gets all cards of a users.
-    @GetMapping("/card/userId/{id}")
+    @GetMapping("/cards/userId/{id}")
     public List<Card> getAllCardsOfUser(@PathVariable UUID id) {
         return userRepository.findById(id).get().getCards();
     }
 
     // Gets a card.
-    @GetMapping("/card/cardId/{id}")
+    @GetMapping("/cards/cardId/{id}")
     public Card getCard(@PathVariable UUID id) { return cardRepository.findById(id).get(); }
 
     // Creates a card.
-    @PostMapping("/card/{id}")
-    public UUID createCard(@PathVariable UUID id, @RequestBody Card c) {
+    @PostMapping("/cards/{id}")
+    public UUID createCard(@PathVariable UUID id, @RequestBody Card card) {
         Optional<User> userOptional = userRepository.findById(id);
-        
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setCard(c);
-            return user.getId();
+            card.setUser(user);
+            cardRepository.save(card);
+            user.addCard(card);
+            userRepository.save(user);
+            return card.getId();
         }
-
         return null;
     }
 
