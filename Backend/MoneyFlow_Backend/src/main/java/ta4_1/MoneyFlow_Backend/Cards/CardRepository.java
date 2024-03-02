@@ -15,4 +15,5 @@ public interface CardRepository extends JpaRepository<Card, UUID> {
 
     @Transactional
     void deleteById(UUID id);
+    
 }
