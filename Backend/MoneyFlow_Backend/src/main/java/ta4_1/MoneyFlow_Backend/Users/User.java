@@ -1,7 +1,9 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
 import jakarta.persistence.*;
+import ta4_1.MoneyFlow_Backend.Cards.Card;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,6 +34,10 @@ public class User {
 
     @Column(name = "type")
     private String type = "regular";
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Card> cards;
+
     public User(){
 
     }
@@ -86,6 +92,17 @@ public class User {
     public String getType() { return this.type; }
 
     public void setType(String type) { this.type = type; }
+
+    public List<Card> getCards() { return this.cards; }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+        if (cards != null) {
+            for (Card card : cards) {
+                card.setUser(this);
+            }
+        }
+    }
 
     @Override
     public String toString() {
