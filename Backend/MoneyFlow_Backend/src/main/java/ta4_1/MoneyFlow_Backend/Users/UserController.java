@@ -20,16 +20,14 @@ public class UserController {
     private BCryptPasswordEncoder passwordEncoder;
 
     // Gets all users of any type.
-    @GetMapping("/users/{userType}")
+    @GetMapping("/users/type/{userType}")
     public List<User> getUsersByType(@PathVariable String userType) {
         return userRepository.findByType(userType);
     }
 
     // Gets a user.
-    @GetMapping("/users/{id}")
-    public Optional<User> getUser(@PathVariable UUID id) {
-        return userRepository.findById(id);
-    }
+    @GetMapping("/users/id/{id}")
+    public Optional<User> getUser(@PathVariable UUID id) { return userRepository.findById(id); }
 
     // Gets all users.
     @GetMapping("/users")
@@ -72,12 +70,11 @@ public class UserController {
             user.setFirstName(u.getFirstName());
             user.setLastName(u.getLastName());
             user.setEmail(u.getEmail());
-            user.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
+            user.setPassword(passwordEncoder.encode(u.getPassword()));
 
             userRepository.save(user);
-            return Optional.of(user);
         }
-        return userOptional; // Return the original Optional<User> if the user was not found
+        return userOptional;
     }
 
     // Deletes a user.
