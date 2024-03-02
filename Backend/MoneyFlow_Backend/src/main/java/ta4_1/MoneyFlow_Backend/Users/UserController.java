@@ -10,45 +10,69 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 
 /**
- * Controller used to showcase Create and Read from a LIST
+ * Controller for managing user-related operations in the MoneyFlow application.
  *
  * @author Onur Onal
+ * @author Kemal Yavuz
+ *
  */
-
 @RestController
 public class UserController {
     @Autowired
-    UserRepository userRepository;
+    UserRepository userRepository; // Injects the UserRepository for database operations.
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;  // Injects the password encoder for hashing passwords.
 
-    // Gets all users of any type.
+    /**
+     * Retrieves a list of users filtered by their type.
+     *
+     * @param userType the type of users to retrieve
+     * @return a list of users with the specified type
+     */
     @GetMapping("/users/type/{userType}")
     public List<User> getUsersByType(@PathVariable String userType) {
         return userRepository.findByType(userType);
     }
 
-    // Gets a user.
+    /**
+     * Retrieves a user by their unique ID.
+     *
+     * @param id the ID of the user to retrieve
+     * @return an Optional containing the user if found, or an empty Optional otherwise
+     */
     @GetMapping("/users/id/{id}")
     public Optional<User> getUser(@PathVariable UUID id) { return userRepository.findById(id); }
 
-    // Gets all users.
+    /**
+     * Retrieves a list of all users.
+     *
+     * @return  a list of all users
+     */
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Sign up operation.
+    /**
+     * Handles user signup by creating a new user with the provided information.
+     *
+     * @param u the user to be created
+     * @return ID of the User
+     */
     @PostMapping("/signup")
-    public String signup(@RequestBody User u) {
+    public UUID signup(@RequestBody User u) {
         u.setType("regular");
         u.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
         userRepository.save(u);
-        return "Success";
+        return u.getId();
     }
 
-    // Login operation for guest.
+    /**
+     * Handles guest login by creating a new user with the type "guest".
+     *
+     * @return a success message
+     */
     @PostMapping("/login/guest")
     public String loginGuest() {
         User u = new User();
@@ -57,7 +81,14 @@ public class UserController {
         return "Success";
     }
 
-    // Login operation.
+    /**
+     * Handles user login by verifying the provided email and password.
+     *
+     * @param email the email of the user attempting to log in
+     * @param password  the password of the user attempting to log in
+     * @return ID of the User
+     * @throws ResponseStatusException if the user is not found or the password is incorrect
+     */
     @PostMapping("/login")
     public UUID login(@RequestParam String email, @RequestParam String password) {
         User user = userRepository.findByEmail(email)
@@ -71,23 +102,34 @@ public class UserController {
         }
     }
 
-    // Updates a user.
+    /**
+     * Updates the information of an existing user.
+     *
+     * @param id the ID of the user to be updated
+     * @param u the updated user information
+     * @return Updated user if the update is successful
+     */
     @PutMapping("/users/{id}")
-    public Optional<User> updateUser(@PathVariable UUID id, @RequestBody User u) {
-        Optional<User> userOptional = userRepository.findById(id);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setFirstName(u.getFirstName());
-            user.setLastName(u.getLastName());
-            user.setEmail(u.getEmail());
-            user.setPassword(passwordEncoder.encode(u.getPassword()));
-
-            userRepository.save(user);
-        }
-        return userOptional;
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User u) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setFirstName(u.getFirstName());
+                    user.setLastName(u.getLastName());
+                    user.setEmail(u.getEmail());
+                    user.setIncome(u.getIncome());
+                    user.setPassword(passwordEncoder.encode(u.getPassword()));
+                    return ResponseEntity.ok(userRepository.save(user));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
+    /**
+     * Generates a financial report for a user.
+     *
+     * @param id the ID of the user for whom the report is to be generated
+     * @return  a ResponseEntity containing the financial report or a not found status
+     */
     @GetMapping("/{id}/financial-report")
     public ResponseEntity<String> generateFinancialReport(@PathVariable UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
@@ -100,11 +142,19 @@ public class UserController {
         }
     }
 
-    // Deletes a user.
+    /**
+     * Deletes a user by their unique ID.
+     *
+     * @param id the ID of the user to be deleted
+     * @return  a success message
+     */
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable UUID id) {
-        userRepository.deleteById(id);
-        return "Success";
+    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    userRepository.deleteById(id);
+                    return ResponseEntity.ok("User deleted successfully");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
-

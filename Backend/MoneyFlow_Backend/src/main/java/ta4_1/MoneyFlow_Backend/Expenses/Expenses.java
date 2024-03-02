@@ -7,18 +7,35 @@ import ta4_1.MoneyFlow_Backend.Users.User;
 import java.util.UUID;
 
 /**
+ * Represents the expenses associated with a user.
+ *
  * @author Kemal Yavuz
+ * @author Onur Onal
+ *
  */
-
 @Entity
+@Table(name = "expenses")
 public class Expenses {
     @Id
-    private UUID id;
+    @GeneratedValue(generator = "UUID")
+    private UUID id;    // Unique identifier for the expenses.
 
-    @OneToOne
+    @Column(name = "personal")
+    private double personal;    // Personal expenses.
+
+    @Column(name = "work")
+    private double work;    // Work-related expenses.
+
+    @Column(name = "home")
+    private double home;    // Home expenses.
+
+    @Column(name = "other")
+    private double other;   // Other expenses.
+
     @JsonIgnore
-    @MapsId
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;  // The user associated with these expenses.
 
     public User getUser() {
         return user;
@@ -27,11 +44,6 @@ public class Expenses {
     public void setUser(User user) {
         this.user = user;
     }
-
-    private double personal;
-    private double work;
-    private double home;
-    private double other;
 
     public Expenses() {
     }
@@ -56,7 +68,9 @@ public class Expenses {
     }
 
     public void setPersonal(double personal) {
-        this.personal = personal;
+        if (personal >= 0) {
+            this.personal = personal;
+        }
     }
 
     public double getWork() {
@@ -64,7 +78,9 @@ public class Expenses {
     }
 
     public void setWork(double work) {
-        this.work = work;
+        if (work >= 0) {
+            this.work = work;
+        }
     }
 
     public double getHome() {
@@ -72,7 +88,9 @@ public class Expenses {
     }
 
     public void setHome(double home) {
-        this.home = home;
+        if (home >= 0) {
+            this.home = home;
+        }
     }
 
     public double getOther() {
@@ -80,7 +98,9 @@ public class Expenses {
     }
 
     public void setOther(double other) {
-        this.other = other;
+        if (other >= 0) {
+            this.other = other;
+        }
     }
 
     public double getTotalExpenses() {

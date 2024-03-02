@@ -6,41 +6,59 @@ import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.UUID;
 
+/**
+ * Entity representing a credit/debit card.
+ *
+ * @author Onur Onal
+ * @author Kemal Yavuz
+ *
+ */
 @Entity
 @Table(name = "cards")
 public class Card {
-
     @Id
     @GeneratedValue(generator = "UUID")
-    private UUID id;
+    private UUID id;    // Unique identifier for the card
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String name;    // Name of the card
 
     @Column(name = "card_number", unique = true, nullable = false)
-    private String cardNumber;
+    private String cardNumber;  // Card number, must be unique
 
     @Column(name = "expiration_date", nullable = false)
-    private String expirationDate;
+    private String expirationDate;  // Expiration date of the card
 
     @Column(name = "cvv", nullable = false)
-    private String cvv;
+    private String cvv; // CVV number of the card
 
-    @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "user_id", nullable = true)
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;  // The user associated with this card
 
+    /**
+     * Default constructor
+     */
     public Card(){
-
     }
 
+    /**
+     * Constructor with parameters.
+     *
+     * @param name            Name associated with the card.
+     * @param cardNumber      Card number.
+     * @param expirationDate  Expiration date of the card.
+     * @param cvv             CVV of the card.
+     */
     public Card(String name, String cardNumber, String expirationDate, String cvv){
         this.name = name;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
         this.cvv = cvv;
     }
+
+    // Getters and setters
 
     public String getName() {
         return this.name;
