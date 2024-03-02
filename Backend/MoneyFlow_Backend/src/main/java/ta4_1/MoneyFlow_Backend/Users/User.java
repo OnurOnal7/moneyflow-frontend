@@ -10,47 +10,61 @@ import java.util.UUID;
 
 /**
  * Provides the Definition/Structure for the user table
+ * Represents a User in the MoneyFlow application.
+ * Each user has a unique ID, personal information, an income, associated expenses, and a list of cards.
  *
  * @author Onur Onal
+ * @author Kemal Yavuz
+ *
  */
-
-@Entity
-@Table(name = "users")
+@Entity // Indicates that this class is an entity in the database.
+@Table(name = "users")  // Specifies the table name in the database.
 public class User {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    private UUID id;
+    @Id // Indicates that this field is the primary key.
+    @GeneratedValue(generator = "UUID") // Specifies that the ID should be generated automatically as a UUID.
+    private UUID id; // Unique identifier for the user.
 
-    @OneToOne(mappedBy = "user")
-    private Expenses expenses;
+    @Column(name = "first_name", nullable = false)  // Maps this field to the "first_name" column in the database.
+    private String firstName;   // The user's first name.
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "last_name", nullable = false)   // Maps this field to the "last_name" column in the database.
+    private String lastName;    // The user's last name.
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "password", nullable = false)    // Maps this field to the "password" column in the database.
+    private String password;    // The user's password.
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "email", unique = true, nullable = false)    // Maps this field to the "email" column in the database.
+    private String email;   // The user's email.
 
-    @Column(name = "email", unique = true)
-    private String email;
+    @Column(name = "type")  // Maps this field to the "type" column in the database.
+    private String type;    // The user's type (e.g., regular, premium).
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "income")    // Maps this field to the "income" column in the database.
+    private Double income;  // The user's income.
 
-    @Column(name = "income")
-    private double income;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
+    private Expenses expenses;  // The user's associated expenses.
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Card> cards;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Card entity.
+    private List<Card> cards;   // The user's associated cards.
 
+    /**
+     * Default constructor for JPA.
+     */
     public User(){
 
     }
 
+    /**
+     * Constructs a new User with the specified personal information and income.
+     *
+     * @param firstName - the first name of the user
+     * @param lastName  - the last name of the user
+     * @param password  - the password of the user
+     * @param email - the email of the user
+     * @param income    - the income of the user
+     */
     public User(String firstName, String lastName, String password, String email, double income){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,6 +72,8 @@ public class User {
         this.email = email;
         this.income = income;
     }
+
+    // Getters and setters for each field
 
     public String getFirstName() {
         return this.firstName;
@@ -103,24 +119,15 @@ public class User {
 
     public void setType(String type) { this.type = type; }
 
-    public double getIncome() {
+    public Double getIncome() {
         return income;
     }
 
-    public void setIncome(double income) {
+    public void setIncome(Double income) {
         this.income = income;
     }
 
     public List<Card> getCards() { return this.cards; }
-
-    public void addCards(List<Card> cards) {
-        this.cards.clear();
-        if (cards != null) {
-            for (Card card : cards) {
-                addCard(card);
-            }
-        }
-    }
 
     public void addCard(Card card) {
         if (cards != null) {
@@ -140,12 +147,22 @@ public class User {
         }
     }
 
+    /**
+     * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
+     *
+     * @return  a string containing the financial report
+     */
     public String generateFinancialReport() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
         double budget = income - totalExpenses;
         return "Income: " + income + "\nExpenses: " + totalExpenses + "\n" + firstName + ", You Have " + budget + "$ to spend on entertainment, investing, or other.";
     }
 
+    /**
+     * Represents the user as a string containing their ID, personal information, and income.
+     *
+     * @return  a string representation of the user
+     */
     @Override
     public String toString() {
         return id + " "
@@ -153,7 +170,7 @@ public class User {
                 + lastName + " "
                 + password + " "
                 + email + " "
-                + income;
+                + income + " "
+                + type;
     }
 }
-
