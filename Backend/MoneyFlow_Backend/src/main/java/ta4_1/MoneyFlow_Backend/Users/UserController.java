@@ -48,6 +48,7 @@ public class UserController {
     public String login(@RequestParam String email, @RequestParam String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
+        
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder.matches(password, user.getPassword())) { // Use the autowired encoder for password matching
