@@ -100,11 +100,18 @@ public class User {
     public List<Card> getCards() { return this.cards; }
 
     public void setCards(List<Card> cards) {
-        this.cards = cards;
+        this.cards.clear();
         if (cards != null) {
             for (Card card : cards) {
-                card.setUser(this);
+                setCard(card);
             }
+        }
+    }
+
+    public void setCard(Card card) {
+        if (cards != null) {
+            this.cards.add(card);
+            card.setUser(this);
         }
     }
 
