@@ -82,4 +82,13 @@ public class Expenses {
     public void setOther(double other) {
         this.other = other;
     }
+
+    public double getTotalExpenses() {
+        return personal + work + home + other;
+    }
+
+    @Override
+    public String toString() {
+        return "Expenses{" + "id=" + id + ", personal=" + personal + ", work=" + work + ", home=" + home + ", other=" + other + '}';
+    }
 }
