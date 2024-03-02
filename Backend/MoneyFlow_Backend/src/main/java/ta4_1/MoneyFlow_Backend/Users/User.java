@@ -39,6 +39,9 @@ public class User {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "income")
+    private double income;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Card> cards;
 
@@ -46,11 +49,12 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String password, String email){
+    public User(String firstName, String lastName, String password, String email, double income){
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
+        this.income = income;
     }
 
     public String getFirstName() {
@@ -97,6 +101,14 @@ public class User {
 
     public void setType(String type) { this.type = type; }
 
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
     public List<Card> getCards() { return this.cards; }
 
     public void setCards(List<Card> cards) {
@@ -126,13 +138,20 @@ public class User {
         }
     }
 
+    public String generateFinancialReport() {
+        double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
+        double budget = income - totalExpenses;
+        return "Income: " + income + "\nExpenses: " + totalExpenses + "\n" + firstName + ", You Have " + budget + "$ to spend on entertainment, investing, or other.";
+    }
+
     @Override
     public String toString() {
         return id + " "
                 + firstName + " "
                 + lastName + " "
                 + password + " "
-                + email;
+                + email + " "
+                + income;
     }
 }
 

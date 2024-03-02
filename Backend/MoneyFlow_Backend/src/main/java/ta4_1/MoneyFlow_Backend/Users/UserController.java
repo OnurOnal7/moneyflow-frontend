@@ -2,6 +2,7 @@ package ta4_1.MoneyFlow_Backend.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -85,6 +86,18 @@ public class UserController {
             userRepository.save(user);
         }
         return userOptional;
+    }
+
+    @GetMapping("/{id}/financial-report")
+    public ResponseEntity<String> generateFinancialReport(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String report = user.generateFinancialReport();
+            return ResponseEntity.ok(report);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Deletes a user.
