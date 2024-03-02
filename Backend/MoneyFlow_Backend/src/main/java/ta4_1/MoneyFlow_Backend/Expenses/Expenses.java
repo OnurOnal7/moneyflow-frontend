@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Expenses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
@@ -15,6 +16,7 @@ public class Expenses {
     private UUID id;
 
     @OneToOne
+    @JsonIgnore
     @MapsId
     private User user;
 
