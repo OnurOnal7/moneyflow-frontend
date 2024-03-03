@@ -32,6 +32,9 @@ public class Card {
     @Column(name = "cvv", nullable = false)
     private String cvv; // CVV number of the card
 
+    @Column(name = "is_default", nullable = false)
+    private boolean isDefault; // If the card is the user's default card.
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -67,6 +70,7 @@ public class Card {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getCardNumber() {
         return this.cardNumber;
     }
@@ -97,12 +101,17 @@ public class Card {
 
     public void setUser(User user) { this.user = user; }
 
+    public boolean getIsDefault() { return this.isDefault; }
+
+    public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+
     @Override
     public String toString() {
         return id + " "
                 + name + " "
                 + cardNumber + " "
                 + expirationDate + " "
-                + cvv;
+                + cvv + " "
+                + isDefault;
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Controller for Cards
@@ -58,13 +55,57 @@ public class CardController {
     }
 
     /**
-     * Retrieves a specific card by its ID.
+     * Retrieves a specific card of a user.
      *
-     * @param id The UUID of the card.
+     * @param userId The UUID of the user.
+     * @param cardId The UUID of the card.
      * @return The card with the specified ID.
      */
-    @GetMapping("/cards/cardId/{id}")
-    public Card getCard(@PathVariable UUID id) { return cardRepository.findById(id).get(); }
+    @GetMapping("/cards/id/{userId}/{cardId}")
+    public ResponseEntity<Card> getCard(@PathVariable UUID userId, @PathVariable UUID cardId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOptional.get();
+        List<Card> userCards = user.getCards();
+
+        for (Card c : userCards) {
+            if (c.getId().equals(cardId)) {
+                return ResponseEntity.ok(c);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+
+    /**
+     * Retrieves the default card of a specific user.
+     *
+     * @param id The UUID of the user.
+     * @return The card with the specified ID.
+     */
+    @GetMapping("/cards/userId/{id}/default")
+    public ResponseEntity<Card> getDefaultCard(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOptional.get();
+        List<Card> userCards = user.getCards();
+
+        for (Card c : userCards) {
+            if (c.getIsDefault()) {
+                return ResponseEntity.ok(c);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 
     /**
      * Creates a new card for a user.
@@ -74,20 +115,31 @@ public class CardController {
      * @return The UUID of the newly created card.
      */
     @PostMapping("/cards/{id}")
-    public UUID createCard(@PathVariable UUID id, @RequestBody Card card) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public ResponseEntity<?> createCard(@PathVariable UUID id, @RequestBody Card card) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    card.setIsDefault(true);
+                    List<Card> userCards = user.getCards();
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            card.setUser(user);
-            cardRepository.save(card);
-            user.addCard(card);
-            userRepository.save(user);
-            return card.getId();
-        }
+                    for (Card c : userCards) {
+                        if (c.getIsDefault() == true) {
+                            c.setIsDefault(false);
+                            cardRepository.save(c);
+                            break;
+                        }
+                    }
 
-        return null;
+                    card.setUser(user);
+                    cardRepository.save(card);
+                    user.addCard(card);
+                    userRepository.save(user);
+                    // Wrap the UUID in a JSON object
+                    return ResponseEntity.ok(Map.of("id", card.getId()));
+
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 /*
     @PutMapping("/cards/{id}")
     public ResponseEntity<Card> updateCard(@PathVariable UUID id, @RequestBody Card card) {

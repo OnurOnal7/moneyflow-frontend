@@ -81,7 +81,7 @@ public class ExpensesController {
      */
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Expenses> updateExpensesOfUser(@PathVariable UUID id, @RequestBody Expenses updatedExpenses) {
+    public ResponseEntity<Expenses> addExpensesToUser(@PathVariable UUID id, @RequestBody Expenses updatedExpenses) {
         return userRepository.findById(id)
                 .map(user -> {
                     Expenses currentExpenses = user.getExpenses();
