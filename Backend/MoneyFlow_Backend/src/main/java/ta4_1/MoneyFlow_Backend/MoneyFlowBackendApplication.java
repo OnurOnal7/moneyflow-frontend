@@ -6,8 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MoneyFlowBackendApplication {
 
+	/**
+	 * Main method to run the Spring Boot application.
+	 *
+	 * @param args Command line arguments.
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(MoneyFlowBackendApplication.class, args);
 	}
-
 }
