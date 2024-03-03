@@ -1,1 +1,1 @@
-This is a text
+{Personal: "2500", Home: "50000", Work: "20000", Other: "1200"}
