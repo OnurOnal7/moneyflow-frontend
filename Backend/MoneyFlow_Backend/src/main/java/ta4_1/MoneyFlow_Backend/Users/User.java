@@ -150,12 +150,11 @@ public class User {
     /**
      * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
      *
-     * @return  a string containing the financial report
+     * @return  Budget = Income - Expenses
      */
-    public String generateFinancialReport() {
+    public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
-        double budget = income - totalExpenses;
-        return "Income: " + income + "\nExpenses: " + totalExpenses + "\n" + firstName + ", You Have " + budget + "$ to spend on entertainment, investing, or other.";
+        return income - totalExpenses;
     }
 
     /**
