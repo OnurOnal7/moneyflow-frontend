@@ -123,6 +123,21 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/users/{id}/income")
+    public ResponseEntity<User> updateIncome(@PathVariable UUID id, @RequestBody Map<String, Double> incomeMap) {
+        if (!incomeMap.containsKey("income")) {
+            return ResponseEntity.badRequest().build();
+        }
+        Double income = incomeMap.get("income");
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setIncome(income);
+                    return ResponseEntity.ok(userRepository.save(user));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
     /**
      * Generates a financial report for a user.
      *
@@ -130,12 +145,12 @@ public class UserController {
      * @return  a ResponseEntity containing the financial report or a not found status
      */
     @GetMapping("/{id}/financial-report")
-    public ResponseEntity<String> generateFinancialReport(@PathVariable UUID id) {
+    public ResponseEntity<Double> generateFinancialReport(@PathVariable UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            String report = user.generateFinancialReport();
-            return ResponseEntity.ok(report);
+            double budget = user.generateBudget();
+            return ResponseEntity.ok(budget);
         } else {
             return ResponseEntity.notFound().build();
         }
