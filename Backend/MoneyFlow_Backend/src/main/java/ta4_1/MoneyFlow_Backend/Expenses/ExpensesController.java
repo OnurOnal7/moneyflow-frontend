@@ -9,6 +9,7 @@ import ta4_1.MoneyFlow_Backend.Users.User;
 
 //import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class ExpensesController {
      * @return ResponseEntity with the created or updated expenses.
      */
     @PostMapping("/{userId}")
-    public ResponseEntity<UUID> createExpenses(@PathVariable UUID userId, @RequestBody Expenses expenses) {
+    public ResponseEntity<?> createExpenses(@PathVariable UUID userId, @RequestBody Expenses expenses) {
         Optional<User> userOptional = userRepository.findById(userId);  // Find the user by ID.
         if (!userOptional.isPresent()) {
             return ResponseEntity.notFound().build();   // If the user is not found, return a 404 response.
@@ -46,7 +47,7 @@ public class ExpensesController {
         Expenses savedExpenses = expensesRepository.save(expenses); // Save the expenses to the database.
         user.setExpenses(savedExpenses); // Update the expenses in the User entity
         userRepository.save(user); // Save the updated User entity
-        return ResponseEntity.ok(savedExpenses.getId());
+        return ResponseEntity.ok(Map.of("userId", expenses.getId()));
     }
 
     /**
