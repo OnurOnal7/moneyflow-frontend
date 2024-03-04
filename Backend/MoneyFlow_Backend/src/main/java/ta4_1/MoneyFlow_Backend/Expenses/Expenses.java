@@ -34,7 +34,7 @@ public class Expenses {
 
     @JsonIgnore
     @OneToOne
-    @MapsId
+    //@MapsId
     @JoinColumn(name = "user_id")
     private User user;  // The user associated with these expenses.
 
