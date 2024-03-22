@@ -73,12 +73,12 @@ public class UserController {
      *
      * @return a success message
      */
-    @PostMapping("/login/guest")
-    public String loginGuest() {
+    @PostMapping("/login/type/guest")
+    public UUID loginGuest() {
         User u = new User();
         u.setType("guest");
         userRepository.save(u);
-        return "Success";
+        return u.getId();
     }
 
     /**
