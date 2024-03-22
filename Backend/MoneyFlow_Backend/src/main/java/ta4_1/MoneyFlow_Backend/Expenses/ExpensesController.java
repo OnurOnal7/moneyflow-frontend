@@ -139,17 +139,24 @@ public class ExpensesController {
     }
 */
     /**
-     * Delete expenses by ID.
+     * Delete expenses by user ID.
      *
-     * @param id The ID of the expenses to delete.
+     * @param userId The ID of the user whose expenses are to be deleted.
      * @return ResponseEntity indicating the result of the deletion.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExpenses(@PathVariable UUID id) {
-        return expensesRepository.findById(id)
-                .map(expenses -> {
-                    expensesRepository.delete(expenses);
-                    return ResponseEntity.ok().<Void>build();
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteExpensesByUserId(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    Expenses expenses = user.getExpenses();
+                    if (expenses != null) {
+                        expensesRepository.delete(expenses);
+                        user.setExpenses(null);
+                        userRepository.save(user);
+                        return ResponseEntity.ok().<Void>build();
+                    } else {
+                        return ResponseEntity.notFound().build();
+                    }
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
