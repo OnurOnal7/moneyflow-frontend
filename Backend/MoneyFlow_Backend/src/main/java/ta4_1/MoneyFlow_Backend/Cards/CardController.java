@@ -140,21 +140,23 @@ public class CardController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-/*
-    @PutMapping("/cards/{id}")
-    public ResponseEntity<Card> updateCard(@PathVariable UUID id, @RequestBody Card card) {
-        return cardRepository.findById(id)
+    /**
+     * Updates a card of a user.
+     *
+     * @param userId The UUID of the user.
+     * @param cardId The UUID of the card.
+     * @return The updated card.
+     *//*
+    @PutMapping("/cards/id/{userId}/{cardId}")
+    public ResponseEntity<Card> updateCard(@PathVariable UUID userId, @PathVariable UUID cardId, @RequestBody Card card) {
+        return userRepository.findById(userId)
                 .map(user -> {
-                    user.setFirstName(u.getFirstName());
-                    user.setLastName(u.getLastName());
-                    user.setEmail(u.getEmail());
-                    user.setIncome(u.getIncome());
-                    user.setPassword(passwordEncoder.encode(u.getPassword()));
+                    Card c = new Card();
                     return ResponseEntity.ok(userRepository.save(user));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-*/
+    }*/
+
     /**
      * Deletes a card by its unique ID.
      *

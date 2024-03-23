@@ -47,7 +47,7 @@ public class ExpensesController {
         Expenses savedExpenses = expensesRepository.save(expenses); // Save the expenses to the database.
         user.setExpenses(savedExpenses); // Update the expenses in the User entity
         userRepository.save(user); // Save the updated User entity
-        return ResponseEntity.ok(Map.of("userId", expenses.getId()));
+        return ResponseEntity.ok(Map.of("expenseId", expenses.getId()));
     }
 
     /**
@@ -96,48 +96,6 @@ public class ExpensesController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-    /*
-     * Add extra expenses to a user's existing expenses based on the expense type.
-     *
-     * @param userId      The ID of the user.
-     * @param expenseType The type of expense to add (e.g., "personal", "work", "home", "other").
-     * @param amount      The amount to add to the specified expense type.
-     * @return ResponseEntity with the updated expenses.
-     */
-    /*
-    @PostMapping("/add/{userId}/{expenseType}")
-    public ResponseEntity<Expenses> addExtraExpenses(@PathVariable UUID userId, @PathVariable String expenseType, @RequestBody Double amount) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        User user = userOptional.get();
-        Expenses expenses = user.getExpenses();
-        if (expenses == null) {
-            expenses = new Expenses();
-            expenses.setUser(user);
-        }
-        switch (expenseType.toLowerCase()) {
-            case "personal":
-                expenses.setPersonal(expenses.getPersonal() + amount);
-                break;
-            case "work":
-                expenses.setWork(expenses.getWork() + amount);
-                break;
-            case "home":
-                expenses.setHome(expenses.getHome() + amount);
-                break;
-            case "other":
-                expenses.setOther(expenses.getOther() + amount);
-                break;
-            default:
-                return ResponseEntity.badRequest().body(null);
-        }
-        Expenses savedExpenses = expensesRepository.save(expenses);
-        return ResponseEntity.ok(savedExpenses);
-    }
-*/
     /**
      * Delete expenses by user ID.
      *
