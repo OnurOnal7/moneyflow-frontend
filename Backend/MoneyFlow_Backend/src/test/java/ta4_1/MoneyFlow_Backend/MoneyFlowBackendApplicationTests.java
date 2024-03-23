@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 // The @SpringBootTest annotation tells Spring Boot to look for the main configuration class
 // (one with @SpringBootApplication, for instance) and use that to start a Spring application context.
 @SpringBootTest
-@ActiveProfiles("test") // Use the 'test' profile for these tests, assuming you have application-test.properties
+@ActiveProfiles("test")
 public class MoneyFlowBackendApplicationTests {
 
 	// Autowire the ApplicationContext to ensure that injection works properly
