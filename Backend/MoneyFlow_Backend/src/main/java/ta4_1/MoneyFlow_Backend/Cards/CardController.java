@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Cards;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -146,29 +147,63 @@ public class CardController {
      * @param userId The UUID of the user.
      * @param cardId The UUID of the card.
      * @return The updated card.
-     *//*
+     */
     @PutMapping("/cards/id/{userId}/{cardId}")
-    public ResponseEntity<Card> updateCard(@PathVariable UUID userId, @PathVariable UUID cardId, @RequestBody Card card) {
+    @Transactional
+    public ResponseEntity<?> updateCard(@PathVariable UUID userId, @PathVariable UUID cardId, @RequestBody Card card) {
         return userRepository.findById(userId)
                 .map(user -> {
-                    Card c = new Card();
-                    return ResponseEntity.ok(userRepository.save(user));
+                    Card updatedCard = null;
+                    for (Card c : user.getCards()) {
+                        if (c.getId().equals(cardId)) {
+                            updatedCard = c;
+                            break;
+                        }
+                    }
+                    if (updatedCard == null) {
+                        return ResponseEntity.notFound().build();
+                    }
+                    if (!card.getCardNumber().equals(null)) { updatedCard.setCardNumber(card.getCardNumber()); }
+                    if (!card.getExpirationDate().equals(null)) { updatedCard.setExpirationDate(card.getExpirationDate()); }
+                    if (!card.getName().equals(null)) { updatedCard.setName(card.getName()); }
+                    if (!card.getCvv().equals(null)) { updatedCard.setCvv(card.getCvv()); }
+
+                    return ResponseEntity.ok(updatedCard);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }*/
+    }
 
     /**
      * Deletes a card by its unique ID.
      *
-     * @param id the ID of the card to be deleted
-     * @return  a success message
+     * @param userId The UUID of the user.
+     * @param cardId The UUID of the card.
+     * @return  success message
      */
-    @DeleteMapping("/cards/{id}")
-    public ResponseEntity<String> deleteCard(@PathVariable UUID id) {
-        return cardRepository.findById(id)
-                .map(card -> {
-                    cardRepository.deleteById(id);
-                    return ResponseEntity.ok("Card deleted successfully");
+    @DeleteMapping("/cards/id/{userId}/{cardId}")
+    @Transactional
+    public ResponseEntity<?> deleteCard(@PathVariable UUID userId, @PathVariable UUID cardId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    Card deletedCard = null;
+                    boolean isCardDeleted = false;
+                    for (Card c : user.getCards()) {
+                        if (c.getId().equals(cardId)) {
+                            deletedCard = c;
+                            isCardDeleted = true;
+                            break;
+                        }
+                    }
+                    if (isCardDeleted) {
+                        user.getCards().remove(deletedCard);
+                        if ((deletedCard.getIsDefault()) && (!user.getCards().isEmpty())) {
+                            user.getCards().iterator().next().setIsDefault(true);
+                        }
+                        return ResponseEntity.ok("Card deleted successfully");
+                    }
+                    else {
+                        return ResponseEntity.notFound().build();
+                    }
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
