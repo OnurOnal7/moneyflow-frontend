@@ -178,7 +178,7 @@ public class CardController {
      *
      * @param userId The UUID of the user.
      * @param cardId The UUID of the card.
-     * @return  a success message
+     * @return  success message
      */
     @DeleteMapping("/cards/id/{userId}/{cardId}")
     @Transactional
