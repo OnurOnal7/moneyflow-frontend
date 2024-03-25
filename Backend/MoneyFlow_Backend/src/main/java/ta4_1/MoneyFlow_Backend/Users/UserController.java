@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,13 +111,15 @@ public class UserController {
      * @return Updated user if the update is successful
      */
     @PutMapping("/users/{id}")
+    @Transactional
     public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User u) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setFirstName(u.getFirstName());
                     user.setLastName(u.getLastName());
                     user.setEmail(u.getEmail());
-                    user.setIncome(u.getIncome());
+                    user.setMonthlyIncome(u.getMonthlyIncome());
+                    user.setAnnualIncome(u.getAnnualIncome());
                     user.setPassword(passwordEncoder.encode(u.getPassword()));
                     return ResponseEntity.ok(userRepository.save(user));
                 })
@@ -131,7 +134,7 @@ public class UserController {
         Double income = incomeMap.get("income");
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setIncome(income);
+                    user.setMonthlyIncome(income);
                     return ResponseEntity.ok(userRepository.save(user));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());

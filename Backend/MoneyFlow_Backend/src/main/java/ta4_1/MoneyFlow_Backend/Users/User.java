@@ -40,8 +40,11 @@ public class User {
     @Column(name = "type")  // Maps this field to the "type" column in the database.
     private String type;    // The user's type (e.g., regular, premium).
 
-    @Column(name = "income")    // Maps this field to the "income" column in the database.
-    private Double income;  // The user's income.
+    @Column(name = "monthly_income")    // Maps this field to the "monthly_income" column in the database.
+    private Double monthly_income;  // The user's monthly income.
+
+    @Column(name = "annual_income")    // Maps this field to the "annual_income" column in the database.
+    private Double annual_income;  // The user's annual income.
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
@@ -63,14 +66,16 @@ public class User {
      * @param lastName  - the last name of the user
      * @param password  - the password of the user
      * @param email - the email of the user
-     * @param income    - the income of the user
+     * @param monthly_income - the monthly income of the user
+     * @param annual_income - the annual income of the user
      */
-    public User(String firstName, String lastName, String password, String email, double income){
+    public User(String firstName, String lastName, String password, String email, double monthly_income, double annual_income){
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-        this.income = income;
+        this.monthly_income = monthly_income;
+        this.annual_income = annual_income;
     }
 
     // Getters and setters for each field
@@ -119,13 +124,17 @@ public class User {
 
     public void setType(String type) { this.type = type; }
 
-    public Double getIncome() {
-        return income;
+    public Double getMonthlyIncome() {
+        return monthly_income;
     }
 
-    public void setIncome(Double income) {
-        this.income = income;
+    public void setMonthlyIncome(Double monthly_income) {
+        this.monthly_income = monthly_income;
     }
+
+    public Double getAnnualIncome() { return annual_income; }
+
+    public void setAnnualIncome(Double annual_income) { this.annual_income = annual_income; }
 
     public List<Card> getCards() { return this.cards; }
 
@@ -154,7 +163,7 @@ public class User {
      */
     public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
-        return income - totalExpenses;
+        return monthly_income - totalExpenses;
     }
 
     /**
@@ -169,7 +178,8 @@ public class User {
                 + lastName + " "
                 + password + " "
                 + email + " "
-                + income + " "
+                + monthly_income + " "
+                + annual_income + " "
                 + type;
     }
 }
