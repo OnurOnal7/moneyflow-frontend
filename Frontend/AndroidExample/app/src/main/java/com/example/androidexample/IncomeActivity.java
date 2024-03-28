@@ -71,4 +71,3 @@ public class IncomeActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 }
-
