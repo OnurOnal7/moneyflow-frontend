@@ -1,0 +1,9 @@
+pages:
+  script:
+    - mkdir public
+    - cp -r Documents/MoneyFlow_Backend_Javadoc/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
