@@ -13,6 +13,7 @@ public class FirstPageActivity extends AppCompatActivity {
     private Button signupButton;
     private Button guestButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
