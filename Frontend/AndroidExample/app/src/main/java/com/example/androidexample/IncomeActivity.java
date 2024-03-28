@@ -42,6 +42,11 @@ public class IncomeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This methods takes in a double "Monthly Income" and uses the Patch method to update the income value
+     * @param monthlyIncome
+     */
+
     private void sendIncomeData(final double monthlyIncome) {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -66,4 +71,3 @@ public class IncomeActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 }
-

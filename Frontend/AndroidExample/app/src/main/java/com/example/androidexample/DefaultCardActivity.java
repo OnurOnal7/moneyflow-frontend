@@ -42,6 +42,10 @@ public class DefaultCardActivity extends AppCompatActivity {
         // Your existing code for the btnBuy click listener
     }
 
+    /**
+     * This Method Retrieves a User's Card Information
+     */
+
     private void retrieveDefaultCardInfo() {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, DEFAULT_CARD_URL,
                 new Response.Listener<String>() {

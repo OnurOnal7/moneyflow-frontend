@@ -48,6 +48,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Takes a user's Email and Password and Checks to see if both email and password match in the database
+     * @param email
+     * @param password
+     */
     private void sendPostRequest(String email, String password) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "?email=" + email + "&password=" + password,
                 response -> {

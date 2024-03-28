@@ -67,6 +67,10 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This Method takes a jsonObject and sends a POST request to BACKEND
+     * @param jsonBody
+     */
     private void sendPostRequest(JSONObject jsonBody) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 response -> Toast.makeText(SignupActivity.this, "Response: " + response, Toast.LENGTH_LONG).show(),

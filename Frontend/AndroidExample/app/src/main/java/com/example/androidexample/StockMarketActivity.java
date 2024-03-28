@@ -28,6 +28,9 @@ public class StockMarketActivity extends AppCompatActivity {
         startWebSocket();
     }
 
+    /**
+     * This Method Initializes the Websocket
+     */
     private void startWebSocket() {
         OkHttpClient client = new OkHttpClient();
 
@@ -85,6 +88,9 @@ public class StockMarketActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This Method Destroys the websocket
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
