@@ -1,4 +1,6 @@
 pages:
+  tags:
+    - general
   script:
     - mkdir public
     - cp -r Documents/MoneyFlow_Backend_Javadoc/* public/
