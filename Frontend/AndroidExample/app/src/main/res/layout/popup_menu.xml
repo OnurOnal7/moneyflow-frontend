@@ -1,15 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@android:drawable/dialog_holo_light_frame">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- Add more buttons for each menu item you need -->
     <Button
         android:id="@+id/btn_stock_market"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stock Market"/>
-    <!-- You can add more buttons here for other menu items -->
+        android:text="Stock Market" />
+
+    <Button
+        android:id="@+id/btn_prime_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prime User"
+        android:layout_marginTop="10dp" />
+
 </LinearLayout>
