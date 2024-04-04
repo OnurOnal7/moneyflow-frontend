@@ -1,6 +1,5 @@
 package com.example.androidexample;
 
-
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
