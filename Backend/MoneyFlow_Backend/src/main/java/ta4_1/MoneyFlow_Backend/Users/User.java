@@ -163,14 +163,18 @@ public class User {
 
     public Map<String, Recommendation> getRecommendations() { return this.recommendations; }
 
-    public void addRecommendation(Recommendation r) {
-        if (r != null) {
-            LocalDate date = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            String formattedDate = date.format(formatter);
-            this.recommendations.put(formattedDate, r);
-            r.setUser(this);
-        }
+    public Recommendation addRecommendation(String recommendationText) {
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String formattedDate = date.format(formatter);
+
+        Recommendation recommendation = new Recommendation();
+        recommendation.setRecommendation(recommendationText);
+        recommendation.setDate(formattedDate); // Assuming setDate accepts a String.
+        recommendation.setUser(this);
+
+        this.recommendations.put(formattedDate, recommendation);
+        return recommendation;
     }
 
     /**

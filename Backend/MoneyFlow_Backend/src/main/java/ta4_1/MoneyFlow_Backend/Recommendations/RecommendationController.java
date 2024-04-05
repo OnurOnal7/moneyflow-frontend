@@ -1,4 +1,111 @@
 package ta4_1.MoneyFlow_Backend.Recommendations;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ta4_1.MoneyFlow_Backend.Users.User;
+import ta4_1.MoneyFlow_Backend.Users.UserRepository;
+
+import java.util.*;
+
+/**
+ * Controller for Recommendations
+ *
+ * @author Onur Onal
+ * @author Kemal Yavuz
+ *
+ */
+
+@RestController
 public class RecommendationController {
+
+    @Autowired
+    private RecommendationRepository recommendationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * Retrieves all recommendations for all users.
+     *
+     * @return A list of maps containing recommendations for each user.
+     */
+    @GetMapping("/recommendations")
+    public List<Collection<Recommendation>> getAllRecommendations() {
+        List<User> users = userRepository.findAll();
+        List<Collection<Recommendation>> allRecommendations = new ArrayList<>();
+
+        for (User u : users) {
+            allRecommendations.add(u.getRecommendations().values());
+        }
+
+        return allRecommendations;
+    }
+
+    /**
+     * Retrieves all recommendations for a specific user.
+     *
+     * @param id The UUID of the user.
+     * @return A map of recommendations for the specified user.
+     */
+    @GetMapping("/recommendations/userId/{id}")
+    public ResponseEntity<Collection<Recommendation>> getAllRecommendationsOfUser(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> ResponseEntity.ok(user.getRecommendations().values()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Retrieves the dates of all recommendations for a specific user.
+     *
+     * @param id The UUID of the user.
+     * @return A list of date strings for the specified user.
+     */
+    @GetMapping("/recommendations/userId/{id}/dates")
+    public ResponseEntity<List<String>> getUserRecommendationDates(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Set<String> dates = user.getRecommendations().keySet();
+                    List<String> datesList = new ArrayList<>(dates);
+                    return ResponseEntity.ok(datesList);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Retrieves a user recommendation by its date.
+     *
+     * @param id The UUID of the user.
+     * @return The recommendation object.
+     */
+    @GetMapping("/recommendations/userId/{id}/byDate")
+    public ResponseEntity<String> getRecommendationByDate(@PathVariable UUID id, @RequestParam String date) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    String s = user.getRecommendations().get(date).getRecommendation();
+                    return ResponseEntity.ok(s);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Creates a new recommendation for a user.
+     *
+     * @param id   The UUID of the user.
+     * @param recommendationText The text with which the recommendation is created .
+     * @return The UUID of the newly created recommendation.
+     */
+    @PostMapping("/recommendations/{id}")
+    public ResponseEntity<?> createRecommendation(@PathVariable UUID id, @RequestBody String recommendationText) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Recommendation r = user.addRecommendation(recommendationText);
+                    userRepository.save(user);
+                    r.setUser(user);
+                    recommendationRepository.save(r);
+                    return ResponseEntity.ok(Map.of("id", r.getId()));
+
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

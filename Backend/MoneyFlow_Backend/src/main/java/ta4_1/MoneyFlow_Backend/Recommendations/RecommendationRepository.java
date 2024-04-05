@@ -18,7 +18,7 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
      * Finds a recommendation by its ID.
      *
      * @param id The UUID of the recommendation.
-     * @return An Optional containing the found card, if any.
+     * @return An Optional containing the found recommendation, if any.
      */
     Optional<Recommendation> findById(UUID id);
 
