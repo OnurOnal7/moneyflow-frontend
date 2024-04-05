@@ -1,12 +1,13 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
+import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Provides the Definition/Structure for the user table
@@ -50,7 +51,11 @@ public class User {
     private Expenses expenses;  // The user's associated expenses.
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Card entity.
-    private List<Card> cards;   // The user's associated cards.
+    private List<Card> cards = new ArrayList<>();   // The user's associated cards.
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Recommendation entity.
+    @MapKey(name = "date") // Designating the map key
+    private Map<String, Recommendation> recommendations = new HashMap<>();    // The user's associated recommendations.
 
     /**
      * Default constructor for JPA.
@@ -153,6 +158,18 @@ public class User {
         this.expenses = expenses;
         if (expenses != null) {
             expenses.setUser(this); // Set the user in the Expenses entity
+        }
+    }
+
+    public Map<String, Recommendation> getRecommendations() { return this.recommendations; }
+
+    public void addRecommendation(Recommendation r) {
+        if (r != null) {
+            LocalDate date = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            String formattedDate = date.format(formatter);
+            this.recommendations.put(formattedDate, r);
+            r.setUser(this);
         }
     }
 

@@ -78,6 +78,13 @@ public class UserController {
     public UUID loginGuest() {
         User u = new User();
         u.setType("guest");
+        u.setFirstName("Guest");
+        u.setLastName("User");
+        u.setPassword("N/A");
+        String uniqueEmail = "guest_" + UUID.randomUUID().toString() + "@example.com";
+        u.setEmail(uniqueEmail);
+        u.setMonthlyIncome(0.0);
+        u.setAnnualIncome(0.0);
         userRepository.save(u);
         return u.getId();
     }
@@ -126,6 +133,12 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Updates the income of a user.
+     *
+     * @param id the ID of the user for whom the income is updated.
+     * @return  a ResponseEntity of the user.
+     */
     @PatchMapping("/users/{id}/income")
     public ResponseEntity<User> updateIncome(@PathVariable UUID id, @RequestBody Map<String, Double> incomeMap) {
         if (!incomeMap.containsKey("income")) {
@@ -137,6 +150,72 @@ public class UserController {
                     user.setMonthlyIncome(income);
                     return ResponseEntity.ok(userRepository.save(user));
                 })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Retrieve the monthly income of the user.
+     *
+     * @param id the ID of the user from whom the monthly income is retrieved.
+     * @return  a ResponseEntity of the user's monthly income.
+     */
+    @GetMapping("/{id}/monthlyIncome")
+    public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double monthlyIncome = user.getMonthlyIncome();
+            return ResponseEntity.ok(monthlyIncome);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Retrieve the annual income of the user.
+     *
+     * @param id the ID of the user from whom the annual income is retrieved.
+     * @return  a ResponseEntity of the user's annual income.
+     */
+    @GetMapping("/{id}/annualIncome")
+    public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double annualIncome = user.getAnnualIncome();
+            return ResponseEntity.ok(annualIncome);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Upgrades the user to premium.
+     *
+     * @param userId the ID of the user to be upgraded to premium.
+     * @return  a ResponseEntity of a confirmation string.
+     */
+    @PostMapping("/upgradeType/{userId}")
+    public ResponseEntity<String> upgradeType(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.setType("premium");
+                    userRepository.save(user);
+                    return ResponseEntity.ok("User upgraded to premium");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Retrieve the type of the user.
+     *
+     * @param userId the ID of the user whose type is retrieved.
+     * @return  a ResponseEntity of the user's type.
+     */
+    @GetMapping("/userType/{userId}")
+    public ResponseEntity<String> getUserType(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> ResponseEntity.ok(user.getType()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -174,4 +253,5 @@ public class UserController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
 }

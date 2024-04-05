@@ -163,10 +163,18 @@ public class CardController {
                     if (updatedCard == null) {
                         return ResponseEntity.notFound().build();
                     }
-                    if (!card.getCardNumber().equals(null)) { updatedCard.setCardNumber(card.getCardNumber()); }
-                    if (!card.getExpirationDate().equals(null)) { updatedCard.setExpirationDate(card.getExpirationDate()); }
-                    if (!card.getName().equals(null)) { updatedCard.setName(card.getName()); }
-                    if (!card.getCvv().equals(null)) { updatedCard.setCvv(card.getCvv()); }
+                    if (!card.getCardNumber().equals(null)) {
+                        updatedCard.setCardNumber(card.getCardNumber());
+                    }
+                    if (!card.getExpirationDate().equals(null)) {
+                        updatedCard.setExpirationDate(card.getExpirationDate());
+                    }
+                    if (!card.getName().equals(null)) {
+                        updatedCard.setName(card.getName());
+                    }
+                    if (!card.getCvv().equals(null)) {
+                        updatedCard.setCvv(card.getCvv());
+                    }
 
                     return ResponseEntity.ok(updatedCard);
                 })
