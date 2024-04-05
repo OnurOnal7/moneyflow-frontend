@@ -133,6 +133,12 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Updates the income of a user.
+     *
+     * @param id the ID of the user for whom the income is updated.
+     * @return  a ResponseEntity of the user.
+     */
     @PatchMapping("/users/{id}/income")
     public ResponseEntity<User> updateIncome(@PathVariable UUID id, @RequestBody Map<String, Double> incomeMap) {
         if (!incomeMap.containsKey("income")) {
@@ -148,10 +154,10 @@ public class UserController {
     }
 
     /**
-     * Generates a financial report for a user.
+     * Retrieve the monthly income of the user.
      *
-     * @param id the ID of the user for whom the report is to be generated
-     * @return  a ResponseEntity containing the financial report or a not found status
+     * @param id the ID of the user from whom the monthly income is retrieved.
+     * @return  a ResponseEntity of the user's monthly income.
      */
     @GetMapping("/{id}/monthlyIncome")
     public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
@@ -166,10 +172,10 @@ public class UserController {
     }
 
     /**
-     * Generates a financial report for a user.
+     * Retrieve the annual income of the user.
      *
-     * @param id the ID of the user for whom the report is to be generated
-     * @return  a ResponseEntity containing the financial report or a not found status
+     * @param id the ID of the user from whom the annual income is retrieved.
+     * @return  a ResponseEntity of the user's annual income.
      */
     @GetMapping("/{id}/annualIncome")
     public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
@@ -183,6 +189,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Upgrades the user to premium.
+     *
+     * @param userId the ID of the user to be upgraded to premium.
+     * @return  a ResponseEntity of a confirmation string.
+     */
     @PostMapping("/upgradeType/{userId}")
     public ResponseEntity<String> upgradeType(@PathVariable UUID userId) {
         return userRepository.findById(userId)
@@ -194,6 +206,12 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Retrieve the type of the user.
+     *
+     * @param userId the ID of the user whose type is retrieved.
+     * @return  a ResponseEntity of the user's type.
+     */
     @GetMapping("/userType/{userId}")
     public ResponseEntity<String> getUserType(@PathVariable UUID userId) {
         return userRepository.findById(userId)
@@ -235,42 +253,5 @@ public class UserController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-/*
-    /**
-     * Retrieve the monthly income of the user.
-     *
-     * @param id the ID of the user from whom the monthly income is retrieved.
-     * @return  a ResponseEntity of the user's monthly income.
-     */ /*
-    @GetMapping("/users/monthly/{id}")
-    public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            double income = user.getMonthlyIncome();
-            return ResponseEntity.ok(income);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
-/*
-    /**
-     * Retrieve the annual income of the user.
-     *
-     * @param id the ID of the user from whom the annual income is retrieved.
-     * @return  a ResponseEntity of the user's annual income.
-     *//*
-    @GetMapping("/users/annual/{id}")
-    public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            double income = user.getAnnualIncome();
-            return ResponseEntity.ok(income);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    */
+    
 }
