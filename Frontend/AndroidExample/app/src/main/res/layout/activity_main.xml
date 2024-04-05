@@ -19,10 +19,33 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="81dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:scaleY="1"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Add a TextView for the currency rate display -->
+        <TextView
+            android:id="@+id/currencyExchangeRateEURUSD"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="EUR/USD: --"
+            tools:ignore="RelativeOverlap"
+            android:paddingEnd="16dp" />
+
+
+        <TextView
+            android:id="@+id/currencyExchangeRateTLUSD"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="TL/USD: --"
+            tools:ignore="RelativeOverlap"
+            android:paddingEnd="16dp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <Button
             android:id="@+id/btn_show_popup"
