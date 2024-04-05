@@ -3,6 +3,7 @@ package ta4_1.MoneyFlow_Backend.Recommendations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
+import java.time.LocalDate;
 
 import java.util.UUID;
 
@@ -21,7 +22,10 @@ public class Recommendation {
     private UUID id;    // Unique identifier for a recommendation
 
     @Column(name = "recommendation", nullable = false)
-    private String recommendation;    // A recommendation
+    private String recommendation;    // The recommendation paragraph
+
+    @Column(name = "date", nullable = false)
+    private String date;    // The recommendation date
 
     @JsonIgnore
     @ManyToOne
@@ -38,10 +42,12 @@ public class Recommendation {
     /**
      * Constructor with parameters.
      *
-     * @param recommendation  The recommendation.
+     * @param recommendation  The recommendation paragraph.
+     * @param date  The recommendation date.
      */
-    public Recommendation(String recommendation){
+    public Recommendation(String recommendation, String date){
         this.recommendation = recommendation;
+        this.date = date;
     }
 
     // Getters and setters
@@ -49,6 +55,10 @@ public class Recommendation {
     public String getRecommendation() { return this.recommendation; }
 
     public void setRecommendation(String recommendation) { this.recommendation = recommendation; }
+
+    public String getDate() { return this.date; }
+
+    public void setDate(String date) { this.date = date; }
 
     public UUID getId() { return this.id; }
 
@@ -61,6 +71,7 @@ public class Recommendation {
     @Override
     public String toString() {
         return id + " "
-                + recommendation;
+                + recommendation + " "
+                + date;
     }
 }
