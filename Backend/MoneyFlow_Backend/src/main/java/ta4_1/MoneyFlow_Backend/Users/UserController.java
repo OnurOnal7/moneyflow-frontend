@@ -235,4 +235,42 @@ public class UserController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+/*
+    /**
+     * Retrieve the monthly income of the user.
+     *
+     * @param id the ID of the user from whom the monthly income is retrieved.
+     * @return  a ResponseEntity of the user's monthly income.
+     */ /*
+    @GetMapping("/users/monthly/{id}")
+    public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double income = user.getMonthlyIncome();
+            return ResponseEntity.ok(income);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }*/
+/*
+    /**
+     * Retrieve the annual income of the user.
+     *
+     * @param id the ID of the user from whom the annual income is retrieved.
+     * @return  a ResponseEntity of the user's annual income.
+     *//*
+    @GetMapping("/users/annual/{id}")
+    public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double income = user.getAnnualIncome();
+            return ResponseEntity.ok(income);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    */
 }
