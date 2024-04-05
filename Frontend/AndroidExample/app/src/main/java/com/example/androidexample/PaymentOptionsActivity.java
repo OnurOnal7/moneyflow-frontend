@@ -31,7 +31,7 @@ public class PaymentOptionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the card form activity
-                Intent intent = new Intent(PaymentOptionsActivity.this, MainActivity.class);
+                Intent intent = new Intent(PaymentOptionsActivity.this, PaymentCardActivity.class);
                 startActivity(intent);
                 Log.d("UUID", DEFAULT_CARD_URL + " is the ID!"); // Now used inside an instance method
             }

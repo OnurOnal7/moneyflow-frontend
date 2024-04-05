@@ -5,6 +5,7 @@
     <string name="enter_monthly_income">Enter Monthly Income</string>
     <string name="submit">Submit</string>
     <string name="buy_now">Buy now</string>
+    <string name="currency_rate">Currency Rate</string>
     <string-array name="categories_array">
         <item>personal</item>
         <item>work</item>
