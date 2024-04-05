@@ -78,6 +78,13 @@ public class UserController {
     public UUID loginGuest() {
         User u = new User();
         u.setType("guest");
+        u.setFirstName("Guest");
+        u.setLastName("User");
+        u.setPassword("N/A");
+        String uniqueEmail = "guest_" + UUID.randomUUID().toString() + "@example.com";
+        u.setEmail(uniqueEmail);
+        u.setMonthlyIncome(0.0);
+        u.setAnnualIncome(0.0);
         userRepository.save(u);
         return u.getId();
     }
@@ -137,6 +144,60 @@ public class UserController {
                     user.setMonthlyIncome(income);
                     return ResponseEntity.ok(userRepository.save(user));
                 })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Generates a financial report for a user.
+     *
+     * @param id the ID of the user for whom the report is to be generated
+     * @return  a ResponseEntity containing the financial report or a not found status
+     */
+    @GetMapping("/{id}/monthlyIncome")
+    public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double monthlyIncome = user.getMonthlyIncome();
+            return ResponseEntity.ok(monthlyIncome);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Generates a financial report for a user.
+     *
+     * @param id the ID of the user for whom the report is to be generated
+     * @return  a ResponseEntity containing the financial report or a not found status
+     */
+    @GetMapping("/{id}/annualIncome")
+    public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            double annualIncome = user.getAnnualIncome();
+            return ResponseEntity.ok(annualIncome);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/upgradeType/{userId}")
+    public ResponseEntity<String> upgradeType(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.setType("premium");
+                    userRepository.save(user);
+                    return ResponseEntity.ok("User upgraded to premium");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/userType/{userId}")
+    public ResponseEntity<String> getUserType(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> ResponseEntity.ok(user.getType()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
