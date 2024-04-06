@@ -12,4 +12,6 @@
         <item>home</item>
         <item>other</item>
     </string-array>
+    <string-array name="categories_dates">
+    </string-array>
 </resources>

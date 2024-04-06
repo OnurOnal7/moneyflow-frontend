@@ -61,6 +61,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -70,7 +71,7 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.777">
+        app:layout_constraintVertical_bias="0.976">
 
         <Button
             android:id="@+id/signup_login_btn"
@@ -108,12 +109,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="70sp"
-            android:text="confirm\npassword: "
+            android:text="Confirm\nPassword: "
             android:textColor="#000000"
             android:textSize="20dp"></TextView>
 
         <EditText
-            android:id="@+id/signup_confirm_edt"
+            android:id="@+id/confirm"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:hint="Enter Password Here"
@@ -137,7 +138,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="password: "
+            android:text="Password: "
             android:textColor="#000000"
             android:textSize="20dp"></TextView>
 
@@ -193,4 +194,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.068"></TextView>
+
+    <EditText
+        android:id="@+id/mon_exp"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:hint="Enter Expense Here"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.725"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.753"></EditText>
+
+    <EditText
+        android:id="@+id/ann_exp"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:hint="Enter Expense Here"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.729"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.875"></EditText>
+
+    <TextView
+        android:id="@+id/mon_exp_view"
+        android:layout_width="160dp"
+        android:layout_height="44dp"
+        android:layout_weight="1"
+        android:text="Monthly Expense: "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.746"></TextView>
+
+    <TextView
+        android:id="@+id/ann_expense_view"
+        android:layout_width="166dp"
+        android:layout_height="72dp"
+        android:layout_weight="1"
+        android:text="Annual Expense:"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.902"></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,10 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 
 import java.time.LocalDate;
@@ -42,16 +44,24 @@ public class User {
     private String type;    // The user's type (e.g., regular, premium).
 
     @Column(name = "monthly_income")    // Maps this field to the "monthly_income" column in the database.
-    private Double monthly_income;  // The user's monthly income.
+    private Double monthlyIncome;  // The user's monthly income.
 
     @Column(name = "annual_income")    // Maps this field to the "annual_income" column in the database.
-    private Double annual_income;  // The user's annual income.
+    private Double annualIncome;  // The user's annual income.
+
+    @Column(name = "currency_exchange_setting")
+    private String currencyExchangeSetting;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Card entity.
     private List<Card> cards = new ArrayList<>();   // The user's associated cards.
+
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    @JsonBackReference
+    private Family family;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Recommendation entity.
     @MapKey(name = "date") // Designating the map key
@@ -71,16 +81,16 @@ public class User {
      * @param lastName  - the last name of the user
      * @param password  - the password of the user
      * @param email - the email of the user
-     * @param monthly_income - the monthly income of the user
-     * @param annual_income - the annual income of the user
+     * @param monthlyIncome - the monthly income of the user
+     * @param annualIncome - the annual income of the user
      */
-    public User(String firstName, String lastName, String password, String email, double monthly_income, double annual_income){
+    public User(String firstName, String lastName, String password, String email, double monthlyIncome, double annualIncome){
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-        this.monthly_income = monthly_income;
-        this.annual_income = annual_income;
+        this.monthlyIncome = monthlyIncome;
+        this.annualIncome = annualIncome;
     }
 
     // Getters and setters for each field
@@ -130,16 +140,16 @@ public class User {
     public void setType(String type) { this.type = type; }
 
     public Double getMonthlyIncome() {
-        return monthly_income;
+        return monthlyIncome;
     }
 
-    public void setMonthlyIncome(Double monthly_income) {
-        this.monthly_income = monthly_income;
+    public void setMonthlyIncome(Double monthlyIncome) {
+        this.monthlyIncome = monthlyIncome;
     }
 
-    public Double getAnnualIncome() { return annual_income; }
+    public Double getAnnualIncome() { return annualIncome; }
 
-    public void setAnnualIncome(Double annual_income) { this.annual_income = annual_income; }
+    public void setAnnualIncome(Double annualIncome) { this.annualIncome = annualIncome; }
 
     public List<Card> getCards() { return this.cards; }
 
@@ -161,17 +171,38 @@ public class User {
         }
     }
 
+    public String getCurrencyExchangeSetting() {
+        return currencyExchangeSetting;
+    }
+
+    public void setCurrencyExchangeSetting(String currencyExchangeSetting) {
+        this.currencyExchangeSetting = currencyExchangeSetting;
+    }
+
     public Map<String, Recommendation> getRecommendations() { return this.recommendations; }
 
-    public void addRecommendation(Recommendation r) {
-        if (r != null) {
-            LocalDate date = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            String formattedDate = date.format(formatter);
-            this.recommendations.put(formattedDate, r);
-            r.setUser(this);
-        }
+    public Recommendation addRecommendation(String recommendationText) {
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String formattedDate = date.format(formatter);
+
+        Recommendation recommendation = new Recommendation();
+        recommendation.setRecommendation(recommendationText);
+        recommendation.setDate(formattedDate); // Assuming setDate accepts a String.
+        recommendation.setUser(this);
+
+        this.recommendations.put(formattedDate, recommendation);
+        return recommendation;
     }
+
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
+    }
+
 
     /**
      * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
@@ -180,7 +211,7 @@ public class User {
      */
     public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
-        return monthly_income - totalExpenses;
+        return monthlyIncome - totalExpenses;
     }
 
     /**
@@ -195,8 +226,9 @@ public class User {
                 + lastName + " "
                 + password + " "
                 + email + " "
-                + monthly_income + " "
-                + annual_income + " "
-                + type;
+                + monthlyIncome + " "
+                + annualIncome + " "
+                + type + " "
+                + currencyExchangeSetting;
     }
 }

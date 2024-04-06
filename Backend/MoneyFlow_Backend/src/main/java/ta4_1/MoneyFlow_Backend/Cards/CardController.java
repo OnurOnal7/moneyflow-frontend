@@ -119,17 +119,6 @@ public class CardController {
     public ResponseEntity<?> createCard(@PathVariable UUID id, @RequestBody Card card) {
         return userRepository.findById(id)
                 .map(user -> {
-                    card.setIsDefault(true);
-                    List<Card> userCards = user.getCards();
-
-                    for (Card c : userCards) {
-                        if (c.getIsDefault() == true) {
-                            c.setIsDefault(false);
-                            cardRepository.save(c);
-                            break;
-                        }
-                    }
-
                     card.setUser(user);
                     cardRepository.save(card);
                     user.addCard(card);
@@ -137,6 +126,37 @@ public class CardController {
                     // Wrap the UUID in a JSON object
                     return ResponseEntity.ok(Map.of("id", card.getId()));
 
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Sets a new default card for a user.
+     *
+     * @param userId The UUID of the user.
+     * @param cardId The UUID of the card.
+     * @return The new default card.
+     */
+    @PostMapping("/cards/id/{userId}/{cardId}")
+    public ResponseEntity<Card> setDefaultCard(@PathVariable UUID userId, @PathVariable UUID cardId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    List<Card> userCards = user.getCards();
+                    Card card = null;
+
+                    for (Card c : userCards) {
+                        if (c.getId().equals(cardId)) {
+                            c.setIsDefault(true);
+                            card = c;
+                            cardRepository.save(c);
+                        }
+                        else if (c.getIsDefault() == true) {
+                            c.setIsDefault(false);
+                            cardRepository.save(c);
+                        }
+                    }
+
+                    return ResponseEntity.ok(card);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

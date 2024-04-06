@@ -1,6 +1,8 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -48,4 +50,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
      */
     @Transactional
     void deleteById(UUID id);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.family")
+    List<User> findAllWithFamily();
 }

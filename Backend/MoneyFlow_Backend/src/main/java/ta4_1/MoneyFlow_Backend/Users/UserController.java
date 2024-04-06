@@ -52,7 +52,7 @@ public class UserController {
      */
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllWithFamily();
     }
 
     /**
@@ -161,14 +161,12 @@ public class UserController {
      */
     @GetMapping("/{id}/monthlyIncome")
     public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            double monthlyIncome = user.getMonthlyIncome();
-            return ResponseEntity.ok(monthlyIncome);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return userRepository.findById(id)
+                .map(user -> {
+                    Double monthlyIncome = user.getMonthlyIncome();
+                    return ResponseEntity.ok(monthlyIncome);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -179,14 +177,35 @@ public class UserController {
      */
     @GetMapping("/{id}/annualIncome")
     public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Double annualIncome = user.getAnnualIncome();
+                    return ResponseEntity.ok(annualIncome);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/getCurrency")
+    public ResponseEntity<String> getCurrencyExchangeSetting(@PathVariable UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            double annualIncome = user.getAnnualIncome();
-            return ResponseEntity.ok(annualIncome);
+            String currencyExchangeSetting = user.getCurrencyExchangeSetting();
+            return ResponseEntity.ok(currencyExchangeSetting);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/{userId}/setCurrency/{Settings}")
+    public ResponseEntity<String> setCurrency(@PathVariable UUID userId, @PathVariable String Settings) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.setCurrencyExchangeSetting(Settings);
+                    userRepository.save(user);
+                    return ResponseEntity.ok("User's currency exchange settings has been updated");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
