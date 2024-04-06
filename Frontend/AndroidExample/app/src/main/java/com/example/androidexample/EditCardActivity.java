@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 public class EditCardActivity extends AppCompatActivity {
 
+    private String cardId;
     private CardForm cardForm;
     private Card card; // Keep a reference to the original card to update
 
@@ -46,6 +47,13 @@ public class EditCardActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Toast.makeText(this, "Failed to load card details", Toast.LENGTH_SHORT).show();
             }
+        }
+        if (getIntent().hasExtra("card_id")) {
+            cardId = getIntent().getStringExtra("card_id");
+        } else {
+            Toast.makeText(this, "Card ID is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
         }
 
         Button btnSaveCard = findViewById(R.id.btn_save_card);
@@ -127,7 +135,6 @@ public class EditCardActivity extends AppCompatActivity {
             Toast.makeText(this, "User ID is not available", Toast.LENGTH_LONG).show();
             return;
         }
-        String cardId = card.getId();
         if (cardId == null || cardId.isEmpty()) {
             Toast.makeText(this, "Card ID is not available", Toast.LENGTH_LONG).show();
             return;
@@ -146,5 +153,6 @@ public class EditCardActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
+
 
 }

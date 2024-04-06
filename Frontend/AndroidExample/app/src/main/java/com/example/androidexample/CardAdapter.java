@@ -46,6 +46,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             String cardDataJson = card.toJson().toString();
             Log.d("CardAdapter", "Card data being sent: " + cardDataJson);
             intent.putExtra("card_data", cardDataJson);
+            intent.putExtra("card_id", card.getId()); // Pass the card ID as an extra
             activity.startActivity(intent);
         });
 
