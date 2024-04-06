@@ -1,8 +1,10 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 
 import java.time.LocalDate;
@@ -55,6 +57,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Card entity.
     private List<Card> cards = new ArrayList<>();   // The user's associated cards.
+
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    @JsonBackReference
+    private Family family;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Recommendation entity.
     @MapKey(name = "date") // Designating the map key
@@ -183,6 +190,15 @@ public class User {
             r.setUser(this);
         }
     }
+
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
+    }
+
 
     /**
      * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
