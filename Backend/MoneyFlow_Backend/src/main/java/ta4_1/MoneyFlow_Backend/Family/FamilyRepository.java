@@ -1,8 +1,11 @@
 package ta4_1.MoneyFlow_Backend.Family;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +31,4 @@ public interface FamilyRepository extends JpaRepository<Family, UUID> {
      */
     @Transactional
     void deleteById(UUID id);
-
-    // Add any other custom methods you might need for your Family entity.
 }
