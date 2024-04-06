@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,27 +19,43 @@ public class Family {
 
     @OneToMany(mappedBy = "family")
     @JsonManagedReference
-    private Set<User> users;
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "family")
     @JsonManagedReference
-    private Set<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
-
-    public Set<Card> getCards() {
-        return cards;
+    // Getters and setters
+    public UUID getId() {
+        return id;
     }
 
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public Set<User> getUsers() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 
     public void addCard(Card card) {
@@ -48,5 +66,25 @@ public class Family {
     public void removeCard(Card card) {
         cards.remove(card);
         card.setFamily(null);
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+        user.setFamily(this);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        user.setFamily(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Family{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", users=" + users +
+                ", cards=" + cards +
+                '}';
     }
 }
