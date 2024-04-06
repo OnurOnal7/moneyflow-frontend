@@ -24,6 +24,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".StockMarketActivity" />
         <activity android:name=".RecommendationActivity" />
+        <activity android:name=".PrevRecommendationActivity" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".FirstPageActivity"
