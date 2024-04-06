@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
@@ -106,6 +107,38 @@ public class RecommendationController {
                     recommendationRepository.save(r);
                     return ResponseEntity.ok(Map.of("id", r.getId()));
 
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Deletes a recommendation by its unique ID.
+     *
+     * @param userId The UUID of the user.
+     * @param recommendationId The UUID of the card.
+     * @return  success message
+     */
+    @DeleteMapping("/recommendations/id/{userId}/{recommendationId}")
+    @Transactional
+    public ResponseEntity<?> deleteRecommendation(@PathVariable UUID userId, @PathVariable UUID recommendationId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    Recommendation deletedRecommendation = null;
+                    for (Recommendation r : user.getRecommendations().values()) {
+                        if (r.getId().equals(recommendationId)) {
+                            deletedRecommendation = r;
+                            break;
+                        }
+                    }
+                    if (deletedRecommendation != null) {
+                        user.getRecommendations().remove(deletedRecommendation.getDate());
+                        recommendationRepository.delete(deletedRecommendation);
+                        userRepository.save(user);
+                        return ResponseEntity.ok("Recommendation deleted successfully.");
+                    }
+                    else {
+                        return ResponseEntity.notFound().build();
+                    }
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

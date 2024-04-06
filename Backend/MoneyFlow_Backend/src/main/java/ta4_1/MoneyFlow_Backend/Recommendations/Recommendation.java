@@ -3,7 +3,6 @@ package ta4_1.MoneyFlow_Backend.Recommendations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
-import java.time.LocalDate;
 
 import java.util.UUID;
 
