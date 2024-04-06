@@ -47,6 +47,9 @@ public class User {
     @Column(name = "annual_income")    // Maps this field to the "annual_income" column in the database.
     private Double annualIncome;  // The user's annual income.
 
+    @Column(name = "currency_exchange_setting")
+    private int[] currencyExchangeSetting;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
 
@@ -161,6 +164,14 @@ public class User {
         }
     }
 
+    public int[] getCurrencyExchangeSetting() {
+        return currencyExchangeSetting;
+    }
+
+    public void setCurrencyExchangeSetting(int[] currencyExchangeSetting) {
+        this.currencyExchangeSetting = currencyExchangeSetting;
+    }
+
     public Map<String, Recommendation> getRecommendations() { return this.recommendations; }
 
     public void addRecommendation(Recommendation r) {
@@ -197,6 +208,7 @@ public class User {
                 + email + " "
                 + monthlyIncome + " "
                 + annualIncome + " "
-                + type;
+                + type + " "
+                + Arrays.toString(currencyExchangeSetting);
     }
 }
