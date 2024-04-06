@@ -16,8 +16,6 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     private Button sendBtn, backMainBtn;
     private EditText msgEtx;
     private TextView msgTv;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +67,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
             String s = msgTv.getText().toString();
             msgTv.setText(s + "---\nconnection closed by " + closedBy + "\nreason: " + reason);
         });
-
     }
-
     @Override
     public void onWebSocketError(Exception ex) {}
 
