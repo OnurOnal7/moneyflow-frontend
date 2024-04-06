@@ -5,18 +5,13 @@
     android:padding="16dp"
     android:background="@android:drawable/dialog_holo_light_frame">
 
-    <Button
-        android:id="@+id/btn_stock_market"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stock Market"/>
 
     <Button
         android:id="@+id/btn_prime_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Prime User"
-        android:layout_marginTop="10dp" />
+         />
 
     <Button
         android:id="@+id/btn_settings"
