@@ -32,7 +32,7 @@ public class EditCardActivity extends AppCompatActivity {
                 .expirationRequired(true)
                 .cvvRequired(true)
                 .cardholderName(CardForm.FIELD_REQUIRED)
-                .actionLabel("Update")
+                .actionLabel("Add Card")
                 .setup(this);
 
         cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
@@ -51,10 +51,9 @@ public class EditCardActivity extends AppCompatActivity {
         if (getIntent().hasExtra("card_id")) {
             cardId = getIntent().getStringExtra("card_id");
         } else {
-            Toast.makeText(this, "Card ID is not available", Toast.LENGTH_LONG).show();
-            finish();
-            return;
+            cardId = null; // Indicate that a new card is being added
         }
+
 
         Button btnSaveCard = findViewById(R.id.btn_save_card);
         btnSaveCard.setOnClickListener(v -> {
@@ -116,39 +115,29 @@ public class EditCardActivity extends AppCompatActivity {
         }
     }
 
-
-    private void updateCardOnBackend(JSONObject cardJson, String cardId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + LoginActivity.UUID.replace("\"", "") + "/" + cardId;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, cardJson,
-                response -> {
-                    Toast.makeText(EditCardActivity.this, "Card updated successfully!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                },
-                error -> Toast.makeText(EditCardActivity.this, "Error updating card: " + error.toString(), Toast.LENGTH_SHORT).show());
-
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
     private void sendCardToBackend(Card card) {
         if (LoginActivity.UUID == null || LoginActivity.UUID.isEmpty()) {
             Toast.makeText(this, "User ID is not available", Toast.LENGTH_LONG).show();
             return;
         }
-        if (cardId == null || cardId.isEmpty()) {
-            Toast.makeText(this, "Card ID is not available", Toast.LENGTH_LONG).show();
-            return;
-        }
         String userId = LoginActivity.UUID.replace("\"", "");
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId;
+        String url;
 
         JSONObject cardJson = card.toJson();
+
+        // Determine if this is an add or update operation based on whether a card ID is available
+        if (cardId == null || cardId.isEmpty()) {
+            url = "http://coms-309-056.class.las.iastate.edu:8080/cards/" + userId;
+        } else {
+            url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId;
+        }
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.PUT,
+                cardId == null || cardId.isEmpty() ? Request.Method.POST : Request.Method.PUT, // Use POST for add and PUT for update
                 url,
                 cardJson,
-                response -> Toast.makeText(EditCardActivity.this, "Card updated successfully!", Toast.LENGTH_SHORT).show(),
-                error -> Toast.makeText(EditCardActivity.this, "Error updating card: " + error.toString(), Toast.LENGTH_SHORT).show()
+                response -> Toast.makeText(EditCardActivity.this, "Card saved successfully!", Toast.LENGTH_SHORT).show(),
+                error -> Toast.makeText(EditCardActivity.this, "Error saving card: " + error.toString(), Toast.LENGTH_SHORT).show()
         );
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);

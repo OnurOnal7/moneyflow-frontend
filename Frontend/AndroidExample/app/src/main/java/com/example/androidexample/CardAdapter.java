@@ -51,9 +51,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         });
 
         holder.useButton.setOnClickListener(view -> {
-            // Here, implement the logic to set this card as default, e.g., via an API call
-            String cardId = card.getId(); // Replace with method to get card ID
-            activity.setDefaultCard(cardId);
+            // Get the user ID
+            String userId = LoginActivity.UUID.replace("\"", "");
+            // Call the useCard method
+            useCard(userId);
         });
 
         holder.deleteButton.setOnClickListener(view -> {
@@ -100,6 +101,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
                 error -> {
                     // Error handling code
                     Toast.makeText(activity, "Error deleting card: " + error.toString(), Toast.LENGTH_SHORT).show();
+                });
+
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
+    public void useCard(String userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/upgradeType/" + userId;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    // Handle the response
+                    Toast.makeText(activity, "Card used successfully", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    // Handle the error
+                    Toast.makeText(activity, "Error using card: " + error.toString(), Toast.LENGTH_SHORT).show();
                 });
 
         Volley.newRequestQueue(activity).add(stringRequest);
