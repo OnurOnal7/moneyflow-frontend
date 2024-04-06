@@ -8,7 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -49,6 +51,16 @@ public class FamilyController {
     @GetMapping
     public List<Family> getAllFamilies() {
         return familyRepository.findAll();
+    }
+
+    @GetMapping("/ofUser/{id}")
+    public ResponseEntity<Family> getFamilyOfUser(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Family f = user.getFamily();
+                    return ResponseEntity.ok(f);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/updateFamily/{familyId}")
