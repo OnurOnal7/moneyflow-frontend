@@ -1,8 +1,9 @@
 package com.example.androidexample;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,9 @@ public class StockMarketActivity extends AppCompatActivity {
         startWebSocket();
     }
 
+    /**
+     * This Method Initializes the Websocket
+     */
     private void startWebSocket() {
         OkHttpClient client = new OkHttpClient();
 
@@ -35,11 +39,7 @@ public class StockMarketActivity extends AppCompatActivity {
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-
-
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
-
-
             }
 
             @Override
@@ -67,30 +67,27 @@ public class StockMarketActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
-                runOnUiThread(() -> {
-
-                });
+                runOnUiThread(() -> {});
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 webSocket.close(1000, null);
-
             }
 
             @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-
-            }
+            public void onClosed(WebSocket webSocket, int code, String reason) {}
         });
     }
 
+    /**
+     * This Method Destroys the websocket
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (webSocket != null) {
             webSocket.close(1000, "Activity destroyed");
-
         }
     }
 }

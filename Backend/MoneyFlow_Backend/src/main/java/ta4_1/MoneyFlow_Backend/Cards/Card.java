@@ -1,7 +1,9 @@
 package ta4_1.MoneyFlow_Backend.Cards;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.UUID;
@@ -39,6 +41,11 @@ public class Card {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;  // The user associated with this card
+
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    @JsonBackReference
+    private Family family;
 
     /**
      * Default constructor
@@ -104,6 +111,14 @@ public class Card {
     public boolean getIsDefault() { return this.isDefault; }
 
     public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
+    }
 
     @Override
     public String toString() {

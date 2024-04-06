@@ -14,11 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidExample"
         tools:targetApi="31">
+
+        <activity android:name=".StockMarketActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".IncomeActivity" />
+        <activity android:name=".DefaultCardActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RecommendationActivity" />
+        <activity android:name=".PrevRecommendationActivity" />
+        <activity android:name=".ChatActivity" />
         <activity
-            android:name=".StockMarketActivity"
-            />
-        <activity
-            android:name=".MainActivity"
+            android:name=".FirstPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+/build
+.DS_Store
+.idea/
+>>>>>>> c53f2da29f0d39067bdc0a1573b7829594900d52
 *.iml
 .gradle
 /local.properties
@@ -7,8 +13,11 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+<<<<<<< HEAD
 .DS_Store
 /build
+=======
+>>>>>>> c53f2da29f0d39067bdc0a1573b7829594900d52
 /captures
 .externalNativeBuild
 .cxx
