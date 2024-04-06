@@ -187,23 +187,22 @@ public class UserController {
 
 
     @GetMapping("/{id}/getCurrency")
-    public ResponseEntity<int[]> getCurrencyExchangeSetting(@PathVariable UUID id) {
+    public ResponseEntity<String> getCurrencyExchangeSetting(@PathVariable UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            int[] currencyExchangeSetting = user.getCurrencyExchangeSetting();
+            String currencyExchangeSetting = user.getCurrencyExchangeSetting();
             return ResponseEntity.ok(currencyExchangeSetting);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping("/{userId}/setCurrency/{Setting1}/{Setting2}")
-    public ResponseEntity<String> upgradeType(@PathVariable UUID userId, @PathVariable int Setting1, @PathVariable int Setting2) {
-        int[] currencyExchangeSetting = {Setting1, Setting2};
+    @PostMapping("/{userId}/setCurrency/{Settings}")
+    public ResponseEntity<String> setCurrency(@PathVariable UUID userId, @PathVariable String Settings) {
         return userRepository.findById(userId)
                 .map(user -> {
-                    user.setCurrencyExchangeSetting(currencyExchangeSetting);
+                    user.setCurrencyExchangeSetting(Settings);
                     userRepository.save(user);
                     return ResponseEntity.ok("User's currency exchange settings has been updated");
                 })
