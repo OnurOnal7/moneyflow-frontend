@@ -2,12 +2,10 @@ package ta4_1.MoneyFlow_Backend.Family;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,10 +18,6 @@ public class Family {
     @OneToMany(mappedBy = "family")
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "family")
-    @JsonManagedReference
-    private List<Card> cards = new ArrayList<>();
 
     // Getters and setters
     public UUID getId() {
@@ -50,24 +44,6 @@ public class Family {
         this.users = users;
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
-    public void addCard(Card card) {
-        cards.add(card);
-        card.setFamily(this);
-    }
-
-    public void removeCard(Card card) {
-        cards.remove(card);
-        card.setFamily(null);
-    }
-
     public void addUser(User user) {
         users.add(user);
         user.setFamily(this);
@@ -84,7 +60,6 @@ public class Family {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", users=" + users +
-                ", cards=" + cards +
                 '}';
     }
 }

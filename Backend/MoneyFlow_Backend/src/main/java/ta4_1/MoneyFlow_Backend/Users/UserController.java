@@ -272,5 +272,16 @@ public class UserController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/delete-guest-users")
+    public ResponseEntity<String> deleteAllGuestUsers() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if ("guest".equals(user.getType())) {
+                userRepository.deleteById(user.getId());
+            }
+        }
+        return ResponseEntity.ok("All guest users have been deleted.");
+    }
     
 }
