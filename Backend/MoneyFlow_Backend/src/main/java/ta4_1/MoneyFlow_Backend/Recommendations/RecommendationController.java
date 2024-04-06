@@ -110,10 +110,34 @@ public class RecommendationController {
     }
 
     /**
+     * Updates a recommendation of a user.
+     *
+     * @param id The UUID of the user.
+     * @return The updated recommendation.
+     */
+    @PutMapping("/recommendations/userId/{id}/byDate")
+    @Transactional
+    public ResponseEntity<?> updateRecommendation(@PathVariable UUID id, @RequestBody Recommendation recommendation) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Recommendation r = user.getRecommendations().get(recommendation.getDate());
+
+                    if (r == null) {
+                        return ResponseEntity.notFound().build();
+                    }
+
+                    r.setRecommendation(recommendation.getRecommendation());
+                    recommendationRepository.save(r);
+                    return ResponseEntity.ok(r);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
      * Deletes a recommendation by its unique ID.
      *
      * @param userId           The UUID of the user.
-     * @param recommendationId The UUID of the card.
+     * @param recommendationId The UUID of the recommendation.
      * @return success message
      */
     @DeleteMapping("/recommendations/id/{userId}/{recommendationId}")
@@ -133,7 +157,8 @@ public class RecommendationController {
                         recommendationRepository.delete(deletedRecommendation);
                         userRepository.save(user);
                         return ResponseEntity.ok("Recommendation deleted successfully.");
-                    } else {
+                    }
+                    else {
                         return ResponseEntity.notFound().build();
                     }
                 })
