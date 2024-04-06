@@ -52,6 +52,9 @@ public class User {
     @Column(name = "currency_exchange_setting")
     private String currencyExchangeSetting;
 
+    @Column(name = "family_status")
+    private String familyStatus; // "headOfHousehold", "familyMember", or "independent"
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
 
@@ -160,6 +163,10 @@ public class User {
         }
     }
 
+    public void setCards(List<Card> cards) {
+            this.cards = cards;
+    }
+
     public Expenses getExpenses() {
         return expenses;
     }
@@ -203,6 +210,13 @@ public class User {
         this.family = family;
     }
 
+    public String getFamilyStatus() {
+        return familyStatus;
+    }
+
+    public void setFamilyStatus(String familyStatus) {
+        this.familyStatus = familyStatus;
+    }
 
     /**
      * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
@@ -229,6 +243,7 @@ public class User {
                 + monthlyIncome + " "
                 + annualIncome + " "
                 + type + " "
-                + currencyExchangeSetting;
+                + currencyExchangeSetting + " "
+                + familyStatus;
     }
 }

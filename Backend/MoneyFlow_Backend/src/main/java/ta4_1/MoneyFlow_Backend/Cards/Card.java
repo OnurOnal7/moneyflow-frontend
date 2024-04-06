@@ -42,11 +42,6 @@ public class Card {
     @JoinColumn(name = "user_id")
     private User user;  // The user associated with this card
 
-    @ManyToOne
-    @JoinColumn(name = "family_id")
-    @JsonBackReference
-    private Family family;
-
     /**
      * Default constructor
      */
@@ -111,14 +106,6 @@ public class Card {
     public boolean getIsDefault() { return this.isDefault; }
 
     public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
-
-    public Family getFamily() {
-        return family;
-    }
-
-    public void setFamily(Family family) {
-        this.family = family;
-    }
 
     @Override
     public String toString() {
