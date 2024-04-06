@@ -52,7 +52,7 @@ public class UserController {
      */
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllWithFamily();
     }
 
     /**
@@ -184,7 +184,6 @@ public class UserController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
     @GetMapping("/{id}/getCurrency")
     public ResponseEntity<String> getCurrencyExchangeSetting(@PathVariable UUID id) {
