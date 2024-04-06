@@ -13,7 +13,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
- *
  * What happens here is that the serverendpoint -- in this case it is
  * the /chat endpoint handler is registered with SPRING
  * so that requests to ws:// will be honored.
@@ -23,7 +22,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Profile("!test") // This makes sure the WebSocket config is not loaded during tests
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
-    public ServerEndpointExporter serverEndpointExporter(){
+    public ServerEndpointExporter serverEndpointExporter() {
         return new ServerEndpointExporter();
     }
 

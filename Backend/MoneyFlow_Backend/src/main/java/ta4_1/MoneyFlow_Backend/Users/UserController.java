@@ -8,14 +8,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Controller for managing user-related operations in the MoneyFlow application.
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @RestController
 public class UserController {
@@ -43,12 +45,14 @@ public class UserController {
      * @return an Optional containing the user if found, or an empty Optional otherwise
      */
     @GetMapping("/users/id/{id}")
-    public Optional<User> getUser(@PathVariable UUID id) { return userRepository.findById(id); }
+    public Optional<User> getUser(@PathVariable UUID id) {
+        return userRepository.findById(id);
+    }
 
     /**
      * Retrieves a list of all users.
      *
-     * @return  a list of all users
+     * @return a list of all users
      */
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -92,8 +96,8 @@ public class UserController {
     /**
      * Handles user login by verifying the provided email and password.
      *
-     * @param email the email of the user attempting to log in
-     * @param password  the password of the user attempting to log in
+     * @param email    the email of the user attempting to log in
+     * @param password the password of the user attempting to log in
      * @return ID of the User
      * @throws ResponseStatusException if the user is not found or the password is incorrect
      */
@@ -104,8 +108,7 @@ public class UserController {
 
         if (passwordEncoder.matches(password, user.getPassword())) {
             return user.getId();
-        }
-        else {
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password, Access Denied");
         }
     }
@@ -114,7 +117,7 @@ public class UserController {
      * Updates the information of an existing user.
      *
      * @param id the ID of the user to be updated
-     * @param u the updated user information
+     * @param u  the updated user information
      * @return Updated user if the update is successful
      */
     @PutMapping("/users/{id}")
@@ -137,7 +140,7 @@ public class UserController {
      * Updates the income of a user.
      *
      * @param id the ID of the user for whom the income is updated.
-     * @return  a ResponseEntity of the user.
+     * @return a ResponseEntity of the user.
      */
     @PatchMapping("/users/{id}/income")
     public ResponseEntity<User> updateIncome(@PathVariable UUID id, @RequestBody Map<String, Double> incomeMap) {
@@ -157,7 +160,7 @@ public class UserController {
      * Retrieve the monthly income of the user.
      *
      * @param id the ID of the user from whom the monthly income is retrieved.
-     * @return  a ResponseEntity of the user's monthly income.
+     * @return a ResponseEntity of the user's monthly income.
      */
     @GetMapping("/{id}/monthlyIncome")
     public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
@@ -173,7 +176,7 @@ public class UserController {
      * Retrieve the annual income of the user.
      *
      * @param id the ID of the user from whom the annual income is retrieved.
-     * @return  a ResponseEntity of the user's annual income.
+     * @return a ResponseEntity of the user's annual income.
      */
     @GetMapping("/{id}/annualIncome")
     public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
@@ -212,7 +215,7 @@ public class UserController {
      * Upgrades the user to premium.
      *
      * @param userId the ID of the user to be upgraded to premium.
-     * @return  a ResponseEntity of a confirmation string.
+     * @return a ResponseEntity of a confirmation string.
      */
     @PostMapping("/upgradeType/{userId}")
     public ResponseEntity<String> upgradeType(@PathVariable UUID userId) {
@@ -229,7 +232,7 @@ public class UserController {
      * Retrieve the type of the user.
      *
      * @param userId the ID of the user whose type is retrieved.
-     * @return  a ResponseEntity of the user's type.
+     * @return a ResponseEntity of the user's type.
      */
     @GetMapping("/userType/{userId}")
     public ResponseEntity<String> getUserType(@PathVariable UUID userId) {
@@ -243,7 +246,7 @@ public class UserController {
      * Generates a financial report for a user.
      *
      * @param id the ID of the user for whom the report is to be generated
-     * @return  a ResponseEntity containing the financial report or a not found status
+     * @return a ResponseEntity containing the financial report or a not found status
      */
     @GetMapping("/{id}/financial-report")
     public ResponseEntity<Double> generateFinancialReport(@PathVariable UUID id) {
@@ -261,7 +264,7 @@ public class UserController {
      * Deletes a user by their unique ID.
      *
      * @param id the ID of the user to be deleted
-     * @return  a success message
+     * @return a success message
      */
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
@@ -283,5 +286,5 @@ public class UserController {
         }
         return ResponseEntity.ok("All guest users have been deleted.");
     }
-    
+
 }

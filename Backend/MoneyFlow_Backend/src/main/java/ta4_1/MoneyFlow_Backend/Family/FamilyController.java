@@ -5,15 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
-import ta4_1.MoneyFlow_Backend.Cards.CardRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/family")

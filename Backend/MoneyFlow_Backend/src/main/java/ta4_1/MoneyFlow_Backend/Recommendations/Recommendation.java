@@ -11,7 +11,6 @@ import java.util.UUID;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @Entity
 @Table(name = "recommendations")
@@ -41,31 +40,47 @@ public class Recommendation {
     /**
      * Constructor with parameters.
      *
-     * @param recommendation  The recommendation paragraph.
-     * @param date  The recommendation date.
+     * @param recommendation The recommendation paragraph.
+     * @param date           The recommendation date.
      */
-    public Recommendation(String recommendation, String date){
+    public Recommendation(String recommendation, String date) {
         this.recommendation = recommendation;
         this.date = date;
     }
 
     // Getters and setters
 
-    public String getRecommendation() { return this.recommendation; }
+    public String getRecommendation() {
+        return this.recommendation;
+    }
 
-    public void setRecommendation(String recommendation) { this.recommendation = recommendation; }
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
+    }
 
-    public String getDate() { return this.date; }
+    public String getDate() {
+        return this.date;
+    }
 
-    public void setDate(String date) { this.date = date; }
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-    public UUID getId() { return this.id; }
+    public UUID getId() {
+        return this.id;
+    }
 
-    public void setId(UUID id) { this.id = id; }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    public User getUser() { return this.user; }
+    public User getUser() {
+        return this.user;
+    }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {

@@ -14,7 +14,6 @@ import java.util.*;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @RestController
 public class CardController {
@@ -119,7 +118,9 @@ public class CardController {
     public ResponseEntity<?> createCard(@PathVariable UUID id, @RequestBody Card card) {
         return userRepository.findById(id)
                 .map(user -> {
+                    card.setExpirationDate("12/25");
                     card.setUser(user);
+                    card.setIsDefault(true);
                     cardRepository.save(card);
                     user.addCard(card);
                     userRepository.save(user);
@@ -149,8 +150,7 @@ public class CardController {
                             c.setIsDefault(true);
                             card = c;
                             cardRepository.save(c);
-                        }
-                        else if (c.getIsDefault() == true) {
+                        } else if (c.getIsDefault() == true) {
                             c.setIsDefault(false);
                             cardRepository.save(c);
                         }
@@ -206,7 +206,7 @@ public class CardController {
      *
      * @param userId The UUID of the user.
      * @param cardId The UUID of the card.
-     * @return  success message
+     * @return success message
      */
     @DeleteMapping("/cards/id/{userId}/{cardId}")
     @Transactional
@@ -228,8 +228,7 @@ public class CardController {
                             user.getCards().iterator().next().setIsDefault(true);
                         }
                         return ResponseEntity.ok("Card deleted successfully");
-                    }
-                    else {
+                    } else {
                         return ResponseEntity.notFound().build();
                     }
                 })

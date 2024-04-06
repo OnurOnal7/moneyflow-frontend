@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
@@ -15,7 +14,6 @@ import java.util.*;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 
 @RestController
@@ -93,7 +91,7 @@ public class RecommendationController {
     /**
      * Creates a new recommendation for a user.
      *
-     * @param id   The UUID of the user.
+     * @param id                 The UUID of the user.
      * @param recommendationText The text with which the recommendation is created .
      * @return The UUID of the newly created recommendation.
      */
@@ -114,9 +112,9 @@ public class RecommendationController {
     /**
      * Deletes a recommendation by its unique ID.
      *
-     * @param userId The UUID of the user.
+     * @param userId           The UUID of the user.
      * @param recommendationId The UUID of the card.
-     * @return  success message
+     * @return success message
      */
     @DeleteMapping("/recommendations/id/{userId}/{recommendationId}")
     @Transactional
@@ -135,8 +133,7 @@ public class RecommendationController {
                         recommendationRepository.delete(deletedRecommendation);
                         userRepository.save(user);
                         return ResponseEntity.ok("Recommendation deleted successfully.");
-                    }
-                    else {
+                    } else {
                         return ResponseEntity.notFound().build();
                     }
                 })

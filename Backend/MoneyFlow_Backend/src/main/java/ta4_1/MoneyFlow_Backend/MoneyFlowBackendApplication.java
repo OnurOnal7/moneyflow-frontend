@@ -7,12 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // Include all sub-packages
 public class MoneyFlowBackendApplication {
 
-	/**
-	 * Main method to run the Spring Boot application.
-	 *
-	 * @param args Command line arguments.
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(MoneyFlowBackendApplication.class, args);
-	}
+    /**
+     * Main method to run the Spring Boot application.
+     *
+     * @param args Command line arguments.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(MoneyFlowBackendApplication.class, args);
+    }
 }

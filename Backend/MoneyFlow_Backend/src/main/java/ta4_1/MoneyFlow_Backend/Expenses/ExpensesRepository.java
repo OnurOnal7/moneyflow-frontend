@@ -12,7 +12,6 @@ import java.util.UUID;
  *
  * @author Kemal Yavuz
  * @author Onur Onal
- *
  */
 public interface ExpensesRepository extends JpaRepository<Expenses, UUID> {
     /**

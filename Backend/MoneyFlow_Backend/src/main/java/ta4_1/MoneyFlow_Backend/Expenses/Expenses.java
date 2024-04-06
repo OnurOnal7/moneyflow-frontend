@@ -11,7 +11,6 @@ import java.util.UUID;
  *
  * @author Kemal Yavuz
  * @author Onur Onal
- *
  */
 @Entity
 @Table(name = "expenses")

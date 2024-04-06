@@ -10,7 +10,6 @@ import java.util.UUID;
  * Repository interface for Recommendation entities.
  *
  * @author Onur Onal
- *
  */
 
 public interface RecommendationRepository extends JpaRepository<Recommendation, UUID> {
