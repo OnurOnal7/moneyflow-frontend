@@ -1,6 +1,7 @@
 package com.example.androidexample;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.editButton.setOnClickListener(view -> {
             // Intent to start EditCardActivity, passing the card info for editing
             Intent intent = new Intent(activity, EditCardActivity.class);
-            intent.putExtra("card_id", card.getId()); // Replace with actual identifier key and method to get card ID
-            activity.startActivityForResult(intent, CardListActivity.EDIT_CARD_REQUEST_CODE);
+            String cardDataJson = card.toJson().toString();
+            Log.d("CardAdapter", "Card data being sent: " + cardDataJson);
+            intent.putExtra("card_data", cardDataJson);
+            activity.startActivity(intent);
         });
 
         holder.useButton.setOnClickListener(view -> {
@@ -53,12 +56,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         });
 
         holder.deleteButton.setOnClickListener(view -> {
-            // Here, implement the logic to delete the card, e.g., via an API call
-            String cardId = card.getId(); // Replace with method to get card ID
-            activity.deleteCard(cardId, position);
-        });
-
-        holder.deleteButton.setOnClickListener(view -> {
+            // Logic to delete the card
             deleteCard(card, position);
         });
     }

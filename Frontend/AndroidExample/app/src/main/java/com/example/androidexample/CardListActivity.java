@@ -20,21 +20,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class CardListActivity extends AppCompatActivity {
-    private static final String CARDS_URL = "http://coms-309-056.class.las.iastate.edu:8080/cards/userId/" + LoginActivity.UUID.replace("\"", "");
-    public static final int EDIT_CARD_REQUEST_CODE = 1;
+    private static final int EDIT_CARD_REQUEST_CODE = 1;
 
     private RecyclerView recyclerView;
     private CardAdapter adapter;
     private ArrayList<Card> cardList;
-    private UUID userUUID = UUID.fromString(LoginActivity.UUID.replace("\"", ""));
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_list);
+
+        if (LoginActivity.UUID != null) {
+            userId = LoginActivity.UUID.replace("\"", "");
+        } else {
+            // Handle the null case appropriately (e.g., return to login screen)
+            Toast.makeText(this, "User ID is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         Button btnAddCard = findViewById(R.id.btn_add_card);
         btnAddCard.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +64,8 @@ public class CardListActivity extends AppCompatActivity {
     }
 
     private void fetchCards() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, CARDS_URL,
+        String cardsUrl = "http://coms-309-056.class.las.iastate.edu:8080/cards/userId/" + userId;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, cardsUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -83,10 +91,10 @@ public class CardListActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(stringRequest);
     }
-
     public void startEditCardActivity(Card card) {
         Intent intent = new Intent(this, EditCardActivity.class);
-        intent.putExtra("card", card.toJson().toString());
+        intent.putExtra("card_id", card.getId()); // Assuming `getId()` returns a String representation of the ID
+        // Other card data can be put as extras if necessary
         startActivityForResult(intent, EDIT_CARD_REQUEST_CODE);
     }
     protected void onResume() {
