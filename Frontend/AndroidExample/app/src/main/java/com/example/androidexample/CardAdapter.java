@@ -61,6 +61,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             // Logic to delete the card
             deleteCard(card, position);
         });
+        holder.defaultButton.setOnClickListener(view -> {
+            // Get the user ID and card ID
+            String userId = LoginActivity.UUID.replace("\"", "");
+            String cardId = card.getId();
+            // Call the setDefaultCard method
+            setDefaultCard(userId, cardId);
+        });
     }
 
     @Override
@@ -70,7 +77,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
         public TextView cardNumberTextView;
-        public Button editButton, useButton, deleteButton;
+        public Button editButton, useButton, defaultButton, deleteButton;
 
         public CardViewHolder(View view) {
             super(view);
@@ -78,6 +85,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             editButton = view.findViewById(R.id.editButton);
             useButton = view.findViewById(R.id.useButton);
             deleteButton = view.findViewById(R.id.deleteButton);
+            defaultButton = view.findViewById(R.id.defaultButton);
         }
     }
 
@@ -120,4 +128,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
         Volley.newRequestQueue(activity).add(stringRequest);
     }
+
+    public void setDefaultCard(String userId, String cardId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId + "/setDefault";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
+                response -> {
+                    // Handle the response
+                    Toast.makeText(activity, "Card set as default successfully", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    // Handle the error
+                    Toast.makeText(activity, "Error setting card as default: " + error.toString(), Toast.LENGTH_SHORT).show();
+                });
+
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
+
 }
