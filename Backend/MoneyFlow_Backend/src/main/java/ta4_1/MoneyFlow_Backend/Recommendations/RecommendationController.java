@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Recommendations;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -108,4 +109,6 @@ public class RecommendationController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
 }

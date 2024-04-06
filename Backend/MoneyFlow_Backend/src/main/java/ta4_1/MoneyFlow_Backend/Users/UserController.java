@@ -161,14 +161,12 @@ public class UserController {
      */
     @GetMapping("/{id}/monthlyIncome")
     public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            double monthlyIncome = user.getMonthlyIncome();
-            return ResponseEntity.ok(monthlyIncome);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return userRepository.findById(id)
+                .map(user -> {
+                    Double monthlyIncome = user.getMonthlyIncome();
+                    return ResponseEntity.ok(monthlyIncome);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -179,14 +177,12 @@ public class UserController {
      */
     @GetMapping("/{id}/annualIncome")
     public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            double annualIncome = user.getAnnualIncome();
-            return ResponseEntity.ok(annualIncome);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return userRepository.findById(id)
+                .map(user -> {
+                    Double annualIncome = user.getAnnualIncome();
+                    return ResponseEntity.ok(annualIncome);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
