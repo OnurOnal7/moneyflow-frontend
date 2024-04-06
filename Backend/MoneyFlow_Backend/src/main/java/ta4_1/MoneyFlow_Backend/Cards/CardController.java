@@ -120,7 +120,6 @@ public class CardController {
                 .map(user -> {
                     card.setExpirationDate("12/25");
                     card.setUser(user);
-                    card.setIsDefault(true);
                     cardRepository.save(card);
                     user.addCard(card);
                     userRepository.save(user);
@@ -138,7 +137,7 @@ public class CardController {
      * @param cardId The UUID of the card.
      * @return The new default card.
      */
-    @PostMapping("/cards/id/{userId}/{cardId}")
+    @PutMapping("/cards/id/{userId}/{cardId}/setDefault")
     public ResponseEntity<Card> setDefaultCard(@PathVariable UUID userId, @PathVariable UUID cardId) {
         return userRepository.findById(userId)
                 .map(user -> {
