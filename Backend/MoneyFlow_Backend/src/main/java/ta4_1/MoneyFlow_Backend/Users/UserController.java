@@ -185,6 +185,31 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
+    @GetMapping("/{id}/getCurrency")
+    public ResponseEntity<int[]> getCurrencyExchangeSetting(@PathVariable UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            int[] currencyExchangeSetting = user.getCurrencyExchangeSetting();
+            return ResponseEntity.ok(currencyExchangeSetting);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{userId}/setCurrency/{Setting1}/{Setting2}")
+    public ResponseEntity<String> upgradeType(@PathVariable UUID userId, @PathVariable int Setting1, @PathVariable int Setting2) {
+        int[] currencyExchangeSetting = {Setting1, Setting2};
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.setCurrencyExchangeSetting(currencyExchangeSetting);
+                    userRepository.save(user);
+                    return ResponseEntity.ok("User's currency exchange settings has been updated");
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     /**
      * Upgrades the user to premium.
      *
