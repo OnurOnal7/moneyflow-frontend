@@ -39,11 +39,7 @@ public class StockMarketActivity extends AppCompatActivity {
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-
-
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
-
-
             }
 
             @Override
@@ -71,21 +67,16 @@ public class StockMarketActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
-                runOnUiThread(() -> {
-
-                });
+                runOnUiThread(() -> {});
             }
 
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 webSocket.close(1000, null);
-
             }
 
             @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-
-            }
+            public void onClosed(WebSocket webSocket, int code, String reason) {}
         });
     }
 
@@ -97,7 +88,6 @@ public class StockMarketActivity extends AppCompatActivity {
         super.onDestroy();
         if (webSocket != null) {
             webSocket.close(1000, "Activity destroyed");
-
         }
     }
 }

@@ -24,7 +24,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Add a TextView for the currency rate display -->
             <TextView
                 android:id="@+id/selectedCurrency1"
                 android:layout_width="wrap_content"
@@ -42,20 +41,15 @@
                 android:layout_below="@id/selectedCurrency1"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp" />
-
-
-
-
         </androidx.appcompat.widget.Toolbar>
 
         <Button
             android:id="@+id/btn_show_popup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu"
+            android:text="Menu"
             android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
-            tools:ignore="RelativeOverlap" />
+            android:layout_margin="16dp" />
 
         <Button
             android:id="@+id/btn_upload"
@@ -102,7 +96,5 @@
             android:layout_marginEnd="17dp"
             android:layout_marginBottom="21dp"
             android:text="Chat" />
-
-
     </RelativeLayout>
 </ScrollView>
