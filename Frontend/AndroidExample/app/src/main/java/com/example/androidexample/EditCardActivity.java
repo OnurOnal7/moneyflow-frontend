@@ -2,6 +2,7 @@ package com.example.androidexample;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 public class EditCardActivity extends AppCompatActivity {
 
     private CardForm cardForm;
+    private Card card; // Keep a reference to the original card to update
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,35 +31,42 @@ public class EditCardActivity extends AppCompatActivity {
                 .expirationRequired(true)
                 .cvvRequired(true)
                 .cardholderName(CardForm.FIELD_REQUIRED)
-                .actionLabel("Save")
+                .actionLabel("Update")
                 .setup(this);
 
         cardForm.getCvvEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
         if (getIntent().hasExtra("card_data")) {
             String cardJsonString = getIntent().getStringExtra("card_data");
+            Log.d("EditCardActivity", "Received card data: " + cardJsonString);
             try {
-                JSONObject cardJsonObject = new JSONObject(cardJsonString);
-                Card card = Card.fromJson(cardJsonObject);
-                populateCardForm(card);
+                JSONObject cardDetails = new JSONObject(cardJsonString);
+                populateCardForm(cardDetails);
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Error loading card information", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to load card details", Toast.LENGTH_SHORT).show();
             }
         }
 
         Button btnSaveCard = findViewById(R.id.btn_save_card);
         btnSaveCard.setOnClickListener(v -> {
             if (cardForm.isValid()) {
-                String cardNumber = cardForm.getCardNumber();
-                String expirationMonth = cardForm.getExpirationMonth();
-                String expirationYear = cardForm.getExpirationYear();
-                String cvv = cardForm.getCvv();
                 String cardholderName = cardForm.getCardholderName();
+                String cardNumber = cardForm.getCardNumber();
+                String expirationDate = cardForm.getExpirationMonth() + "/" + cardForm.getExpirationYear();
+                String cvv = cardForm.getCvv();
 
-                Card newCard = new Card(cardholderName, cardNumber, expirationMonth + "/" + expirationYear, cvv);
-                sendCardToBackend(newCard);
-
+                if (card == null) {
+                    // If the card is null, create a new card
+                    card = new Card(cardholderName, cardNumber, expirationDate, cvv);
+                } else {
+                    // If the card is not null, update its details
+                    card.setName(cardholderName);
+                    card.setCardNumber(cardNumber);
+                    card.setExpirationDate(expirationDate);
+                    card.setCvv(cvv);
+                }
+                sendCardToBackend(card);
                 finish();
             } else {
                 Toast.makeText(EditCardActivity.this, "Please fill out the card form correctly.", Toast.LENGTH_LONG).show();
@@ -65,22 +74,77 @@ public class EditCardActivity extends AppCompatActivity {
         });
     }
 
-    private void populateCardForm(Card card) {
-        cardForm.getCardEditText().setText(card.getCardNumber());
-        String[] expirationDateParts = card.getExpirationDate().split("/");
-        String expirationDate = expirationDateParts[0] + (expirationDateParts.length > 1 ? expirationDateParts[1] : "");
-        cardForm.getExpirationDateEditText().setText(expirationDate);
-        cardForm.getCvvEditText().setText(card.getCvv());
-        cardForm.getCardholderNameEditText().setText(card.getName());
+    private void populateCardForm(JSONObject cardDetails) {
+        try {
+            Log.d("EditCardActivity", "Populating card form with: " + cardDetails.toString());
+            String cardNumber = cardDetails.getString("cardNumber");
+            String expirationDate = cardDetails.getString("expirationDate");
+            String cvv = cardDetails.getString("cvv");
+            String name = cardDetails.getString("name");
+
+            // Log the individual details
+            Log.d("EditCardActivity", "Card Number: " + cardNumber);
+            Log.d("EditCardActivity", "Expiration Date: " + expirationDate);
+            Log.d("EditCardActivity", "CVV: " + cvv);
+            Log.d("EditCardActivity", "Name: " + name);
+
+            // Populate the form fields
+            cardForm.getCardEditText().setText(cardNumber);
+            cardForm.getExpirationDateEditText().setText(expirationDate);
+            cardForm.getCvvEditText().setText(cvv);
+            cardForm.getCardholderNameEditText().setText(name);
+
+            // Set the card's ID
+            if (cardDetails.has("id")) {
+                if (card == null) {
+                    card = new Card(name, cardNumber, expirationDate, cvv);
+                }
+                card.setId(cardDetails.getString("id")); // Use the setId method to set the ID
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("EditCardActivity", "JSONException while populating form", e);
+            Toast.makeText(this, "Failed to parse card details", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void sendCardToBackend(Card card) {
-        JSONObject cardJson = card.toJson();
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/" + LoginActivity.UUID.replace("\"", "");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, cardJson,
-                response -> Toast.makeText(EditCardActivity.this, "Card added successfully!", Toast.LENGTH_SHORT).show(),
-                error -> Toast.makeText(EditCardActivity.this, "Error adding card: " + error.toString(), Toast.LENGTH_SHORT).show());
+
+    private void updateCardOnBackend(JSONObject cardJson, String cardId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + LoginActivity.UUID.replace("\"", "") + "/" + cardId;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, cardJson,
+                response -> {
+                    Toast.makeText(EditCardActivity.this, "Card updated successfully!", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                },
+                error -> Toast.makeText(EditCardActivity.this, "Error updating card: " + error.toString(), Toast.LENGTH_SHORT).show());
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
+
+    private void sendCardToBackend(Card card) {
+        if (LoginActivity.UUID == null || LoginActivity.UUID.isEmpty()) {
+            Toast.makeText(this, "User ID is not available", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String cardId = card.getId();
+        if (cardId == null || cardId.isEmpty()) {
+            Toast.makeText(this, "Card ID is not available", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String userId = LoginActivity.UUID.replace("\"", "");
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId;
+
+        JSONObject cardJson = card.toJson();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                cardJson,
+                response -> Toast.makeText(EditCardActivity.this, "Card updated successfully!", Toast.LENGTH_SHORT).show(),
+                error -> Toast.makeText(EditCardActivity.this, "Error updating card: " + error.toString(), Toast.LENGTH_SHORT).show()
+        );
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
 }
