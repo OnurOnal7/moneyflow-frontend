@@ -37,6 +37,7 @@ public class FamilyController {
 
         String uniqueEmail = "family_" + UUID.randomUUID().toString() + "@example.com";
         familyMember.setEmail(uniqueEmail);
+        familyMember.setPassword(mainUser.getPassword());
 
         familyMember.setFamilyStatus("familyMember");
         familyMember.setFamily(family);
