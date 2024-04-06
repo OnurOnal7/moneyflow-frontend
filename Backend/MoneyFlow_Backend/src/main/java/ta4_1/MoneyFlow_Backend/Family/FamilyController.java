@@ -50,6 +50,20 @@ public class FamilyController {
         return familyRepository.findAll();
     }
 
+    @PutMapping("/updateFamily/{familyId}")
+    public ResponseEntity<Family> updateFamily(@PathVariable UUID familyId, @RequestBody Family updatedFamily) {
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Family not found"));
+
+        // Update family details
+        if (updatedFamily.getName() != null) {
+            family.setName(updatedFamily.getName());
+        }
+
+        familyRepository.save(family);
+        return ResponseEntity.ok(family);
+    }
+
     @DeleteMapping("/deleteFamily/{familyId}")
     public ResponseEntity<String> deleteFamily(@PathVariable UUID familyId) {
         Family family = familyRepository.findById(familyId)
