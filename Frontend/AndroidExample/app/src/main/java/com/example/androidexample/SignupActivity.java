@@ -27,6 +27,9 @@ public class SignupActivity extends AppCompatActivity {
     private EditText lastname;
     private Button loginButton;
     private Button signupButton;
+    private EditText monthly;
+    private EditText annual;
+
     private static final String URL = "http://coms-309-056.class.las.iastate.edu:8080/signup";
 
     @Override
@@ -36,11 +39,13 @@ public class SignupActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.lastname_signup);
         passwordEditText = findViewById(R.id.signup_password_edt);
-        confirmEditText = findViewById(R.id.signup_confirm_edt);
+        confirmEditText = findViewById(R.id.confirm);
         loginButton = findViewById(R.id.signup_login_btn);
         signupButton = findViewById(R.id.signup_signup_btn);
         firstname = findViewById(R.id.lastname_signup4);
         lastname = findViewById(R.id.lastname_signup2);
+        monthly = findViewById(R.id.mon_exp);
+        annual = findViewById(R.id.ann_exp);
 
         loginButton.setOnClickListener(v -> {
             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
@@ -54,10 +59,12 @@ public class SignupActivity extends AppCompatActivity {
                 jsonBody.put("lastName", lastname.getText().toString());
                 jsonBody.put("email", usernameEditText.getText().toString());
                 jsonBody.put("password", passwordEditText.getText().toString());
+                jsonBody.put("monthlyIncome",monthly.getText().toString());
+                jsonBody.put("annualIncome", annual.getText().toString());
 
                 sendPostRequest(jsonBody);
                 // Start the IncomeActivity after sending the signup request
-                Intent intent = new Intent(SignupActivity.this, IncomeActivity.class);
+                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
