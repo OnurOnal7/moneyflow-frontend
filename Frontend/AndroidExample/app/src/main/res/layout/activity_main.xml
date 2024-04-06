@@ -25,24 +25,25 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <!-- Add a TextView for the currency rate display -->
-        <TextView
-            android:id="@+id/currencyExchangeRateEURUSD"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="EUR/USD: --"
-            tools:ignore="RelativeOverlap"
-            android:paddingEnd="16dp" />
+            <TextView
+                android:id="@+id/selectedCurrency1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Currency 1: --"
+                android:layout_below="@id/toolbar"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:id="@+id/selectedCurrency2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Currency 2: --"
+                android:layout_below="@id/selectedCurrency1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp" />
 
 
-        <TextView
-            android:id="@+id/currencyExchangeRateTLUSD"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="TL/USD: --"
-            tools:ignore="RelativeOverlap"
-            android:paddingEnd="16dp" />
 
 
         </androidx.appcompat.widget.Toolbar>

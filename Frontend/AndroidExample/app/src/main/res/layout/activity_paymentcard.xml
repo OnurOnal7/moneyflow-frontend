@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentCardActivity">
+    tools:context=".DefaultCardActivity">
 
+    <!-- RecyclerView to display the list of cards -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cardsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/cardForm"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- The CardForm from Braintree for adding new cards -->
     <com.braintreepayments.cardform.view.CardForm
         android:id="@+id/cardForm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btnBuy"
+        android:layout_marginBottom="12dp"/>
 
-
+    <!-- Button to submit new card details or confirm an action like 'Buy' -->
     <Button
         android:id="@+id/btnBuy"
         android:layout_width="match_parent"

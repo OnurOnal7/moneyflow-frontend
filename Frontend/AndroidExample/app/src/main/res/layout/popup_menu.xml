@@ -14,7 +14,12 @@
         android:id="@+id/btn_prime_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Prime User"
-        android:layout_marginTop="10dp" />
+        android:text="Prime User" />
+
+    <Button
+        android:id="@+id/btn_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings" />
 
 </LinearLayout>

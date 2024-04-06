@@ -17,8 +17,7 @@
 
         <activity android:name=".IncomeActivity"/>
         <activity android:name=".DefaultCardActivity"/>
-        <activity android:name=".PaymentCardActivity" />
-        <activity android:name=".PaymentOptionsActivity" />
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />
