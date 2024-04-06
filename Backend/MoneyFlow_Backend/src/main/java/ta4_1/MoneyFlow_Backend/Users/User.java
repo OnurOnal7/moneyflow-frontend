@@ -18,7 +18,6 @@ import java.util.*;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @Entity // Indicates that this class is an entity in the database.
 @Table(name = "users")  // Specifies the table name in the database.
@@ -37,7 +36,8 @@ public class User {
     @Column(name = "password", nullable = false)    // Maps this field to the "password" column in the database.
     private String password;    // The user's password.
 
-    @Column(name = "email", unique = true, nullable = false)    // Maps this field to the "email" column in the database.
+    @Column(name = "email", unique = true, nullable = false)
+    // Maps this field to the "email" column in the database.
     private String email;   // The user's email.
 
     @Column(name = "type")  // Maps this field to the "type" column in the database.
@@ -55,10 +55,12 @@ public class User {
     @Column(name = "family_status")
     private String familyStatus; // "headOfHousehold", "familyMember", or "independent"
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Card entity.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-many relationship with the Card entity.
     private List<Card> cards = new ArrayList<>();   // The user's associated cards.
 
     @ManyToOne
@@ -66,28 +68,29 @@ public class User {
     @JsonBackReference
     private Family family;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Establishes a one-to-many relationship with the Recommendation entity.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-many relationship with the Recommendation entity.
     @MapKey(name = "date") // Designating the map key
     private Map<String, Recommendation> recommendations = new HashMap<>();    // The user's associated recommendations.
 
     /**
      * Default constructor for JPA.
      */
-    public User(){
+    public User() {
 
     }
 
     /**
      * Constructs a new User with the specified personal information and income.
      *
-     * @param firstName - the first name of the user
-     * @param lastName  - the last name of the user
-     * @param password  - the password of the user
-     * @param email - the email of the user
+     * @param firstName     - the first name of the user
+     * @param lastName      - the last name of the user
+     * @param password      - the password of the user
+     * @param email         - the email of the user
      * @param monthlyIncome - the monthly income of the user
-     * @param annualIncome - the annual income of the user
+     * @param annualIncome  - the annual income of the user
      */
-    public User(String firstName, String lastName, String password, String email, double monthlyIncome, double annualIncome){
+    public User(String firstName, String lastName, String password, String email, double monthlyIncome, double annualIncome) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -138,9 +141,13 @@ public class User {
         this.id = UUID.randomUUID();
     }
 
-    public String getType() { return this.type; }
+    public String getType() {
+        return this.type;
+    }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Double getMonthlyIncome() {
         return monthlyIncome;
@@ -150,11 +157,17 @@ public class User {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public Double getAnnualIncome() { return annualIncome; }
+    public Double getAnnualIncome() {
+        return annualIncome;
+    }
 
-    public void setAnnualIncome(Double annualIncome) { this.annualIncome = annualIncome; }
+    public void setAnnualIncome(Double annualIncome) {
+        this.annualIncome = annualIncome;
+    }
 
-    public List<Card> getCards() { return this.cards; }
+    public List<Card> getCards() {
+        return this.cards;
+    }
 
     public void addCard(Card card) {
         if (cards != null) {
@@ -164,7 +177,7 @@ public class User {
     }
 
     public void setCards(List<Card> cards) {
-            this.cards = cards;
+        this.cards = cards;
     }
 
     public Expenses getExpenses() {
@@ -186,7 +199,9 @@ public class User {
         this.currencyExchangeSetting = currencyExchangeSetting;
     }
 
-    public Map<String, Recommendation> getRecommendations() { return this.recommendations; }
+    public Map<String, Recommendation> getRecommendations() {
+        return this.recommendations;
+    }
 
     public Recommendation addRecommendation(String recommendationText) {
         LocalDate date = LocalDate.now();
@@ -221,7 +236,7 @@ public class User {
     /**
      * Generates a financial report for the user, summarizing their income, expenses, and remaining budget.
      *
-     * @return  Budget = Income - Expenses
+     * @return Budget = Income - Expenses
      */
     public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
@@ -231,7 +246,7 @@ public class User {
     /**
      * Represents the user as a string containing their ID, personal information, and income.
      *
-     * @return  a string representation of the user
+     * @return a string representation of the user
      */
     @Override
     public String toString() {

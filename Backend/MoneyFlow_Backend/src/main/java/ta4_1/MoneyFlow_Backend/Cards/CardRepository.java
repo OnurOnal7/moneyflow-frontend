@@ -10,7 +10,6 @@ import java.util.UUID;
  * Repository interface for Card entities.
  *
  * @author Onur Onal
- *
  */
 public interface CardRepository extends JpaRepository<Card, UUID> {
     /**
@@ -28,5 +27,5 @@ public interface CardRepository extends JpaRepository<Card, UUID> {
      */
     @Transactional
     void deleteById(UUID id);
-    
+
 }

@@ -1,32 +1,27 @@
 package ta4_1.MoneyFlow_Backend;
 
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
-
-import jakarta.websocket.OnClose;
-import jakarta.websocket.OnError;
-import jakarta.websocket.OnMessage;
-import jakarta.websocket.OnOpen;
-import jakarta.websocket.Session;
+import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Represents a WebSocket chat server for handling real-time communication
  * between users. Each user connects to the server using their unique
  * username.
- *
+ * <p>
  * This class is annotated with Spring's `@ServerEndpoint` and `@Component`
  * annotations, making it a WebSocket endpoint that can handle WebSocket
  * connections at the "/chat/{username}" endpoint.
- *
+ * <p>
  * Example URL: ws://localhost:8080/chat/username
- *
+ * <p>
  * The server provides functionality for broadcasting messages to all connected
  * users and sending messages to specific users.
  */
@@ -36,8 +31,8 @@ public class ChatServer {
 
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
-    private static Map < Session, String > sessionUsernameMap = new Hashtable < > ();
-    private static Map < String, Session > usernameSessionMap = new Hashtable < > ();
+    private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
+    private static Map<String, Session> usernameSessionMap = new Hashtable<>();
 
     // server side logger
     private final Logger logger = LoggerFactory.getLogger(ChatServer.class);
@@ -45,7 +40,7 @@ public class ChatServer {
     /**
      * This method is called when a new WebSocket connection is established.
      *
-     * @param session represents the WebSocket session for the connected user.
+     * @param session  represents the WebSocket session for the connected user.
      * @param username username specified in path parameter.
      */
     @OnOpen
@@ -58,8 +53,7 @@ public class ChatServer {
         if (usernameSessionMap.containsKey(username)) {
             session.getBasicRemote().sendText("username already exists");
             session.close();
-        }
-        else {
+        } else {
             // map current session with username
             sessionUsernameMap.put(session, username);
 
@@ -67,7 +61,7 @@ public class ChatServer {
             usernameSessionMap.put(username, session);
 
             // send to the user joining in
-            sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
+            sendMessageToPArticularUser(username, "Welcome to the chat server, " + username);
 
             // send to everyone in the chat
             broadcast("User: " + username + " has Joined the Chat");
@@ -104,8 +98,7 @@ public class ChatServer {
             String actualMessage = actualMessageBuilder.toString();
             sendMessageToPArticularUser(destEmail, "[DM from " + username + "]: " + actualMessage);
             sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
-        }
-        else { // Message to whole chat
+        } else { // Message to whole chat
             broadcast(username + ": " + message);
         }
     }

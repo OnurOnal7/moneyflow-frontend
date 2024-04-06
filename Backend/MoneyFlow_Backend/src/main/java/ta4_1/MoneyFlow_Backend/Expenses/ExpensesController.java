@@ -4,10 +4,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 import ta4_1.MoneyFlow_Backend.Users.User;
+import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
-//import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import java.util.UUID;
  *
  * @author Kemal Yavuz
  * @author Onur Onal
- *
  */
 @RestController
 @RequestMapping("/expenses")
@@ -76,7 +74,7 @@ public class ExpensesController {
     /**
      * Update expenses by user ID.
      *
-     * @param id             The ID of the user whose expenses to update.
+     * @param id              The ID of the user whose expenses to update.
      * @param updatedExpenses The updated expenses object.
      * @return ResponseEntity with the updated expenses.
      */

@@ -1,9 +1,7 @@
 package ta4_1.MoneyFlow_Backend.Cards;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.util.UUID;
@@ -13,7 +11,6 @@ import java.util.UUID;
  *
  * @author Onur Onal
  * @author Kemal Yavuz
- *
  */
 @Entity
 @Table(name = "cards")
@@ -45,18 +42,18 @@ public class Card {
     /**
      * Default constructor
      */
-    public Card(){
+    public Card() {
     }
 
     /**
      * Constructor with parameters.
      *
-     * @param name            Name associated with the card.
-     * @param cardNumber      Card number.
-     * @param expirationDate  Expiration date of the card.
-     * @param cvv             CVV of the card.
+     * @param name           Name associated with the card.
+     * @param cardNumber     Card number.
+     * @param expirationDate Expiration date of the card.
+     * @param cvv            CVV of the card.
      */
-    public Card(String name, String cardNumber, String expirationDate, String cvv){
+    public Card(String name, String cardNumber, String expirationDate, String cvv) {
         this.name = name;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
@@ -85,7 +82,9 @@ public class Card {
         return this.expirationDate;
     }
 
-    public void setExpirationDate(String expirationDate) { this.expirationDate = expirationDate; }
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
     public UUID getId() {
         return this.id;
@@ -95,17 +94,29 @@ public class Card {
         this.id = UUID.randomUUID();
     }
 
-    public String getCvv() { return this.cvv; }
+    public String getCvv() {
+        return this.cvv;
+    }
 
-    public void setCvv(String cvv) { this.cvv = cvv; }
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
 
-    public User getUser() { return user; }
+    public User getUser() {
+        return user;
+    }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public boolean getIsDefault() { return this.isDefault; }
+    public boolean getIsDefault() {
+        return this.isDefault;
+    }
 
-    public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
 
     @Override
     public String toString() {
