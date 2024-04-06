@@ -23,12 +23,14 @@
         android:id="@+id/btn_recommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recommend" />
+        android:text="Recommend"
+        />
 
     <Button
         android:id="@+id/btn_Family_Plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Family Plan" />
+        android:text="Family Plan"
+         />
 
 </LinearLayout>
