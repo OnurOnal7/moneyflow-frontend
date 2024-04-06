@@ -48,7 +48,7 @@ public class User {
     private Double annualIncome;  // The user's annual income.
 
     @Column(name = "currency_exchange_setting")
-    private int[] currencyExchangeSetting;
+    private String currencyExchangeSetting;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)   // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
@@ -164,11 +164,11 @@ public class User {
         }
     }
 
-    public int[] getCurrencyExchangeSetting() {
+    public String getCurrencyExchangeSetting() {
         return currencyExchangeSetting;
     }
 
-    public void setCurrencyExchangeSetting(int[] currencyExchangeSetting) {
+    public void setCurrencyExchangeSetting(String currencyExchangeSetting) {
         this.currencyExchangeSetting = currencyExchangeSetting;
     }
 
@@ -213,6 +213,6 @@ public class User {
                 + monthlyIncome + " "
                 + annualIncome + " "
                 + type + " "
-                + Arrays.toString(currencyExchangeSetting);
+                + currencyExchangeSetting;
     }
 }
