@@ -22,7 +22,6 @@ import java.util.Map;
 public class FamilyPlanActivity extends AppCompatActivity {
 
     private String fam_URL =  "http://coms-309-056.class.las.iastate.edu:8080/family/addMember/"+LoginActivity.UUID.replace("\"", "");
-
     private EditText fn,ln,m,a;
     private Button confirm;
 
@@ -48,7 +47,7 @@ public class FamilyPlanActivity extends AppCompatActivity {
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("firstName", fn.getText().toString());
                     jsonBody.put("lastName", ln.getText().toString());
-                    jsonBody.put("monhlyIncome",m.getText().toString());
+                    jsonBody.put("monthlyIncome",m.getText().toString());
                     jsonBody.put("annualIncome", a.getText().toString());
 
                     sendPostRequest(jsonBody);
