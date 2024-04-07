@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
@@ -50,7 +51,35 @@ public class CardController {
     @GetMapping("/cards/userId/{id}")
     public ResponseEntity<List<Card>> getAllCardsOfUser(@PathVariable UUID id) {
         return userRepository.findById(id)
-                .map(user -> ResponseEntity.ok(user.getCards()))
+                .map(user -> {
+
+
+
+                return ResponseEntity.ok(user.getCards());
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Retrieves all cards for a specific user's family.
+     *
+     * @param id The UUID of the user.
+     * @return A list of cards for the specified user's family.
+     */
+    @GetMapping("/cards/userId/{id}/family")
+    public ResponseEntity<List<Card>> getAllCardsOfUserFamily(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    List<Card> familyCards = new ArrayList<>();
+                    Family family = user.getFamily();
+
+                    for (User u : family.getUsers()) {
+                        for (Card c : u.getCards()) {
+                            familyCards.add(c);
+                        }
+                    }
+                    return ResponseEntity.ok(familyCards);
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
