@@ -147,7 +147,6 @@ public class CardController {
     public ResponseEntity<?> createCard(@PathVariable UUID id, @RequestBody Card card) {
         return userRepository.findById(id)
                 .map(user -> {
-                    card.setExpirationDate("12/25");
                     card.setUser(user);
                     cardRepository.save(card);
                     user.addCard(card);

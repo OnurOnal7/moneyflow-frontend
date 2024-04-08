@@ -29,6 +29,7 @@ public class CardListActivity extends AppCompatActivity {
     private ArrayList<Card> cardList;
     private String userId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,16 @@ public class CardListActivity extends AppCompatActivity {
                 // Start EditCardActivity with no extra, indicating a new card is being added
                 Intent intent = new Intent(CardListActivity.this, EditCardActivity.class);
                 startActivityForResult(intent, EDIT_CARD_REQUEST_CODE);
+            }
+        });
+
+        Button btnReturnMain = findViewById(R.id.btn_return_main);
+        btnReturnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Return to the MainActivity when the button is clicked
+                Intent intent = new Intent(CardListActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

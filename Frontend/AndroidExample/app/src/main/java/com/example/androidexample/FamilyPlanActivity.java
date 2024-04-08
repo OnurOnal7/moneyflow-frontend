@@ -21,12 +21,11 @@ import java.util.Map;
 
 public class FamilyPlanActivity extends AppCompatActivity {
 
-    private String fam_URL =  "http://coms-309-056.class.las.iastate.edu:8080/family/addMember/"+LoginActivity.UUID.replace("\"", "");
-    private EditText fn,ln,m,a;
+    private String fam_URL = "http://coms-309-056.class.las.iastate.edu:8080/family/addMember/" + LoginActivity.UUID.replace("\"", "");
+    private EditText fn, ln, m, a;
     private Button confirm;
 
     public static String famID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,37 +39,29 @@ public class FamilyPlanActivity extends AppCompatActivity {
 
         confirm = findViewById(R.id.btn_confirm);
 
+        confirm.setOnClickListener(v -> {
+            try {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("firstName", fn.getText().toString());
+                jsonBody.put("lastName", ln.getText().toString());
+                jsonBody.put("monthlyIncome", m.getText().toString());
+                jsonBody.put("annualIncome", a.getText().toString());
 
-
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    JSONObject jsonBody = new JSONObject();
-                    jsonBody.put("firstName", fn.getText().toString());
-                    jsonBody.put("lastName", ln.getText().toString());
-                    jsonBody.put("monthlyIncome",m.getText().toString());
-                    jsonBody.put("annualIncome", a.getText().toString());
-
-                    sendPostRequest(jsonBody);
-                    // Redirect to Main
-                    Intent intent = new Intent(FamilyPlanActivity.this, AddFamilyExpensesActivity.class);
-                    startActivity(intent);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                sendPostRequest(jsonBody);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
-
-
-
-
-
     }
+
     private void sendPostRequest(JSONObject jsonBody) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, fam_URL,
-                response -> famID = response,
+                response -> {
+                    famID = response.replace("\"", "");  // Remove any double quotes from the response
+                    // Redirect to AddFamilyExpensesActivity
+                    Intent intent = new Intent(FamilyPlanActivity.this, AddFamilyExpensesActivity.class);
+                    startActivity(intent);
+                },
                 error -> Toast.makeText(FamilyPlanActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
             @Override
             public byte[] getBody() {
@@ -87,9 +78,3 @@ public class FamilyPlanActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(stringRequest);
     }
 }
-
-
-
-
-
-

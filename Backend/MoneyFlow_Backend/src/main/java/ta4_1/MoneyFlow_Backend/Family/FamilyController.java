@@ -42,6 +42,7 @@ public class FamilyController {
         familyMember.setPassword(mainUser.getPassword());
 
         familyMember.setFamilyStatus("familyMember");
+        familyMember.setType(mainUser.getType());
         familyMember.setFamily(family);
 
         userRepository.save(familyMember);
