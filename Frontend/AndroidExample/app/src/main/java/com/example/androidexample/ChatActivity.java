@@ -71,4 +71,21 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     @Override
     public void onWebSocketError(Exception ex) {}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reconnect the WebSocket when the activity resumes
+        WebSocketManager.getInstance().reconnectWebSocket();
+        // Set this activity as the WebSocket listener
+        WebSocketManager.getInstance().setWebSocketListener(ChatActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Disconnect the WebSocket when the activity is paused
+        WebSocketManager.getInstance().disconnectWebSocket();
+    }
+
+
 }

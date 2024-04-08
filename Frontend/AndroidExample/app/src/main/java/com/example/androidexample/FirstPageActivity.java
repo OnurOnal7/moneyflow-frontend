@@ -16,8 +16,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class FirstPageActivity extends AppCompatActivity {
 
@@ -72,6 +76,9 @@ public class FirstPageActivity extends AppCompatActivity {
                         LoginActivity.UUID = response;
                         ID = response;
                         GetUserTypeRequest();
+                        // Send initial expenses after creating the guest user
+                        sendInitialExpenses(UUID.fromString(response.replace("\"", "")));
+                        // Redirect to MainActivity
                         Intent intent = new Intent(FirstPageActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else {
@@ -89,6 +96,39 @@ public class FirstPageActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(stringRequest);
     }
+
+    private void sendInitialExpenses(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("personal", 0.0);
+            postData.put("work", 0.0);
+            postData.put("home", 0.0);
+            postData.put("other", 0.0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.d("InitialExpenses", "Expenses added successfully"),
+                error -> Log.e("InitialExpenses", "Error adding expenses: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
 
     private void GetUserTypeRequest() {
         if(ID != null) {

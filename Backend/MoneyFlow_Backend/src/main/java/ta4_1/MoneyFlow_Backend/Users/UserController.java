@@ -68,6 +68,10 @@ public class UserController {
     @PostMapping("/signup")
     public UUID signup(@RequestBody User u) {
         u.setType("regular");
+        u.setCurrencyExchangeSetting("EUR,CAD");
+        if (u.getFamilyStatus() == null) {
+            u.setFamilyStatus("independent"); // Set default family status if not provided
+        }
         u.setPassword(passwordEncoder.encode(u.getPassword())); // Use the autowired encoder for password encoding
         userRepository.save(u);
         return u.getId();
@@ -285,6 +289,28 @@ public class UserController {
             }
         }
         return ResponseEntity.ok("All guest users have been deleted.");
+    }
+
+    @PostMapping("/delete-regular-users")
+    public ResponseEntity<String> deleteAllRegularUsers() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if ("regular".equals(user.getType())) {
+                userRepository.deleteById(user.getId());
+            }
+        }
+        return ResponseEntity.ok("All regular users have been deleted.");
+    }
+
+    @PostMapping("/delete-familyMember-users")
+    public ResponseEntity<String> deleteAllFamilyMemberUsers() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if ("familyMember".equals(user.getFamilyStatus())) {
+                userRepository.deleteById(user.getId());
+            }
+        }
+        return ResponseEntity.ok("All family member status users have been deleted.");
     }
 
 }
