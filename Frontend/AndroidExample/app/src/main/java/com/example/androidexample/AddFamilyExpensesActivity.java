@@ -19,33 +19,29 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FamilyPlanActivity extends AppCompatActivity {
+public class AddFamilyExpensesActivity extends AppCompatActivity {
 
-    private String fam_URL = "http://coms-309-056.class.las.iastate.edu:8080/family/addMember/" + LoginActivity.UUID.replace("\"", "");
-    private EditText fn, ln, m, a;
-    private Button confirm;
-
-    public static String famID;
+    private EditText p, w, h, o;
+    private Button conf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_family_plan);
+        setContentView(R.layout.activity_add_family_expenses);
 
-        fn = findViewById(R.id.fam_first);
-        ln = findViewById(R.id.fam_last);
-        m = findViewById(R.id.fam_mon);
-        a = findViewById(R.id.fam_ann);
+        conf = findViewById(R.id.btn_conf_fam);
+        p = findViewById(R.id.fam_personal);
+        w = findViewById(R.id.fam_work);
+        h = findViewById(R.id.fam_home);
+        o = findViewById(R.id.fam_other);
 
-        confirm = findViewById(R.id.btn_confirm);
-
-        confirm.setOnClickListener(v -> {
+        conf.setOnClickListener(v -> {
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("firstName", fn.getText().toString());
-                jsonBody.put("lastName", ln.getText().toString());
-                jsonBody.put("monthlyIncome", m.getText().toString());
-                jsonBody.put("annualIncome", a.getText().toString());
+                jsonBody.put("personal", Double.parseDouble(p.getText().toString()));
+                jsonBody.put("work", Double.parseDouble(w.getText().toString()));
+                jsonBody.put("home", Double.parseDouble(h.getText().toString()));
+                jsonBody.put("other", Double.parseDouble(o.getText().toString()));
 
                 sendPostRequest(jsonBody);
             } catch (JSONException e) {
@@ -55,14 +51,16 @@ public class FamilyPlanActivity extends AppCompatActivity {
     }
 
     private void sendPostRequest(JSONObject jsonBody) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, fam_URL,
+        String exp_URL = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + FamilyPlanActivity.famID;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, exp_URL,
                 response -> {
-                    famID = response.replace("\"", "");  // Remove any double quotes from the response
-                    // Redirect to AddFamilyExpensesActivity
-                    Intent intent = new Intent(FamilyPlanActivity.this, AddFamilyExpensesActivity.class);
+                    Toast.makeText(AddFamilyExpensesActivity.this, "Expenses added successfully", Toast.LENGTH_LONG).show();
+                    // Redirect to MainActivity
+                    Intent intent = new Intent(AddFamilyExpensesActivity.this, MainActivity.class);
                     startActivity(intent);
                 },
-                error -> Toast.makeText(FamilyPlanActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
+                error -> Toast.makeText(AddFamilyExpensesActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
             @Override
             public byte[] getBody() {
                 return jsonBody.toString().getBytes();

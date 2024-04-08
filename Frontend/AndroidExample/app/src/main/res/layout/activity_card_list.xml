@@ -20,4 +20,12 @@
         android:background="@color/purple_200"
         android:textColor="@android:color/white" />
 
+    <Button
+        android:id="@+id/btn_return_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return to Main"
+        android:layout_marginTop="16dp"/>
+
+
 </RelativeLayout>

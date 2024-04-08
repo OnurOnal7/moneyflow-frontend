@@ -26,6 +26,8 @@
         <activity android:name=".CardListActivity" />
         <activity android:name=".EditCardActivity"/>
         <activity android:name=".FamilyPlanActivity"/>
+        <activity android:name=".AddFamilyExpensesActivity"/>
+
         <activity
             android:name=".FirstPageActivity"
             android:exported="true">

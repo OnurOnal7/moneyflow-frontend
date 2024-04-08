@@ -23,7 +23,7 @@ public class FamilyController {
     private FamilyRepository familyRepository;
 
     @PostMapping("/addMember/{userId}")
-    public User addFamilyMember(@PathVariable UUID userId, @RequestBody User familyMember) {
+    public UUID addFamilyMember(@PathVariable UUID userId, @RequestBody User familyMember) {
         User mainUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
@@ -42,10 +42,11 @@ public class FamilyController {
         familyMember.setPassword(mainUser.getPassword());
 
         familyMember.setFamilyStatus("familyMember");
+        familyMember.setType(mainUser.getType());
         familyMember.setFamily(family);
 
         userRepository.save(familyMember);
-        return familyMember;
+        return familyMember.getId();
     }
 
     @GetMapping
