@@ -25,6 +25,8 @@ public class FamilyPlanActivity extends AppCompatActivity {
     private EditText fn,ln,m,a;
     private Button confirm;
 
+    public static String famID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class FamilyPlanActivity extends AppCompatActivity {
 
                     sendPostRequest(jsonBody);
                     // Redirect to Main
-                    Intent intent = new Intent(FamilyPlanActivity.this, MainActivity.class);
+                    Intent intent = new Intent(FamilyPlanActivity.this, AddFamilyExpensesActivity.class);
                     startActivity(intent);
 
                 } catch (JSONException e) {
@@ -68,7 +70,7 @@ public class FamilyPlanActivity extends AppCompatActivity {
     }
     private void sendPostRequest(JSONObject jsonBody) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, fam_URL,
-                response -> Toast.makeText(FamilyPlanActivity.this, "Response: " + response, Toast.LENGTH_LONG).show(),
+                response -> famID = response,
                 error -> Toast.makeText(FamilyPlanActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
             @Override
             public byte[] getBody() {
