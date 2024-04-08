@@ -31,7 +31,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText annual;
 
     private static final String URL = "http://coms-309-056.class.las.iastate.edu:8080/signup";
-    private static final String E_URL = "http://coms-309-056.class.las.iastate.edu:8080/expenses/"+LoginActivity.UUID.replace("\"","");
+    //private static final String E_URL = "http://coms-309-056.class.las.iastate.edu:8080/expenses/"+LoginActivity.UUID.replace("\"","");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
