@@ -9,7 +9,7 @@ android-build:
    - pk_tag                   # <-- change to your runner's tag
   before_script:                    # change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./Frontend/AndroidExample/gradlew
+    - chmod +x ./Frontend/AndroidExample
   script:
 
     - cd AndroidExample                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
