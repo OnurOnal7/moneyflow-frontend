@@ -9,10 +9,14 @@ android-build:
    - pk_tag                   # <-- change to your runner's tag
   before_script:                    # change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./AndroidExample/gradlew
+    - chmod +x ./Frontend/AndroidExample/gradlew
   script:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - cd AndroidExample                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+=======
+    - cd Frontend/AndroidExample/gradlew                # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+>>>>>>> ae03bd0e78690569ef07acffb002f9c8a019a718
     - ./gradlew build
 =======
     - cd Frontend/AndroidExample             # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
@@ -32,9 +36,9 @@ android-test:
     - pk_tag                  # <-- change to your runner's tag
   before_script:                   # change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./AndroidExample/gradlew
+    - chmod +x ./Frontend/AndroidExample/gradlew
   script:
-    - cd AndroidExample                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+    - cd Frontend/AndroidExample/gradlew                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew test
 =======
     - android_tag                   # change to your runner's tag
