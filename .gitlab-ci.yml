@@ -11,8 +11,13 @@ android-build:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./AndroidExample/gradlew
   script:
+<<<<<<< HEAD
     - cd AndroidExample                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew build
+=======
+    - cd Frontend/AndroidExample             # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+    - ./gradlew build               # gradle build
+>>>>>>> 759e7e7363f9848fb2782347f691cbae1f4c18d2
   only:
     refs:
       - PKBRANCH_CICD
@@ -23,6 +28,7 @@ android-test:
   image: afirefly/android-ci:java17
   stage: androidtest
   tags:
+<<<<<<< HEAD
     - pk_tag                  # <-- change to your runner's tag
   before_script:                   # change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -30,6 +36,15 @@ android-test:
   script:
     - cd AndroidExample                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew test
+=======
+    - android_tag                   # change to your runner's tag
+  before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
+     - export GRADLE_USER_HOME=`pwd`/.gradle
+     - chmod +x ./AndroidExample/gradlew
+  script:
+     - cd Frontend/AndroidExample               # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+     - ./gradlew test               # gradle test
+>>>>>>> 759e7e7363f9848fb2782347f691cbae1f4c18d2
   only:
     refs:
       - PKBRANCH_CICD
