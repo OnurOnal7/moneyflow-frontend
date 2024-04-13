@@ -23,11 +23,10 @@ android-test:
   image: afirefly/android-ci:java17
   stage: androidtest
   tags:
-    - pk_tag                  # <-- change to your runner's tag
-    - android_tag                   # change to your runner's tag
+    - pk_tag                  # <-- change to your runner's tag           
   before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
-     - export GRADLE_USER_HOME=`pwd`/.gradle
-     - chmod +x ./AndroidExample/gradlew
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/AndroidExample
   script:
      - cd Frontend/AndroidExample               # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
      - ./gradlew test               # gradle test
