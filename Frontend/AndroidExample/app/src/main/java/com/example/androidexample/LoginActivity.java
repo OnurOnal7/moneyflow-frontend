@@ -20,7 +20,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
-    private Button loginButton;
+    public String username;
+    public String password;
+    public Button loginButton;
+    public String check;
     private Button signupButton;
     private static final String URL = "http://coms-309-056.class.las.iastate.edu:8080/login";
 
@@ -38,12 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.login_signup_btn);
 
         loginButton.setOnClickListener(v -> {
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+             username = usernameEditText.getText().toString();
+             password = passwordEditText.getText().toString();
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please fill out all fields.", Toast.LENGTH_LONG).show();
             } else {
+                check = "Success";
                 sendPostRequest(username, password);
             }
         });
