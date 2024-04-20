@@ -32,24 +32,23 @@ import java.util.Random;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthUserSignupProcess {
+public class PrakeerthUserSignup {
     Random random = new Random();
-
-    int randomnumber = random.nextInt(1000) + 1;
+    int Randomnum;
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
     @Test
-    public void userSignupProcess() {
+    public void prakeerthUserSignup() {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_signup_btn), withText("Signup"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                1),
+                                4),
                         isDisplayed()));
         materialButton.perform(click());
 
@@ -62,7 +61,8 @@ public class PrakeerthUserSignupProcess {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("John"), closeSoftKeyboard());
+        Randomnum = random.nextInt(999)+1;
+        appCompatEditText.perform(replaceText("Johnathan"+Randomnum), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.lastname_signup2),
@@ -73,7 +73,8 @@ public class PrakeerthUserSignupProcess {
                                                 5)),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("Doe"), closeSoftKeyboard());
+        Randomnum = random.nextInt(999)+1;
+        appCompatEditText2.perform(replaceText("Doe"+Randomnum), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.lastname_signup),
@@ -84,7 +85,7 @@ public class PrakeerthUserSignupProcess {
                                                 1)),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("jdoe"+randomnumber+"@gmail.com"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("JH@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.signup_password_edt),
@@ -95,7 +96,7 @@ public class PrakeerthUserSignupProcess {
                                                 4)),
                                 1),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("thisjdoe"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("12"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.confirm),
@@ -106,7 +107,7 @@ public class PrakeerthUserSignupProcess {
                                                 3)),
                                 1),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("thisisjdoe"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("12"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.mon_exp),
@@ -126,7 +127,7 @@ public class PrakeerthUserSignupProcess {
                                         0),
                                 8),
                         isDisplayed()));
-        appCompatEditText7.perform(replaceText("120000"), closeSoftKeyboard());
+        appCompatEditText7.perform(replaceText("4000000"), closeSoftKeyboard());
 
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.signup_signup_btn), withText("Signup"),

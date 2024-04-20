@@ -27,6 +27,7 @@
         <activity android:name=".EditCardActivity"/>
         <activity android:name=".FamilyPlanActivity"/>
         <activity android:name=".AddFamilyExpensesActivity"/>
+        <activity android:name=".GoalListActivity"/>
 
         <activity
             android:name=".FirstPageActivity"
