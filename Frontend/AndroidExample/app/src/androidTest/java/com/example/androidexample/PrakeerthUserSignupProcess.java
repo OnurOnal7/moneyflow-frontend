@@ -32,7 +32,7 @@ import java.util.Random;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserSignupProcess {
+public class PrakeerthUserSignupProcess {
     Random random = new Random();
 
     int randomnumber = random.nextInt(1000) + 1;
