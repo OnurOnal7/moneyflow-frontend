@@ -31,21 +31,21 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthUserChatProcess {
+public class PrakeerthAddGoal {
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
     @Test
-    public void userChatProcess() {
+    public void prakeerthAddGoal() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                0),
+                                5),
                         isDisplayed()));
         materialButton.perform(click());
 
@@ -78,35 +78,45 @@ public class PrakeerthUserChatProcess {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(5000);
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_chat), withText("Chat"),
+                allOf(withId(R.id.btn_show_popup), withText("Menu"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
-                                8)));
+                                2)));
         materialButton3.perform(scrollTo(), click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.msgEdt),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("This chat works"), closeSoftKeyboard());
-
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.sendBtn), withText("Send"),
+                allOf(withId(R.id.btn_Goals), withText("Goals"),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
+                                withClassName(is("android.widget.LinearLayout")),
+                                4),
                         isDisplayed()));
         materialButton4.perform(click());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.editText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("Goal"), closeSoftKeyboard());
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.addButton), withText("Add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        materialButton5.perform(click());
+        Thread.sleep(3000);
     }
 
     private static Matcher<View> childAtPosition(

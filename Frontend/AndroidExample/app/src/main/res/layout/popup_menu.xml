@@ -23,7 +23,7 @@
         android:id="@+id/btn_recommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recommend"
+        android:text="Recommendations"
         />
 
     <Button
@@ -32,5 +32,11 @@
         android:layout_height="wrap_content"
         android:text="Family Plan"
          />
+    <Button
+        android:id="@+id/btn_Goals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Goals"
+        />
 
 </LinearLayout>

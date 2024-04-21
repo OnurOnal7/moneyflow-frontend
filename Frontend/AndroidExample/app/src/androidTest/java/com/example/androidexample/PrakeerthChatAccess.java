@@ -31,21 +31,21 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthUserGenerateRecommendation {
+public class PrakeerthChatAccess {
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
     @Test
-    public void userGenerateRecommendation() {
+    public void prakeerthChatAccess() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                0),
+                                5),
                         isDisplayed()));
         materialButton.perform(click());
 
@@ -78,33 +78,37 @@ public class PrakeerthUserGenerateRecommendation {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(6000);
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_chat), withText("Chat"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2)));
+                                8)));
         materialButton3.perform(scrollTo(), click());
 
-        ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.btn_recommend), withText("Recommend"),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                2),
-                        isDisplayed()));
-        materialButton4.perform(click());
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.start), withText("Recommend"),
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.msgEdt),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                1),
+                                3),
                         isDisplayed()));
-        materialButton5.perform(click());
+        appCompatEditText3.perform(replaceText("Hello!"), closeSoftKeyboard());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.sendBtn), withText("Send"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton4.perform(click());
+        Thread.sleep(3000);
     }
 
     private static Matcher<View> childAtPosition(

@@ -29,20 +29,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Random;
-
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthUserAddFamilyProcess {
-    Random random = new Random();
-    int Randomnum;
+public class PrakeerthRecommendation {
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
     @Test
-    public void prakeerthUserAddFamilyProcess() throws InterruptedException {
+    public void prakeerthRecommendation() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -52,6 +48,7 @@ public class PrakeerthUserAddFamilyProcess {
                                 5),
                         isDisplayed()));
         materialButton.perform(click());
+
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.login_username_edt),
@@ -94,113 +91,55 @@ public class PrakeerthUserAddFamilyProcess {
         materialButton3.perform(scrollTo(), click());
 
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.btn_Family_Plan), withText("Family Plan"),
+                allOf(withId(R.id.btn_recommend), withText("Recommendations"),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
-                                3),
+                                2),
                         isDisplayed()));
         materialButton4.perform(click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.fam_first),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("Jane"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.fam_last),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        Randomnum = random.nextInt(999)+1;
-        appCompatEditText4.perform(replaceText("Jackie0"+Randomnum), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.fam_mon),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        3),
-                                0),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("27000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.fam_ann),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        7),
-                                1),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("123456"), closeSoftKeyboard());
-
         ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.btn_confirm), withText("confirm"),
+                allOf(withId(R.id.start), withText("Recommend"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                1),
                         isDisplayed()));
         materialButton5.perform(click());
-
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.fam_personal),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText7.perform(replaceText("120"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.fam_work),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText8.perform(replaceText("120"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.fam_home),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        3),
-                                0),
-                        isDisplayed()));
-        appCompatEditText9.perform(replaceText("120"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.fam_other),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        7),
-                                1),
-                        isDisplayed()));
-        appCompatEditText10.perform(replaceText("120"), closeSoftKeyboard());
+        Thread.sleep(6000);
 
         ViewInteraction materialButton6 = onView(
-                allOf(withId(R.id.btn_conf_fam), withText("confirm"),
+                allOf(withId(R.id.save_b), withText("Save"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                2),
                         isDisplayed()));
         materialButton6.perform(click());
+        Thread.sleep(6000);
+
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.previous_rec), withText("History"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.btn_view), withText("View"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton8.perform(click());
+        Thread.sleep(6000);
     }
 
     private static Matcher<View> childAtPosition(
