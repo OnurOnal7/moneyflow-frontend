@@ -57,11 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="142dp"
             android:layout_marginEnd="151dp"
-            android:layout_marginBottom="190dp"
+            android:layout_marginBottom="188dp"
             android:backgroundTint="#1A2561"
-            android:text="Guest User"
+            android:text="Guest"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.633"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
