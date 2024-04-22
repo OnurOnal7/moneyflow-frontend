@@ -137,7 +137,7 @@ public class User {
         return this.id;
     }
 
-    public void setId() {
+    public void setId(UUID uuid) {
         this.id = UUID.randomUUID();
     }
 
