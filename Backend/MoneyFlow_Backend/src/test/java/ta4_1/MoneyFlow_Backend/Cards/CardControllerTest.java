@@ -133,7 +133,7 @@ public class CardControllerTest {
     }
 
     @Test
-    void deleteCard_shouldReturnSuccessMessage() throws Exception {
+    void testDeleteCard() throws Exception {
         UUID userId = UUID.randomUUID();
         UUID cardId = UUID.randomUUID();
         User user = new User();
