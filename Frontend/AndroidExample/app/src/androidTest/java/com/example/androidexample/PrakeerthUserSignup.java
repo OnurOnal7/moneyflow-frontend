@@ -48,7 +48,7 @@ public class PrakeerthUserSignup {
                                 childAtPosition(
                                         withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                4),
+                                3),
                         isDisplayed()));
         materialButton.perform(click());
 

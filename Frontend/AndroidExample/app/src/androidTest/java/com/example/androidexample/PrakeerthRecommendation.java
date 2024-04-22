@@ -45,10 +45,9 @@ public class PrakeerthRecommendation {
                                 childAtPosition(
                                         withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                5),
+                                4),
                         isDisplayed()));
         materialButton.perform(click());
-
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.login_username_edt),

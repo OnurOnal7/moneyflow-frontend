@@ -45,7 +45,7 @@ public class ErrollDefault_Use {
                                 childAtPosition(
                                         withClassName(is("android.widget.RelativeLayout")),
                                         0),
-                                5),
+                                4),
                         isDisplayed()));
         materialButton.perform(click());
 
