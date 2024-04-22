@@ -78,6 +78,7 @@ public class ErrollDefault_Use {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.btn_show_popup), withText("Menu"),

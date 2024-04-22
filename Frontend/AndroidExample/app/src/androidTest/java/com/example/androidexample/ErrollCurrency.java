@@ -39,7 +39,7 @@ public class ErrollCurrency {
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
     @Test
-    public void errollCurrency() {
+    public void errollCurrency() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -89,6 +89,7 @@ public class ErrollCurrency {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.btn_show_popup), withText("Menu"),
