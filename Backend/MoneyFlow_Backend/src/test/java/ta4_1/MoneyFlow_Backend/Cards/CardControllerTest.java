@@ -8,17 +8,23 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@WebMvcTest(CardController.class)
+@WebMvcTest(controllers = CardController.class)
 public class CardControllerTest {
 
     @Autowired
@@ -94,5 +100,55 @@ public class CardControllerTest {
         // Assuming you add a save operation in the controller
         verify(cardRepository, times(1)).save(existingCard);
         verify(userRepository, times(1)).findById(userId);
+    }
+
+    @Test
+    void testGetAllCardsOfUserFamily() throws Exception {
+        UUID userId = UUID.randomUUID();
+        User user = new User();
+        Family family = new Family();
+        user.setFamily(family);
+
+        User familyMember1 = new User();
+        User familyMember2 = new User();
+
+        Card card1 = new Card("Visa", "1111222233334444", "12/25", "123");
+        Card card2 = new Card("MasterCard", "5555666677778888", "11/26", "456");
+
+        familyMember1.addCard(card1);
+        familyMember2.addCard(card2);
+
+        family.setUsers(Arrays.asList(user, familyMember1, familyMember2));
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        mockMvc.perform(get("/cards/userId/{id}/family", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].cardNumber").value("1111222233334444"))
+                .andExpect(jsonPath("$[1].cardNumber").value("5555666677778888"));
+
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void deleteCard_shouldReturnSuccessMessage() throws Exception {
+        UUID userId = UUID.randomUUID();
+        UUID cardId = UUID.randomUUID();
+        User user = new User();
+        Card card = new Card("Visa", "1111222233334444", "12/25", "123");
+        card.setId(cardId);
+        user.addCard(card);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        mockMvc.perform(delete("/cards/id/{userId}/{cardId}", userId, cardId))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Card deleted successfully"));
+
+        // Verify that the card is removed from the user's list of cards
+        assertTrue(user.getCards().isEmpty());
+        verify(userRepository).findById(userId);
     }
 }
