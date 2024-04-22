@@ -115,7 +115,7 @@ public class RecommendationControllerTest {
     }
 
     @Test
-    void deleteRecommendation_whenExists_deletesAndReturnsSuccess() throws Exception {
+    void testDeleteRecommendation() throws Exception {
         UUID userId = UUID.randomUUID();
         UUID recommendationId = UUID.randomUUID();
         String recommendationDate = "04/22/2024";
