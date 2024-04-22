@@ -1,6 +1,8 @@
 package ta4_1.MoneyFlow_Backend.Users;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -65,6 +68,37 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2))); // Expecting 2 users in the response
     }
+
+    @Test
+    void testSignup_createsValidUser() throws Exception {
+        User userToSave = new User("John", "Doe", "password", "john.doe@example.com", 3000.0, 36000.0);
+
+        when(passwordEncoder.encode(anyString())).thenReturn("encryptedPassword");
+        when(userRepository.save(any(User.class))).then(invocation -> {
+            User savedUser = invocation.getArgument(0);
+            // Simulate setting the ID on the user, which would normally be done by JPA upon saving
+            savedUser.setId(UUID.randomUUID());
+            return savedUser;
+        });
+
+        String userJson = "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"password\":\"password\",\"email\":\"john.doe@example.com\",\"monthlyIncome\":3000.0,\"annualIncome\":36000.0}";
+
+        // Act & Assert
+        mockMvc.perform(post("/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(status().isOk())
+                // Update the assertion to properly handle the quoted UUID string
+                .andExpect(result -> {
+                    String responseBody = result.getResponse().getContentAsString();
+                    UUID uuid = UUID.fromString(responseBody.replace("\"", ""));
+                    assertNotNull(uuid);
+                });
+
+        // Verify that userRepository.save() was called
+        verify(userRepository).save(any(User.class));
+    }
+
 
 
 
