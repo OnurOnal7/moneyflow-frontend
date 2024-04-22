@@ -90,13 +90,11 @@ public class Card {
         return this.id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID();
+    public void setId(UUID uuid) {
+        this.id = uuid;
     }
 
-    public String getCvv() {
-        return this.cvv;
-    }
+    public String getCvv() { return this.cvv; }
 
     public void setCvv(String cvv) {
         this.cvv = cvv;

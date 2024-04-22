@@ -225,6 +225,7 @@ public class CardController {
                         updatedCard.setCvv(card.getCvv());
                     }
 
+                    cardRepository.save(updatedCard);
                     return ResponseEntity.ok(updatedCard);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
