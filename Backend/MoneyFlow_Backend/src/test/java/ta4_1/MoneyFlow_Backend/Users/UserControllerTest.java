@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,7 +71,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void testSignup_createsValidUser() throws Exception {
+    void testSignup() throws Exception {
         User userToSave = new User("John", "Doe", "password", "john.doe@example.com", 3000.0, 36000.0);
 
         when(passwordEncoder.encode(anyString())).thenReturn("encryptedPassword");
@@ -99,8 +100,61 @@ public class UserControllerTest {
         verify(userRepository).save(any(User.class));
     }
 
+    @Test
+    void testLogin() throws Exception {
+        // Arrange
+        String email = "user@example.com";
+        String password = "password";
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setId(UUID.randomUUID());  // Simulate that the user has a dynamically assigned UUID
 
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
 
+        // Act & Assert
+        mockMvc.perform(post("/login")
+                        .param("email", email)
+                        .param("password", password))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    String responseBody = result.getResponse().getContentAsString();
+                    UUID uuid = UUID.fromString(responseBody.replace("\"", "")); // Remove quotes and verify it's a valid UUID
+                    assertNotNull(uuid);
+                });
 
+        // Verify that the repository and password encoder were called correctly
+        verify(userRepository).findByEmail(email);
+        verify(passwordEncoder).matches(password, user.getPassword());
+    }
+
+    @Test
+    void testUpdateUser() throws Exception {
+        // Arrange
+        UUID userId = UUID.randomUUID();
+        User existingUser = new User("OldFirstName", "OldLastName", "OldPassword", "old@example.com", 1000.0, 12000.0);
+        existingUser.setId(userId);
+        User updatedUser = new User("NewFirstName", "NewLastName", "NewPassword", "new@example.com", 2000.0, 24000.0);
+        updatedUser.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(passwordEncoder.encode(anyString())).thenReturn("EncodedNewPassword");
+
+        // Act & Assert
+        mockMvc.perform(put("/users/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updatedUser)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value(updatedUser.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(updatedUser.getLastName()))
+                .andExpect(jsonPath("$.email").value(updatedUser.getEmail()))
+                .andExpect(jsonPath("$.monthlyIncome").value(updatedUser.getMonthlyIncome()))
+                .andExpect(jsonPath("$.annualIncome").value(updatedUser.getAnnualIncome()));
+
+        // Verify that the save method was called on the repository
+        verify(userRepository).save(any(User.class));
+    }
 
 }
