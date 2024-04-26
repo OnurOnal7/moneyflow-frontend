@@ -34,20 +34,17 @@ maven-test:
     changes:
       - Backend/**/*    # more specifically - only when changes are made inside the 'Backend' folder
 
-deploy_to_server:
-  stage: deploy
+auto-deploy:
+  stage: mavendeploy    # one of the stages listed above
   tags:
-    - springboot_tag
-  script:
-    - cd Backend/MoneyFlow_Backend
-    - mvn clean package
-    - scp target/MoneyFlow_Backend-0.0.1-SNAPSHOT.jar onur@coms-309-056.class.las.iastate.edu:/home/onur/COM_S_309/MoneyFlow_Backend/MoneyFlow_Backend-0.0.1-SNAPSHOT.jar
-    - ssh onur@coms-309-056.class.las.iastate.edu 'java -jar /home/onur/COM_S_309/MoneyFlow_Backend/MoneyFlow_Backend-0.0.1-SNAPSHOT.jar'
+  - springboot_tag      # change to your runner's tag
+  script:               # script to run the deployment service you created
+    - cd Backend/MoneyFlow_Backend        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
   only:
     refs:
-      - main
+      - main            # only to trigger the pipeline when changes are pushed to 'main'
     changes:
-      - Backend/**/*  # Ensures this job runs only when there are changes in the Backend directory
+      - Backend/**/*    # more specifically - only when changes are made inside the 'Backend' folder
 
 android-build:
   image: afirefly/android-ci:java17 # Docker image that has Android environments installed     gjandres/android-ci:latest
