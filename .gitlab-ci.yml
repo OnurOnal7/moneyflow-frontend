@@ -40,6 +40,8 @@ auto-deploy:
   - springboot_tag      # change to your runner's tag
   script:               # script to run the deployment service you created
     - cd Backend/MoneyFlow_Backend        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - scp Backend/MoneyFlow_Backend/target/MoneyFlow_Backend-0.0.1-SNAPSHOT.jar onur@coms-309-056.class.las.iastate.edu:COM_S_309/MoneyFlow_Backend
+    - ssh onur@coms-309-056.class.las.iastate.edu 'bash /home/onur/COM_S_309/MoneyFlow_Backend/remote_deploy_script.sh'
   only:
     refs:
       - main            # only to trigger the pipeline when changes are pushed to 'main'
