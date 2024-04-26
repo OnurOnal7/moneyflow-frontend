@@ -26,7 +26,7 @@ public class RecommendationController {
     private UserRepository userRepository;
 
     /**
-     * Retrieves all recommendations for all users.
+     * Retrieves all recommendations of all users.
      *
      * @return A list of maps containing recommendations for each user.
      */

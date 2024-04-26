@@ -18,8 +18,8 @@ public class Statement {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Lob  // This annotation is used to specify that the column should be treated as a BLOB (Binary Large Object)
-    @Column(name = "statement", nullable = false)
+    @Lob
+    @Column(name = "statement", nullable = false, columnDefinition = "MEDIUMBLOB")
     private byte[] bankStatement; // byte array to store xlsx file data
 
     @Column(name = "date", nullable = false)

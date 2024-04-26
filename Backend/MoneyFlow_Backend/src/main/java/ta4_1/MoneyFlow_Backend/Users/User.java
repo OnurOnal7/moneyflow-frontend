@@ -6,6 +6,7 @@ import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 import ta4_1.MoneyFlow_Backend.Family.Family;
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
+import ta4_1.MoneyFlow_Backend.Statements.Statement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -72,6 +73,11 @@ public class User {
     // Establishes a one-to-many relationship with the Recommendation entity.
     @MapKey(name = "date") // Designating the map key
     private Map<String, Recommendation> recommendations = new HashMap<>();    // The user's associated recommendations.
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-many relationship with the Statement entity.
+    @MapKey(name = "date")
+    private Map<String, Statement> statements = new HashMap<>();    // The user's associated statements.
 
     /**
      * Default constructor for JPA.
@@ -210,11 +216,15 @@ public class User {
 
         Recommendation recommendation = new Recommendation();
         recommendation.setRecommendation(recommendationText);
-        recommendation.setDate(formattedDate); // Assuming setDate accepts a String.
+        recommendation.setDate(formattedDate);
         recommendation.setUser(this);
 
         this.recommendations.put(formattedDate, recommendation);
         return recommendation;
+    }
+
+    public Map<String, Statement> getStatements() {
+        return this.statements;
     }
 
     public Family getFamily() {

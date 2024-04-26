@@ -53,8 +53,6 @@ public class CardController {
         return userRepository.findById(id)
                 .map(user -> {
 
-
-
                 return ResponseEntity.ok(user.getCards());
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
