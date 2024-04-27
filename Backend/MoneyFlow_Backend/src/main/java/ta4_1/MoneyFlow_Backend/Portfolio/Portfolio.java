@@ -1,15 +1,16 @@
 package ta4_1.MoneyFlow_Backend.Portfolio;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import ta4_1.MoneyFlow_Backend.Users.User;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
  * Entity Representing a user investment portfolio.
  *
- * @author Kemal Yavuz
  * @author Onur Onal
+ * @author Kemal Yavuz
  */
 
 @Entity
@@ -27,4 +28,69 @@ public class Portfolio {
 
     @Column(name = "stock2")
     private double stock2Shares;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;  // The user associated with this portfolio.
+
+    public Portfolio() {
+    }
+
+    public Portfolio(double portfolioValue, double stock1Shares, double stock2Shares) {
+        this.portfolioValue = portfolioValue;
+        this.stock1Shares = stock1Shares;
+        this.stock2Shares = stock2Shares;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public double getPortfolioValue() {
+        return portfolioValue;
+    }
+
+    public void setPortfolioValue(double portfolioValue) {
+        if (portfolioValue >= 0) {
+            this.portfolioValue = portfolioValue;
+        }
+    }
+
+    public double getStock1Shares() {
+        return stock1Shares;
+    }
+
+    public void setStock1Shares(double stock1Shares) {
+        if (stock1Shares >= 0) {
+            this.stock1Shares = stock1Shares;
+        }
+    }
+
+    public double getStock2Shares() {
+        return stock2Shares;
+    }
+
+    public void setStock2Shares(double stock2Shares) {
+        if (stock2Shares >= 0) {
+            this.stock2Shares = stock2Shares;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Portfolio{" + "id=" + id + ", portfolio value=" + portfolioValue + ", stock 1 shares=" + stock1Shares + ", stock 2 shares=" + stock2Shares + '}';
+    }
 }
