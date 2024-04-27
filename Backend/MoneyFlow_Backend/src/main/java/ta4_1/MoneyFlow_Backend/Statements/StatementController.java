@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ta4_1.MoneyFlow_Backend.Expenses.ExpensesRepository;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
@@ -32,6 +33,9 @@ public class StatementController {
     @Autowired
     private StatementService statementService;
 
+    @Autowired
+    private ExpensesRepository expensesRepository;
+
     /**
      * Adds a new statement for a user and updates income and expenses accordingly.
      *
@@ -44,7 +48,7 @@ public class StatementController {
         return userRepository.findById(id)
                 .map(user -> {
                     Statement s;
-                    statementService = new StatementService();
+                    statementService = new StatementService(expensesRepository);
                     try {
                         s = statementService.createBankStatement(user, file);
                     }

@@ -5,9 +5,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
+import ta4_1.MoneyFlow_Backend.Expenses.ExpensesRepository;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
 import java.io.ByteArrayInputStream;
@@ -20,10 +22,15 @@ import java.util.HashMap;
 @Service
 public class StatementService {
 
+    private final ExpensesRepository expensesRepository;
+
     private HashMap<String, Double> financialMap;
 
     // Constructor to set all financials to 0.
-    public StatementService() {
+    @Autowired
+    public StatementService(ExpensesRepository expensesRepository) {
+        this.expensesRepository = expensesRepository;
+
         financialMap = new HashMap<>();
         financialMap.put("home", 0.0);
         financialMap.put("work", 0.0);
@@ -108,6 +115,14 @@ public class StatementService {
      */
     public void updateFinancials(User user) {
         Expenses userExpenses = user.getExpenses();
+
+        if (userExpenses == null) {
+            userExpenses = new Expenses(0, 0, 0, 0);
+            userExpenses.setUser(user);
+            expensesRepository.save(userExpenses);
+            user.setExpenses(userExpenses);
+        }
+
         user.setMonthlyIncome(user.getMonthlyIncome() + financialMap.get("income"));
         userExpenses.setPersonal(userExpenses.getPersonal() + financialMap.get("personal"));
         userExpenses.setWork(userExpenses.getWork() + financialMap.get("work"));
