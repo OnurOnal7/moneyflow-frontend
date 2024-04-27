@@ -2,6 +2,7 @@ package ta4_1.MoneyFlow_Backend.Users;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import ta4_1.MoneyFlow_Backend.Budget.Budget;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 import ta4_1.MoneyFlow_Backend.Family.Family;
@@ -61,6 +62,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-one relationship with the Expenses entity.
+    private Budget budget;  // The user's associated expenses.
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-one relationship with the Portfolio entity.
@@ -292,6 +297,14 @@ public class User {
     public void removeGoal(Goal goal) {
         this.goals.remove(goal);
         goal.setUser(null);
+    }
+
+    public void setBudget(Budget savedBudget) {
+        budget = savedBudget;
+    }
+
+    public Budget getBudget() {
+        return budget;
     }
 
     /**
