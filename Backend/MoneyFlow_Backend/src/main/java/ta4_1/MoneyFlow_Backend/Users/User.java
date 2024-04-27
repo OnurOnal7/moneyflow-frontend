@@ -75,6 +75,9 @@ public class User {
     private Family family;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Goal> goals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-many relationship with the Recommendation entity.
     @MapKey(name = "date") // Designating the map key
     private Map<String, Recommendation> recommendations = new HashMap<>();    // The user's associated recommendations.
@@ -267,6 +270,27 @@ public class User {
     public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
         return monthlyIncome - totalExpenses;
+    }
+
+    // Getter and setter for goals
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
+
+    // Method to add a goal to the user's list of goals
+    public void addGoal(Goal goal) {
+        this.goals.add(goal);
+        goal.setUser(this);
+    }
+
+    // Method to remove a goal from the user's list of goals
+    public void removeGoal(Goal goal) {
+        this.goals.remove(goal);
+        goal.setUser(null);
     }
 
     /**
