@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Goals;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import java.util.UUID;
@@ -9,29 +10,18 @@ import java.util.UUID;
 public class Goal {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "goal_string")
+    private String goalString;
 
-    @Column(name = "amount", nullable = false)
-    private Double amount;
-
-    @Column(name = "timeframe", nullable = false) // timeframe in months
-    private Integer timeframe;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public Goal() {
-    }
-
-    public Goal(String description, Double amount, Integer timeframe) {
-        this.description = description;
-        this.amount = amount;
-        this.timeframe = timeframe;
     }
 
     public UUID getId() {
@@ -42,28 +32,12 @@ public class Goal {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getGoalString() {
+        return goalString;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public Integer getTimeframe() {
-        return timeframe;
-    }
-
-    public void setTimeframe(Integer timeframe) {
-        this.timeframe = timeframe;
+    public void setGoalString(String goalString) {
+        this.goalString = goalString;
     }
 
     public User getUser() {
