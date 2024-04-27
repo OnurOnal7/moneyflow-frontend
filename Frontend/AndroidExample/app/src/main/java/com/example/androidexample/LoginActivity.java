@@ -66,14 +66,14 @@ public class LoginActivity extends AppCompatActivity {
     private void sendPostRequest(String email, String password) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL + "?email=" + email + "&password=" + password,
                 response -> {
-                    Toast.makeText(LoginActivity.this, "Login Response: " + response, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Logged in", Toast.LENGTH_LONG).show();
                     UUID = response;
                     GetUserTypeRequest();
                     Log.d("UUID", UUID + " is the ID!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 },
-                error -> Toast.makeText(LoginActivity.this, "Login Error: " + error.toString(), Toast.LENGTH_LONG).show());
+                error -> Toast.makeText(LoginActivity.this, "Login Failed, please try again", Toast.LENGTH_LONG).show());
 
         Volley.newRequestQueue(this).add(stringRequest);
     }

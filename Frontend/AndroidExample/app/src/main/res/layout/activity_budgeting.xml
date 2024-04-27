@@ -9,7 +9,7 @@
         android:id="@+id/budg_create_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Goal"
+        android:text="Set Budget"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -21,14 +21,13 @@
         android:id="@+id/textView4"
         android:layout_width="119dp"
         android:layout_height="32dp"
-        android:text="Add a Goal"
+        android:text="Budgeting"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <Spinner
         android:id="@+id/spinner_exptype"
