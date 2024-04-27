@@ -5,11 +5,8 @@ import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 import ta4_1.MoneyFlow_Backend.Family.Family;
-<<<<<<< HEAD
 import ta4_1.MoneyFlow_Backend.Goals.Goal;
-=======
 import ta4_1.MoneyFlow_Backend.Portfolio.Portfolio;
->>>>>>> 81bed8e557fdb4b24a866e95d12c2bab92ec70ae
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 import ta4_1.MoneyFlow_Backend.Statements.Statement;
 
