@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 import ta4_1.MoneyFlow_Backend.Family.Family;
+import ta4_1.MoneyFlow_Backend.Goals.Goal;
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 import ta4_1.MoneyFlow_Backend.Statements.Statement;
 
@@ -68,6 +69,9 @@ public class User {
     @JoinColumn(name = "family_id")
     @JsonBackReference
     private Family family;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Goal> goals = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-many relationship with the Recommendation entity.
@@ -251,6 +255,27 @@ public class User {
     public double generateBudget() {
         double totalExpenses = expenses != null ? expenses.getTotalExpenses() : 0;
         return monthlyIncome - totalExpenses;
+    }
+
+    // Getter and setter for goals
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
+
+    // Method to add a goal to the user's list of goals
+    public void addGoal(Goal goal) {
+        this.goals.add(goal);
+        goal.setUser(this);
+    }
+
+    // Method to remove a goal from the user's list of goals
+    public void removeGoal(Goal goal) {
+        this.goals.remove(goal);
+        goal.setUser(null);
     }
 
     /**
