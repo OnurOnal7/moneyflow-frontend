@@ -1,6 +1,8 @@
 package com.example.androidexample;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,12 +22,16 @@ public class GoalListActivity extends AppCompatActivity {
     private ListView listView;
     private Button button;
 
+    private AlertDialog.Builder builder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goalview);
+
+        builder = new AlertDialog.Builder(this);
 
         listView = findViewById(R.id.listView);
         button = findViewById(R.id.addButton);
@@ -38,13 +44,9 @@ public class GoalListActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(GoalListActivity.this, GoalListAddActivity.class));
-
+                startActivity(new Intent(GoalListActivity.this, Goal_Add_Activity1.class));
             }
         });
-
-
-
     }
 
     private void setUpListViewListener() {
@@ -52,10 +54,25 @@ public class GoalListActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Context context = getApplicationContext();
-                Toast.makeText(context, "Goal Removed", Toast.LENGTH_LONG).show();
 
-                items.remove(position);
-                itemsadapter.notifyDataSetChanged();
+                builder.setTitle("Warning!").setMessage("Are you sure you would like to remove this goal?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(context, "Goal Removed!", Toast.LENGTH_LONG).show();
+                                items.remove(position);
+                                itemsadapter.notifyDataSetChanged();
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
                 return true;
             }
         });

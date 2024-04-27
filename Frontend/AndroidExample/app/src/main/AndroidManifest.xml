@@ -30,6 +30,8 @@
         <activity android:name=".FamilyPlanActivity"/>
         <activity android:name=".AddFamilyExpensesActivity"/>
         <activity android:name=".GoalListActivity"/>
+        <activity android:name=".Goal_Add_Activity1"/>
+        <activity android:name=".Goal_Add_Activity2"/>
         <activity android:name=".BudgetingActivity"/>
 
         <activity

@@ -75,12 +75,12 @@ public class SignupActivity extends AppCompatActivity {
     private void sendPostRequest(JSONObject jsonBody) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 response -> {
-                    Toast.makeText(SignupActivity.this, "Response: " + response, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, "Signed up! Welcome to MoneyFlow!", Toast.LENGTH_LONG).show();
                     // Extract the UUID from the response and send initial expenses
                     UUID userId = UUID.fromString(response.replace("\"", ""));
                     sendInitialExpenses(userId, jsonBody);
                 },
-                error -> Toast.makeText(SignupActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
+                error -> Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show()) {
             @Override
             public byte[] getBody() {
                 return jsonBody.toString().getBytes();
@@ -140,11 +140,10 @@ public class SignupActivity extends AppCompatActivity {
         String loginUrl = "http://coms-309-056.class.las.iastate.edu:8080/login" + "?email=" + email + "&password=" + password;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, loginUrl,
                 response -> {
-                    Toast.makeText(SignupActivity.this, "Login Response: " + response, Toast.LENGTH_LONG).show();
                     LoginActivity.UUID = response;
                     GetUserTypeRequest(response);
                 },
-                error -> Toast.makeText(SignupActivity.this, "Login Error: " + error.toString(), Toast.LENGTH_LONG).show());
+                error -> Toast.makeText(SignupActivity.this, "Sign up Error occurred, try again", Toast.LENGTH_LONG).show());
 
         Volley.newRequestQueue(this).add(stringRequest);
     }
