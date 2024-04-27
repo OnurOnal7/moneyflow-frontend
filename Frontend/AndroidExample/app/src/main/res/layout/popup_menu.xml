@@ -38,5 +38,11 @@
         android:layout_height="wrap_content"
         android:text="Goals"
         />
+    <Button
+        android:id="@+id/btn_Budget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Budgeting"
+        />
 
 </LinearLayout>

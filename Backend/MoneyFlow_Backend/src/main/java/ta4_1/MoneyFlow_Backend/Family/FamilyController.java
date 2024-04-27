@@ -13,6 +13,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Controller for Families
+ *
+ * @author Onur Onal
+ * @author Kemal Yavuz
+ */
+
 @RestController
 @RequestMapping("/family")
 public class FamilyController {
@@ -22,6 +29,13 @@ public class FamilyController {
     @Autowired
     private FamilyRepository familyRepository;
 
+    /**
+     * Add a user to a family.
+     *
+     * @param userId   The ID of the user from which the family will be retrieved.
+     * @param familyMember The user to be added to the family.
+     * @return UUID of the newly added family member.
+     */
     @PostMapping("/addMember/{userId}")
     public UUID addFamilyMember(@PathVariable UUID userId, @RequestBody User familyMember) {
         User mainUser = userRepository.findById(userId)
@@ -49,6 +63,11 @@ public class FamilyController {
         return familyMember.getId();
     }
 
+    /**
+     * Get a list of all families.
+     *
+     * @return List of families.
+     */
     @GetMapping
     public List<Family> getAllFamilies() {
         return familyRepository.findAll();
@@ -64,6 +83,13 @@ public class FamilyController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * Update a family by its ID.
+     *
+     * @param familyId        The ID of the family to be updated.
+     * @param updatedFamily   The updated family object.
+     * @return ResponseEntity of the updated family.
+     */
     @PutMapping("/updateFamily/{familyId}")
     public ResponseEntity<Family> updateFamily(@PathVariable UUID familyId, @RequestBody Family updatedFamily) {
         Family family = familyRepository.findById(familyId)
@@ -78,6 +104,12 @@ public class FamilyController {
         return ResponseEntity.ok(family);
     }
 
+    /**
+     * Delete a family by its ID.
+     *
+     * @param familyId The ID of the family to be deleted.
+     * @return A success string.
+     */
     @DeleteMapping("/deleteFamily/{familyId}")
     public ResponseEntity<String> deleteFamily(@PathVariable UUID familyId) {
         Family family = familyRepository.findById(familyId)
