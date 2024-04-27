@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Cards.Card;
 import ta4_1.MoneyFlow_Backend.Expenses.Expenses;
 import ta4_1.MoneyFlow_Backend.Family.Family;
+<<<<<<< HEAD
 import ta4_1.MoneyFlow_Backend.Goals.Goal;
+=======
+import ta4_1.MoneyFlow_Backend.Portfolio.Portfolio;
+>>>>>>> 81bed8e557fdb4b24a866e95d12c2bab92ec70ae
 import ta4_1.MoneyFlow_Backend.Recommendations.Recommendation;
 import ta4_1.MoneyFlow_Backend.Statements.Statement;
 
@@ -60,6 +64,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-one relationship with the Expenses entity.
     private Expenses expenses;  // The user's associated expenses.
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Establishes a one-to-one relationship with the Portfolio entity.
+    private Portfolio portfolio;  // The user's associated portfolio.
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     // Establishes a one-to-many relationship with the Card entity.
@@ -198,6 +206,17 @@ public class User {
         this.expenses = expenses;
         if (expenses != null) {
             expenses.setUser(this); // Set the user in the Expenses entity
+        }
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+        if (portfolio != null) {
+            portfolio.setUser(this); // Set the user in the Portfolio entity
         }
     }
 

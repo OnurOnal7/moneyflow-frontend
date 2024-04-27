@@ -14,4 +14,13 @@
     </string-array>
     <string-array name="categories_dates">
     </string-array>
+    <string-array name="categories_goal">
+        <item>savings</item>
+        <item>investment</item>
+        <item>vacation</item>
+        <item>education</item>
+        <item>charity</item>
+        <item>lifestyle</item>
+    </string-array>
+
 </resources>
