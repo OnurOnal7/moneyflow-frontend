@@ -51,7 +51,6 @@ public class StatementService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String formattedDate = date.format(formatter);
 
-
         Statement bankStatement = new Statement();
         byte[] contents = file.getBytes();
         bankStatement.setBankStatement(contents);

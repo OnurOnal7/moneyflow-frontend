@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 /**
@@ -23,11 +25,17 @@ public class Portfolio {
     @Column(name = "portfolio_value")
     private double portfolioValue;
 
-    @Column(name = "stock1")
+    @Column(name = "stock1_shares")
     private double stock1Shares;
 
-    @Column(name = "stock2")
+    @Column(name = "stock2_shares")
     private double stock2Shares;
+
+    @Column(name = "stock1_price")
+    private double stock1Price;
+
+    @Column(name = "stock2_price")
+    private double stock2Price;
 
     @JsonIgnore
     @OneToOne
@@ -37,10 +45,12 @@ public class Portfolio {
     public Portfolio() {
     }
 
-    public Portfolio(double portfolioValue, double stock1Shares, double stock2Shares) {
-        this.portfolioValue = portfolioValue;
+    public Portfolio(double portfolioValue, double stock1Shares, double stock2Shares, double stock1Price, double stock2Price) {
+        this.portfolioValue = roundToTwoDecimalPlaces(portfolioValue);
         this.stock1Shares = stock1Shares;
         this.stock2Shares = stock2Shares;
+        this.stock1Price = stock1Price;
+        this.stock2Price = stock2Price;
     }
 
     public User getUser() {
@@ -65,7 +75,7 @@ public class Portfolio {
 
     public void setPortfolioValue(double portfolioValue) {
         if (portfolioValue >= 0) {
-            this.portfolioValue = portfolioValue;
+            this.portfolioValue = roundToTwoDecimalPlaces(portfolioValue);
         }
     }
 
@@ -89,8 +99,40 @@ public class Portfolio {
         }
     }
 
+    public double getStock1Price() {
+        return stock1Price;
+    }
+
+    public void setStock1Price(double stock1Price) {
+        if (stock1Price >= 0) {
+            this.stock1Price = stock1Price;
+        }
+    }
+
+    public double getStock2Price() {
+        return stock2Price;
+    }
+
+    public void setStock2Price(double stock2Price) {
+        if (stock2Price >= 0) {
+            this.stock2Price = stock2Price;
+        }
+    }
+
+    private double roundToTwoDecimalPlaces(double value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
     @Override
     public String toString() {
-        return "Portfolio{" + "id=" + id + ", portfolio value=" + portfolioValue + ", stock 1 shares=" + stock1Shares + ", stock 2 shares=" + stock2Shares + '}';
+        return "Portfolio{" +
+                "id=" + id +
+                ", portfolio value=" + portfolioValue +
+                ", stock 1 shares=" + stock1Shares +
+                ", stock 2 shares=" + stock2Shares +
+                ", stock 1 price=" + stock1Price +
+                ", stock 2 price=" + stock2Price + '}';
     }
 }

@@ -110,7 +110,8 @@ public class ExpensesController {
                         user.setExpenses(null);
                         userRepository.save(user);
                         return ResponseEntity.ok().<Void>build();
-                    } else {
+                    }
+                    else {
                         return ResponseEntity.notFound().build();
                     }
                 })

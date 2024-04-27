@@ -2,9 +2,6 @@ package ta4_1.MoneyFlow_Backend.Portfolio;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-import ta4_1.MoneyFlow_Backend.Portfolio.Portfolio;
-
-import javax.sound.sampled.Port;
 import java.util.Optional;
 import java.util.UUID;
 
