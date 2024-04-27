@@ -14,7 +14,7 @@ public class Goal_Add_Activity1 extends AppCompatActivity {
     private Button NextPhase;
     private Spinner spinnerCategories;
 
-    private String selectedGoalCategory;
+    public static String selectedGoalCategory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,6 @@ public class Goal_Add_Activity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Goal_Add_Activity1.this, Goal_Add_Activity2.class);
-                i.putExtra("cat", selectedGoalCategory);
                 startActivity(i);
             }
         });
