@@ -30,16 +30,16 @@ public class BudgetService {
 
             Map<String, Double> overages = new HashMap<>();
             if (expenses.getPersonal() > budget.getPersonalLimit()) {
-                overages.put("Personal", expenses.getPersonal() - budget.getPersonalLimit());
+                overages.put("Personal", budget.getPersonalLimit() - expenses.getPersonal());
             }
             if (expenses.getWork() > budget.getWorkLimit()) {
-                overages.put("Work", expenses.getWork() - budget.getWorkLimit());
+                overages.put("Work", budget.getWorkLimit() - expenses.getWork());
             }
             if (expenses.getHome() > budget.getHomeLimit()) {
-                overages.put("Home", expenses.getHome() - budget.getHomeLimit());
+                overages.put("Home", budget.getHomeLimit() - expenses.getHome());
             }
             if (expenses.getOther() > budget.getOtherLimit()) {
-                overages.put("Other", expenses.getOther() - budget.getOtherLimit());
+                overages.put("Other", budget.getOtherLimit() - expenses.getOther());
             }
 
             return overages;
