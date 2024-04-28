@@ -280,7 +280,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/delete-guest-users")
+    @DeleteMapping("/delete-guest-users")
     public ResponseEntity<String> deleteAllGuestUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
@@ -291,7 +291,7 @@ public class UserController {
         return ResponseEntity.ok("All guest users have been deleted.");
     }
 
-    @PostMapping("/delete-regular-users")
+    @DeleteMapping("/delete-regular-users")
     public ResponseEntity<String> deleteAllRegularUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
@@ -302,7 +302,7 @@ public class UserController {
         return ResponseEntity.ok("All regular users have been deleted.");
     }
 
-    @PostMapping("/delete-familyMember-users")
+    @DeleteMapping("/delete-familyMember-users")
     public ResponseEntity<String> deleteAllFamilyMemberUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
