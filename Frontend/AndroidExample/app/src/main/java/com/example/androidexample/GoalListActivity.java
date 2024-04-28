@@ -38,7 +38,7 @@ public class GoalListActivity extends AppCompatActivity {
     private Button button, rtn_home, clr_a;
     public String item;
     private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
-    private final String BudURL = "http://coms-309-056.class.las.iastate.edu:8080/budget/"+ LoginActivity.UUID.replace("\"", "");
+    private final String DelAllURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/deleteAll/"+LoginActivity.UUID.replace("\"", "");
     private AlertDialog.Builder builder;
 
 
@@ -70,6 +70,7 @@ public class GoalListActivity extends AppCompatActivity {
         clr_a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                deleteAllGoals();
 
             }
         });
@@ -113,6 +114,30 @@ public class GoalListActivity extends AppCompatActivity {
 
 
 
+    private void deleteAllGoals() {
+
+        StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, DelAllURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Handle successful deletion
+                        itemsadapter.notifyDataSetChanged();
+                        Toast.makeText(GoalListActivity.this, "All Goals Removed!", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        Toast.makeText(GoalListActivity.this, "Error deleting goal: " + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(deleteRequest);
+    }
+
+
     private void deleteGoal(String goalId) {
         String deleteURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + goalId;
 
@@ -121,7 +146,7 @@ public class GoalListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Handle successful deletion
-
+                        itemsadapter.clear();
                         itemsadapter.notifyDataSetChanged();
                         Toast.makeText(GoalListActivity.this, "Goal Removed!", Toast.LENGTH_LONG).show();
                     }
