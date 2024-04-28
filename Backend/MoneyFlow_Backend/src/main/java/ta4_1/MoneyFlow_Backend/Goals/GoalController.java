@@ -1,5 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Goals;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,4 +51,21 @@ public class GoalController {
             return ResponseEntity.ok().<Void>build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
+    @Transactional
+    @DeleteMapping("/deleteAll/{userId}")
+    public ResponseEntity<?> deleteAllGoalsByUser(@PathVariable UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    List<Goal> goals = goalRepository.findByUserId(userId);
+                    if (!goals.isEmpty()) {
+                        goalRepository.deleteAll(goals);
+                        return ResponseEntity.ok().<Void>build();
+                    } else {
+                        return ResponseEntity.ok().build(); // No goals found to delete, but operation is successful
+                    }
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
