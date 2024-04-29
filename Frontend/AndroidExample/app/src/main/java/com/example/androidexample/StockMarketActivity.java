@@ -132,7 +132,7 @@ public class StockMarketActivity extends AppCompatActivity {
             webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"AMZN\"}");
             webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
             webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"BINANCE:DOGEUSDT\"}");
-            webSocket.close(1000, "Activity destroyed");
+            webSocket.close(5001, "Activity destroyed");
         }
     }
 }
