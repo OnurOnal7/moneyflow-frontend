@@ -1,9 +1,6 @@
 package ta4_1.MoneyFlow_Backend.Statements;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,7 +72,7 @@ public class StatementService {
         Sheet sheet = workbook.getSheetAt(0);
         int lastRowNum = sheet.getLastRowNum();
 
-        for (int i = 2; i <= lastRowNum; i++) {
+        for (int i = 9; i <= lastRowNum; i++) {
             Row row = sheet.getRow(i);
             int k = 0;
             if (row != null) {
@@ -122,10 +119,10 @@ public class StatementService {
             user.setExpenses(userExpenses);
         }
 
-        user.setMonthlyIncome(user.getMonthlyIncome() + financialMap.get("income"));
-        userExpenses.setPersonal(userExpenses.getPersonal() + financialMap.get("personal"));
-        userExpenses.setWork(userExpenses.getWork() + financialMap.get("work"));
-        userExpenses.setHome(userExpenses.getHome() + financialMap.get("home"));
-        userExpenses.setOther(userExpenses.getOther() + financialMap.get("other"));
+        user.setMonthlyIncome(financialMap.get("income"));
+        userExpenses.setPersonal(financialMap.get("personal"));
+        userExpenses.setWork(financialMap.get("work"));
+        userExpenses.setHome(financialMap.get("home"));
+        userExpenses.setOther(financialMap.get("other"));
     }
 }
