@@ -25,28 +25,28 @@ public class Portfolio {
     @Column(name = "portfolio_value")
     private double portfolioValue;
 
-    @Column(name = "apple_shares")
+    @Column(name = "aapl_shares")
     private double AAPLShares;
 
-    @Column(name = "amazon_shares")
+    @Column(name = "amzn_shares")
     private double AMZNShares;
 
-    @Column(name = "bitcoin")
+    @Column(name = "btcusdt")
     private double BTCUSDTShares;
 
-    @Column(name = "dogecoin")
+    @Column(name = "dogeusdt")
     private double DOGEUSDTShares;
 
-    @Column(name = "apple_price")
+    @Column(name = "aapl_price")
     private double AAPLPrice;
 
-    @Column(name = "amazon_price")
+    @Column(name = "amzn_price")
     private double AMZNPrice;
 
-    @Column(name = "bitcoin_price")
+    @Column(name = "btcusdt_price")
     private double BTCUSDTPrice;
 
-    @Column(name = "dogecoin_price")
+    @Column(name = "dogeusdt_price")
     private double DOGEUSDTPrice;
 
     @JsonIgnore
