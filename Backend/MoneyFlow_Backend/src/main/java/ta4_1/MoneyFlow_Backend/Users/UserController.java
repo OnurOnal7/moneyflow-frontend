@@ -148,10 +148,11 @@ public class UserController {
      */
     @PatchMapping("/users/{id}/income")
     public ResponseEntity<User> updateIncome(@PathVariable UUID id, @RequestBody Map<String, Double> incomeMap) {
-        if (!incomeMap.containsKey("income")) {
+        Double boxedIncome = incomeMap.get("income");
+        if (boxedIncome == null) {  // Check if the value is null
             return ResponseEntity.badRequest().build();
         }
-        Double income = incomeMap.get("income");
+        double income = boxedIncome;
         return userRepository.findById(id)
                 .map(user -> {
                     user.setMonthlyIncome(income);
@@ -170,7 +171,7 @@ public class UserController {
     public ResponseEntity<Double> getMonthlyIncome(@PathVariable UUID id) {
         return userRepository.findById(id)
                 .map(user -> {
-                    Double monthlyIncome = user.getMonthlyIncome();
+                    double monthlyIncome = user.getMonthlyIncome();
                     return ResponseEntity.ok(monthlyIncome);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -186,7 +187,7 @@ public class UserController {
     public ResponseEntity<Double> getAnnualIncome(@PathVariable UUID id) {
         return userRepository.findById(id)
                 .map(user -> {
-                    Double annualIncome = user.getAnnualIncome();
+                    double annualIncome = user.getAnnualIncome();
                     return ResponseEntity.ok(annualIncome);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());

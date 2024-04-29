@@ -48,10 +48,10 @@ public class User {
     private String type;    // The user's type (e.g., regular, premium).
 
     @Column(name = "monthly_income")    // Maps this field to the "monthly_income" column in the database.
-    private Double monthlyIncome;  // The user's monthly income.
+    private double monthlyIncome;  // The user's monthly income.
 
     @Column(name = "annual_income")    // Maps this field to the "annual_income" column in the database.
-    private Double annualIncome;  // The user's annual income.
+    private double annualIncome;  // The user's annual income.
 
     @Column(name = "currency_exchange_setting")
     private String currencyExchangeSetting;
@@ -169,19 +169,19 @@ public class User {
         this.type = type;
     }
 
-    public Double getMonthlyIncome() {
+    public double getMonthlyIncome() {
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(Double monthlyIncome) {
+    public void setMonthlyIncome(double monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public Double getAnnualIncome() {
+    public double getAnnualIncome() {
         return annualIncome;
     }
 
-    public void setAnnualIncome(Double annualIncome) {
+    public void setAnnualIncome(double annualIncome) {
         this.annualIncome = annualIncome;
     }
 
