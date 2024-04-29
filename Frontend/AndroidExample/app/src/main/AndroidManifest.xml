@@ -33,6 +33,7 @@
         <activity android:name=".Goal_Add_Activity2"/>
         <activity android:name=".BudgetingActivity"/>
         <activity android:name=".BudgetingAddActivity"/>
+        <activity android:name=".StockMarketActivity"/>
 
         <activity
             android:name=".FirstPageActivity"
