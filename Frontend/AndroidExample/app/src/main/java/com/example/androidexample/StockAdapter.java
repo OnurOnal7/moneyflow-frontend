@@ -2,6 +2,7 @@ package com.example.androidexample;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,36 +83,68 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
 
     private void sendDataToBackend(String stockSymbol, double shares, double price) {
         OkHttpClient client = new OkHttpClient();
-        String jsonData = "{\"symbol\": \"" + stockSymbol + "\", \"shares\": " + shares + ", \"price\": " + price + "}";
-        RequestBody body = RequestBody.create(jsonData, MediaType.parse("application/json; charset=utf-8"));
+
+        String formattedSymbol = formatSymbol(stockSymbol);
+        String sharesKey = isCrypto(stockSymbol) ? formattedSymbol : formattedSymbol + "Shares";
+        String priceKey = formattedSymbol + "Price";
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(sharesKey, shares);
+            jsonObject.put(priceKey, price);
+            Log.d("StockAdapter", "JSON to send: " + jsonObject.toString());
+        } catch (JSONException e) {
+            Log.e("StockAdapter", "Failed to create JSON", e);
+            return;
+        }
+
+        RequestBody body = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
+
         Request request = new Request.Builder()
-                .url("http://coms-309-056.class.las.iastate.edu:8080/portfolio/" +  LoginActivity.UUID.replace("\"", "") + "/buy")
-                .post(body)
+                .url("http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID + "/buy")
+                .put(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                // Handle failure, potentially also on UI thread if you're informing the user
+                Log.e("StockAdapter", "Network call failed", e);
+                performPostFailureAction("Network error: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    performPostSuccessAction();  // This calls your method to show the toast
+                    Log.d("StockAdapter", "Network call successful, response: " + response.body().string());
+                    performPostSuccessAction("Purchase successful");
                 } else {
-                    // Handle response errors, potentially also needing runOnUiThread if updating UI
+                    Log.e("StockAdapter", "Network call unsuccessful with response code: " + response.code());
+                    performPostFailureAction("Server error: " + response.code());
                 }
             }
         });
     }
-    private void performPostSuccessAction() {
-        // Check if the context is an instance of Activity
+
+    private boolean isCrypto(String stockSymbol) {
+        return stockSymbol.contains(":");
+    }
+
+    private String formatSymbol(String stockSymbol) {
+        return stockSymbol.replace(":", "").toLowerCase();
+    }
+
+    private void performPostSuccessAction(String message) {
         if (context instanceof Activity) {
             ((Activity) context).runOnUiThread(() -> {
-                // Run on UI thread: Show a toast
-                Toast.makeText(context, "Purchase successful", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            });
+        }
+    }
+
+    private void performPostFailureAction(String message) {
+        if (context instanceof Activity) {
+            ((Activity) context).runOnUiThread(() -> {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             });
         }
     }
