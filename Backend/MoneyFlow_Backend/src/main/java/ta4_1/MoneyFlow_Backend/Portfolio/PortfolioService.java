@@ -12,6 +12,9 @@ public class PortfolioService {
      * @return The updated portfolio value.
      */
     public double updatePortfolioValue(Portfolio userPortfolio) {
-        return (userPortfolio.getStock1Shares() * userPortfolio.getStock1Price()) + (userPortfolio.getStock2Shares() * userPortfolio.getStock2Price());
+        return (userPortfolio.getAppleShares() * userPortfolio.getApplePrice()) +
+               (userPortfolio.getAmazonShares() * userPortfolio.getAmazonPrice()) +
+               (userPortfolio.getBitcoin() * userPortfolio.getBitcoinPrice()) +
+               (userPortfolio.getDogecoin() * userPortfolio.getDogecoinPrice());
     }
 }

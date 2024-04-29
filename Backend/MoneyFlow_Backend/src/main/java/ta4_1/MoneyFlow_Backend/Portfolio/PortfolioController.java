@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
-import javax.sound.sampled.Port;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -103,10 +102,14 @@ public class PortfolioController {
         return userRepository.findById(id)
                 .map(user -> {
                     Portfolio currentPortfolio = user.getPortfolio();
-                    if (updatedPortfolio.getStock1Price() != 0.0) { currentPortfolio.setStock1Price(updatedPortfolio.getStock1Price()); }
-                    if (updatedPortfolio.getStock2Price() != 0.0) { currentPortfolio.setStock2Price(updatedPortfolio.getStock2Price()); }
-                    currentPortfolio.setStock1Shares(currentPortfolio.getStock1Shares() + updatedPortfolio.getStock1Shares());
-                    currentPortfolio.setStock2Shares(currentPortfolio.getStock2Shares() + updatedPortfolio.getStock2Shares());
+                    if (updatedPortfolio.getApplePrice() != 0.0) { currentPortfolio.setApplePrice(updatedPortfolio.getApplePrice()); }
+                    if (updatedPortfolio.getAmazonPrice() != 0.0) { currentPortfolio.setAmazonPrice(updatedPortfolio.getAmazonPrice()); }
+                    if (updatedPortfolio.getBitcoinPrice() != 0.0) { currentPortfolio.setBitcoinPrice(updatedPortfolio.getBitcoinPrice()); }
+                    if (updatedPortfolio.getDogecoinPrice() != 0.0) { currentPortfolio.setDogecoinPrice(updatedPortfolio.getDogecoinPrice()); }
+                    currentPortfolio.setAppleShares(currentPortfolio.getAppleShares() + updatedPortfolio.getAppleShares());
+                    currentPortfolio.setAmazonShares(currentPortfolio.getAmazonShares() + updatedPortfolio.getAmazonShares());
+                    currentPortfolio.setBitcoin(currentPortfolio.getBitcoin() + updatedPortfolio.getBitcoin());
+                    currentPortfolio.setDogecoin(currentPortfolio.getDogecoin() + updatedPortfolio.getDogecoin());
                     currentPortfolio.setPortfolioValue(portfolioService.updatePortfolioValue(currentPortfolio));
 
                     return ResponseEntity.ok(currentPortfolio);
@@ -127,10 +130,14 @@ public class PortfolioController {
         return userRepository.findById(id)
                 .map(user -> {
                     Portfolio currentPortfolio = user.getPortfolio();
-                    if (updatedPortfolio.getStock1Price() != 0.0) { currentPortfolio.setStock1Price(updatedPortfolio.getStock1Price()); }
-                    if (updatedPortfolio.getStock2Price() != 0.0) { currentPortfolio.setStock2Price(updatedPortfolio.getStock2Price()); }
-                    currentPortfolio.setStock1Shares(Math.max(currentPortfolio.getStock1Shares() - updatedPortfolio.getStock1Shares(), 0));
-                    currentPortfolio.setStock2Shares(Math.max(currentPortfolio.getStock2Shares() - updatedPortfolio.getStock2Shares(), 0));
+                    if (updatedPortfolio.getApplePrice() != 0.0) { currentPortfolio.setApplePrice(updatedPortfolio.getApplePrice()); }
+                    if (updatedPortfolio.getAmazonPrice() != 0.0) { currentPortfolio.setAmazonPrice(updatedPortfolio.getAmazonPrice()); }
+                    if (updatedPortfolio.getBitcoinPrice() != 0.0) { currentPortfolio.setBitcoinPrice(updatedPortfolio.getBitcoinPrice()); }
+                    if (updatedPortfolio.getDogecoinPrice() != 0.0) { currentPortfolio.setDogecoinPrice(updatedPortfolio.getDogecoinPrice()); }
+                    currentPortfolio.setAppleShares(Math.max(currentPortfolio.getAppleShares() - updatedPortfolio.getAppleShares(), 0));
+                    currentPortfolio.setAmazonShares(Math.max(currentPortfolio.getAmazonShares() - updatedPortfolio.getAmazonShares(), 0));
+                    currentPortfolio.setBitcoin(Math.max(currentPortfolio.getBitcoin() - updatedPortfolio.getBitcoin(), 0));
+                    currentPortfolio.setDogecoin(Math.max(currentPortfolio.getDogecoin() - updatedPortfolio.getDogecoin(), 0));
                     currentPortfolio.setPortfolioValue(portfolioService.updatePortfolioValue(currentPortfolio));
 
                     return ResponseEntity.ok(currentPortfolio);
@@ -152,11 +159,17 @@ public class PortfolioController {
                     Portfolio currentPortfolio = user.getPortfolio();
                     updatedPrices.forEach((key, value) -> {
                         switch (key) {
-                            case "stock1Price":
-                                currentPortfolio.setStock1Price(value);
+                            case "AAPLPrice":
+                                currentPortfolio.setApplePrice(value);
                                 break;
-                            case "stock2Price":
-                                currentPortfolio.setStock2Price(value);
+                            case "AMZNPrice":
+                                currentPortfolio.setAmazonPrice(value);
+                                break;
+                            case "BTCUSDTPrice":
+                                currentPortfolio.setBitcoinPrice(value);
+                                break;
+                            case "DOGEUSDTPrice":
+                                currentPortfolio.setDogecoinPrice(value);
                                 break;
                             default:
                                 break;

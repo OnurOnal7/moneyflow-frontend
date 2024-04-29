@@ -25,17 +25,29 @@ public class Portfolio {
     @Column(name = "portfolio_value")
     private double portfolioValue;
 
-    @Column(name = "stock1_shares")
-    private double stock1Shares;
+    @Column(name = "apple_shares")
+    private double AAPLShares;
 
-    @Column(name = "stock2_shares")
-    private double stock2Shares;
+    @Column(name = "amazon_shares")
+    private double AMZNShares;
 
-    @Column(name = "stock1_price")
-    private double stock1Price;
+    @Column(name = "bitcoin")
+    private double BTCUSDTShares;
 
-    @Column(name = "stock2_price")
-    private double stock2Price;
+    @Column(name = "dogecoin")
+    private double DOGEUSDTShares;
+
+    @Column(name = "apple_price")
+    private double AAPLPrice;
+
+    @Column(name = "amazon_price")
+    private double AMZNPrice;
+
+    @Column(name = "bitcoin_price")
+    private double BTCUSDTPrice;
+
+    @Column(name = "dogecoin_price")
+    private double DOGEUSDTPrice;
 
     @JsonIgnore
     @OneToOne
@@ -45,12 +57,16 @@ public class Portfolio {
     public Portfolio() {
     }
 
-    public Portfolio(double portfolioValue, double stock1Shares, double stock2Shares, double stock1Price, double stock2Price) {
-        this.portfolioValue = roundToTwoDecimalPlaces(portfolioValue);
-        this.stock1Shares = stock1Shares;
-        this.stock2Shares = stock2Shares;
-        this.stock1Price = stock1Price;
-        this.stock2Price = stock2Price;
+    public Portfolio(double portfolioValue, double AAPLShares, double AMZNShares, double BTCUSDTShares, double DOGEUSDTShares, double AAPLPrice, double AMZNPrice, double BTCUSDTPrice, double DOGEUSDTPrice) {
+        this.portfolioValue = portfolioValue;
+        this.AAPLShares = AAPLShares;
+        this.AMZNShares = AMZNShares;
+        this.BTCUSDTShares = BTCUSDTShares;
+        this.DOGEUSDTShares = DOGEUSDTShares;
+        this.AAPLPrice = AAPLPrice;
+        this.AMZNPrice = AMZNPrice;
+        this.BTCUSDTPrice = BTCUSDTPrice;
+        this.DOGEUSDTPrice = DOGEUSDTPrice;
     }
 
     public User getUser() {
@@ -79,44 +95,68 @@ public class Portfolio {
         }
     }
 
-    public double getStock1Shares() {
-        return stock1Shares;
+    public double getAppleShares() {
+        return AAPLShares;
     }
 
-    public void setStock1Shares(double stock1Shares) {
-        if (stock1Shares >= 0) {
-            this.stock1Shares = stock1Shares;
-        }
+    public double getAmazonShares() {
+        return AMZNShares;
     }
 
-    public double getStock2Shares() {
-        return stock2Shares;
+    public double getBitcoin() {
+        return BTCUSDTShares;
     }
 
-    public void setStock2Shares(double stock2Shares) {
-        if (stock2Shares >= 0) {
-            this.stock2Shares = stock2Shares;
-        }
+    public double getDogecoin() {
+        return DOGEUSDTShares;
     }
 
-    public double getStock1Price() {
-        return stock1Price;
+    public double getApplePrice() {
+        return AAPLPrice;
     }
 
-    public void setStock1Price(double stock1Price) {
-        if (stock1Price >= 0) {
-            this.stock1Price = stock1Price;
-        }
+    public double getAmazonPrice() {
+        return AMZNPrice;
     }
 
-    public double getStock2Price() {
-        return stock2Price;
+    public double getBitcoinPrice() {
+        return BTCUSDTPrice;
     }
 
-    public void setStock2Price(double stock2Price) {
-        if (stock2Price >= 0) {
-            this.stock2Price = stock2Price;
-        }
+    public double getDogecoinPrice() {
+        return DOGEUSDTPrice;
+    }
+
+    public void setAppleShares(double AAPLShares) {
+        this.AAPLShares = AAPLShares;
+    }
+
+    public void setAmazonShares(double AMZNShares) {
+        this.AMZNShares = AMZNShares;
+    }
+
+    public void setBitcoin(double BTCUSDTShares) {
+        this.BTCUSDTShares = BTCUSDTShares;
+    }
+
+    public void setDogecoin(double DOGEUSDTShares) {
+        this.DOGEUSDTShares = DOGEUSDTShares;
+    }
+
+    public void setApplePrice(double AAPLPrice) {
+        this.AAPLPrice = AAPLPrice;
+    }
+
+    public void setAmazonPrice(double AMZNPrice) {
+        this.AMZNPrice = AMZNPrice;
+    }
+
+    public void setBitcoinPrice(double BTCUSDTPrice) {
+        this.BTCUSDTPrice = BTCUSDTPrice;
+    }
+
+    public void setDogecoinPrice(double DOGEUSDTPrice) {
+        this.DOGEUSDTPrice = DOGEUSDTPrice;
     }
 
     private double roundToTwoDecimalPlaces(double value) {
@@ -129,10 +169,14 @@ public class Portfolio {
     public String toString() {
         return "Portfolio{" +
                 "id=" + id +
-                ", portfolio value=" + portfolioValue +
-                ", stock 1 shares=" + stock1Shares +
-                ", stock 2 shares=" + stock2Shares +
-                ", stock 1 price=" + stock1Price +
-                ", stock 2 price=" + stock2Price + '}';
+                ", Apple Shares=" + AAPLShares +
+                ", Amazon Shares=" + AMZNShares +
+                ", Bitcoin=" + BTCUSDTShares +
+                ", Dogecoin=" + DOGEUSDTShares +
+                ", Apple Price=" + AAPLPrice +
+                ", Amazon Price=" + AMZNPrice +
+                ", Bitcoin Price=" + BTCUSDTPrice +
+                ", Dogecoin Price=" + DOGEUSDTPrice +
+                '}';
     }
 }
