@@ -78,6 +78,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Signed up! Welcome to MoneyFlow!", Toast.LENGTH_LONG).show();
                     // Extract the UUID from the response and send initial expenses
                     UUID userId = UUID.fromString(response.replace("\"", ""));
+                    setInitialPortfolio(userId);
                     sendInitialExpenses(userId, jsonBody);
                 },
                 error -> Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show()) {
@@ -119,6 +120,47 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 },
                 error -> Log.e("InitialExpenses", "Error adding expenses: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+    private void setInitialPortfolio(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("AAPLShares", 0.0);
+            postData.put("AMZNShares", 0.0);
+            postData.put("BTCUSDTShares", 0.0);
+            postData.put("DOGEUSDTShares", 0.0);
+            postData.put("AAPLPrice", 0.0);
+            postData.put("AMZNPrice", 0.0);
+            postData.put("BTCUSDTPrice", 0.0);
+            postData.put("DOGEUSDTPrice", 0.0);
+            postData.put("portfoliovalue", 0.0);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("InitialExpenses", "Portfolio set");
+                    // Automatically log in the user after successful signup and initial expenses setup
+                },
+                error -> Log.e("InitialExpenses", "Error: " + error.getMessage())) {
             @Override
             public byte[] getBody() {
                 return postData.toString().getBytes();

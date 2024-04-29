@@ -73,13 +73,14 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"/>
 
+
         <Spinner
             android:id="@+id/spinner_family_members"
+            android:layout_alignStart="@id/pieChart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/pieChart"/>
-
+            android:layout_below="@id/pieChart"
+            android:layout_marginTop="-316dp" />
 
         <EditText
             android:id="@+id/editText_amount"
