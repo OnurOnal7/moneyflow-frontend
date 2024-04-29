@@ -120,6 +120,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
                 response -> {
                     // Handle the response
                     Toast.makeText(activity, "Card used successfully", Toast.LENGTH_SHORT).show();
+                    MainActivity.userType = "premium";
+
                 },
                 error -> {
                     // Handle the error
