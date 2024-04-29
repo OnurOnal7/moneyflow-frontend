@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VolleyMultipartRequest extends Request<NetworkResponse> {
+public abstract class VolleyMultipartRequest extends Request<NetworkResponse> {
 
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";
@@ -111,6 +111,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         }
         dataOutputStream.writeBytes(lineEnd);
     }
+
+    protected abstract Map<String, DataPart> getByteData() throws AuthFailureError;
 
     public static class DataPart {
         private String fileName;
