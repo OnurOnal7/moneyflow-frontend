@@ -121,6 +121,7 @@ public class GoalListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Handle successful deletion
+                        itemsadapter.clear();
                         itemsadapter.notifyDataSetChanged();
                         Toast.makeText(GoalListActivity.this, "All Goals Removed!", Toast.LENGTH_LONG).show();
                     }
@@ -146,7 +147,6 @@ public class GoalListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Handle successful deletion
-                        itemsadapter.clear();
                         itemsadapter.notifyDataSetChanged();
                         Toast.makeText(GoalListActivity.this, "Goal Removed!", Toast.LENGTH_LONG).show();
                     }
