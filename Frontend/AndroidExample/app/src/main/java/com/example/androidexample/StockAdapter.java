@@ -18,7 +18,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,6 +39,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     public StockAdapter(List<StockData> stocksList, Context context) {
         this.stocksList = stocksList;
         this.context = context;
+    }
+    private static final Map<String, String> symbolMap;
+    static {
+        symbolMap = new HashMap<>();
+        symbolMap.put("binance:btcusdt", "bitcoin");
+        symbolMap.put("binance:dogeusdt", "dogecoin");
+        symbolMap.put("aapl", "apple");
+        symbolMap.put("amzn", "amazon");
     }
 
     @NonNull
@@ -84,9 +94,9 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     private void sendDataToBackend(String stockSymbol, double shares, double price) {
         OkHttpClient client = new OkHttpClient();
 
-        String formattedSymbol = formatSymbol(stockSymbol);
-        String sharesKey = isCrypto(stockSymbol) ? formattedSymbol : formattedSymbol + "Shares";
-        String priceKey = formattedSymbol + "Price";
+        String backendSymbol = getBackendSymbol(stockSymbol);
+        String sharesKey = backendSymbol + (isCrypto(stockSymbol) ? "" : "Shares");
+        String priceKey = backendSymbol + "Price";
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -101,9 +111,10 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         RequestBody body = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
 
         Request request = new Request.Builder()
-                .url("http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID + "/buy")
+                .url("http://coms-309-056.class.las.iastate.edu:8080/portfolio/"+ LoginActivity.UUID.replace("\"", "") +"/buy")
                 .put(body)
                 .build();
+        Log.d("StockAdapter", "Sending request to URL: " + request.url());
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -114,12 +125,15 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string(); // Read the response body once
+
+                Log.d("StockAdapter", "Response body: " + responseBody);
+
                 if (response.isSuccessful()) {
-                    Log.d("StockAdapter", "Network call successful, response: " + response.body().string());
                     performPostSuccessAction("Purchase successful");
                 } else {
-                    Log.e("StockAdapter", "Network call unsuccessful with response code: " + response.code());
-                    performPostFailureAction("Server error: " + response.code());
+                    Log.e("StockAdapter", "Network call unsuccessful with response code: " + response.code() + " and body: " + responseBody);
+                    performPostFailureAction("Server error: " + response.code() + " - " + responseBody);
                 }
             }
         });
@@ -129,8 +143,9 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         return stockSymbol.contains(":");
     }
 
-    private String formatSymbol(String stockSymbol) {
-        return stockSymbol.replace(":", "").toLowerCase();
+    private String getBackendSymbol(String stockSymbol) {
+        return symbolMap.getOrDefault(stockSymbol.toLowerCase(), stockSymbol.toLowerCase());
+
     }
 
     private void performPostSuccessAction(String message) {
