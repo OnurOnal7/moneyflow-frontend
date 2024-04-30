@@ -80,6 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                     UUID userId = UUID.fromString(response.replace("\"", ""));
                     setInitialPortfolio(userId);
                     sendInitialExpenses(userId, jsonBody);
+                    sendInitialBudget(userId);
                 },
                 error -> Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show()) {
             @Override
@@ -177,6 +178,39 @@ public class SignupActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         Volley.newRequestQueue(this).add(stringRequest);
     }
+
+    private void sendInitialBudget(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("personal", 1000.0); // Default budget for personal expenses
+            postData.put("work", 1000.0);     // Default budget for work-related expenses
+            postData.put("home", 1000.0);     // Default budget for home expenses
+            postData.put("other", 1000.0);    // Default budget for other expenses
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.d("InitialBudget", "Budget set successfully"),
+                error -> Log.e("InitialBudget", "Error setting initial budget: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
 
     private void loginUser(String email, String password) {
         String loginUrl = "http://coms-309-056.class.las.iastate.edu:8080/login" + "?email=" + email + "&password=" + password;

@@ -2,6 +2,7 @@ package com.example.androidexample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class FamilyPlanActivity extends AppCompatActivity {
 
@@ -53,10 +55,87 @@ public class FamilyPlanActivity extends AppCompatActivity {
         });
     }
 
+    private void setInitialPortfolio(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("AAPLShares", 0.0);
+            postData.put("AMZNShares", 0.0);
+            postData.put("BTCUSDTShares", 0.0);
+            postData.put("DOGEUSDTShares", 0.0);
+            postData.put("AAPLPrice", 0.0);
+            postData.put("AMZNPrice", 0.0);
+            postData.put("BTCUSDTPrice", 0.0);
+            postData.put("DOGEUSDTPrice", 0.0);
+            postData.put("portfoliovalue", 0.0);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("InitialExpenses", "Portfolio set");
+                    // Automatically log in the user after successful signup and initial expenses setup
+                },
+                error -> Log.e("InitialExpenses", "Error: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    private void sendInitialBudget(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("personal", 1000.0); // Default budget for personal expenses
+            postData.put("work", 1000.0);     // Default budget for work-related expenses
+            postData.put("home", 1000.0);     // Default budget for home expenses
+            postData.put("other", 1000.0);    // Default budget for other expenses
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.d("InitialBudget", "Budget set successfully"),
+                error -> Log.e("InitialBudget", "Error setting initial budget: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
     private void sendPostRequest(JSONObject jsonBody) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, fam_URL,
                 response -> {
                     famID = response.replace("\"", "");  // Remove any double quotes from the response
+                    UUID userId = UUID.fromString(famID);
+                    setInitialPortfolio(userId);
+                    sendInitialBudget(userId);
                     // Redirect to AddFamilyExpensesActivity
                     Intent intent = new Intent(FamilyPlanActivity.this, AddFamilyExpensesActivity.class);
                     startActivity(intent);
