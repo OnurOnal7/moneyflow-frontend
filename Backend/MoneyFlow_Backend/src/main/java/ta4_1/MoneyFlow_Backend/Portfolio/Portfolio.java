@@ -128,35 +128,51 @@ public class Portfolio {
     }
 
     public void setAppleShares(double AAPLShares) {
-        this.AAPLShares = AAPLShares;
+        if (AAPLShares >= 0) {
+            this.AAPLShares = AAPLShares;
+        }
     }
 
     public void setAmazonShares(double AMZNShares) {
-        this.AMZNShares = AMZNShares;
+        if (AMZNShares >= 0) {
+            this.AMZNShares = AMZNShares;
+        }
     }
 
     public void setBitcoin(double BTCUSDTShares) {
-        this.BTCUSDTShares = BTCUSDTShares;
+        if (BTCUSDTShares >= 0) {
+            this.BTCUSDTShares = BTCUSDTShares;
+        }
     }
 
     public void setDogecoin(double DOGEUSDTShares) {
-        this.DOGEUSDTShares = DOGEUSDTShares;
+        if (DOGEUSDTShares >= 0) {
+            this.DOGEUSDTShares = DOGEUSDTShares;
+        }
     }
 
     public void setApplePrice(double AAPLPrice) {
-        this.AAPLPrice = AAPLPrice;
+        if (AAPLPrice >= 0) {
+            this.AAPLPrice = AAPLPrice;
+        }
     }
 
     public void setAmazonPrice(double AMZNPrice) {
-        this.AMZNPrice = AMZNPrice;
+        if (AMZNPrice >= 0) {
+            this.AMZNPrice = AMZNPrice;
+        }
     }
 
     public void setBitcoinPrice(double BTCUSDTPrice) {
-        this.BTCUSDTPrice = BTCUSDTPrice;
+        if (BTCUSDTPrice >= 0) {
+            this.BTCUSDTPrice = BTCUSDTPrice;
+        }
     }
 
     public void setDogecoinPrice(double DOGEUSDTPrice) {
-        this.DOGEUSDTPrice = DOGEUSDTPrice;
+        if (DOGEUSDTPrice >= 0) {
+            this.DOGEUSDTPrice = DOGEUSDTPrice;
+        }
     }
 
     private double roundToTwoDecimalPlaces(double value) {

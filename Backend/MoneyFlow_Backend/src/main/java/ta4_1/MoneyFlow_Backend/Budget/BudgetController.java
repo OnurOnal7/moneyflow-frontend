@@ -99,11 +99,7 @@ public class BudgetController {
     @GetMapping("/check/{userId}")
     public ResponseEntity<?> checkBudgetOverages(@PathVariable UUID userId) {
         Map<String, Double> overages = budgetService.checkBudgetLimits(userId);
-        if (overages.isEmpty()) {
-            return ResponseEntity.ok("No budget limits exceeded.");
-        } else {
-            return ResponseEntity.ok(overages);
-        }
+        return ResponseEntity.ok(overages);
     }
 
 }

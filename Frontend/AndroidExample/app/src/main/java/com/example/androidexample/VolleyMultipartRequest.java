@@ -1,5 +1,7 @@
 package com.example.androidexample;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -53,25 +55,31 @@ public abstract class VolleyMultipartRequest extends Request<NetworkResponse> {
         DataOutputStream dos = new DataOutputStream(bos);
 
         try {
-            // Populate text payload
+            // Log each part being built
             for (Map.Entry<String, String> entry : mParams.entrySet()) {
+                Log.d("MultipartRequest", "Adding text field: " + entry.getKey());
                 buildTextPart(dos, entry.getKey(), entry.getValue());
             }
 
-            // Populate data byte payload
-            for (Map.Entry<String, DataPart> entry : mDataPartParams.entrySet()) {
+            // Ensure that getByteData() is properly integrated
+            Map<String, DataPart> dataParts = getByteData();
+            for (Map.Entry<String, DataPart> entry : dataParts.entrySet()) {
+                Log.d("MultipartRequest", "Adding file field: " + entry.getKey());
                 buildDataPart(dos, entry.getKey(), entry.getValue());
             }
 
-            // Close multipart form data after data and text parts
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-            return bos.toByteArray();
+            // Log the request body for debugging
+            byte[] bytes = bos.toByteArray();
+            Log.d("MultipartRequest", "Complete Request Body: " + new String(bytes));
+            return bytes;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     @Override
     protected Response<NetworkResponse> parseNetworkResponse(NetworkResponse response) {
@@ -91,25 +99,19 @@ public abstract class VolleyMultipartRequest extends Request<NetworkResponse> {
         dataOutputStream.writeBytes(parameterValue + lineEnd);
     }
 
-    private void buildDataPart(DataOutputStream dataOutputStream, String parameterName, DataPart dataPart) throws IOException {
-        dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
-        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + parameterName + "\"; filename=\"" + dataPart.getFileName() + "\"" + lineEnd);
-        if (dataPart.getType() != null && !dataPart.getType().trim().isEmpty()) {
-            dataOutputStream.writeBytes("Content-Type: " + dataPart.getType() + lineEnd);
+    private void buildDataPart(DataOutputStream dos, String parameterName, DataPart dataPart) throws IOException {
+        dos.writeBytes(twoHyphens + boundary + lineEnd);
+        dos.writeBytes("Content-Disposition: form-data; name=\"" + parameterName + "\"; filename=\"" + dataPart.getFileName() + "\"" + lineEnd);
+        dos.writeBytes("Content-Type: " + dataPart.getType() + lineEnd);
+        dos.writeBytes(lineEnd);
+
+        byte[] fileData = dataPart.getContent();
+        if (fileData != null && fileData.length > 0) {
+            dos.write(fileData);
+            dos.writeBytes(lineEnd);
+        } else {
+            Log.d("MultipartRequest", "No data for " + parameterName);
         }
-        dataOutputStream.writeBytes(lineEnd);
-
-        ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dataPart.getContent());
-        int bytesAvailable = fileInputStream.available();
-
-        int bufferSize = Math.min(bytesAvailable, 1024 * 1024);
-        byte[] buffer = new byte[bufferSize];
-
-        int bytesRead;
-        while ((bytesRead = fileInputStream.read(buffer, 0, bufferSize)) != -1) {
-            dataOutputStream.write(buffer, 0, bytesRead);
-        }
-        dataOutputStream.writeBytes(lineEnd);
     }
 
     protected abstract Map<String, DataPart> getByteData() throws AuthFailureError;
@@ -125,7 +127,8 @@ public abstract class VolleyMultipartRequest extends Request<NetworkResponse> {
         }
 
         public DataPart(String fileName, byte[] content, String type) {
-            this(fileName, content);
+            this.fileName = fileName;
+            this.content = content;
             this.type = type;
         }
 
@@ -140,5 +143,7 @@ public abstract class VolleyMultipartRequest extends Request<NetworkResponse> {
         public String getType() {
             return type;
         }
+
+
     }
 }
