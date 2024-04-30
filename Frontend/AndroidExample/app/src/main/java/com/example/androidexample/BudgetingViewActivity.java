@@ -1,6 +1,9 @@
 package com.example.androidexample;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +25,9 @@ public class BudgetingViewActivity extends AppCompatActivity {
     private double Personal, Work, Home, Other;
     private TextView Pin, Win, Oin, Hin;
 
+
+    private Button backhome;
+
     private ProgressBar pProgress, wProgress, hProgress, oProgress;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,8 @@ public class BudgetingViewActivity extends AppCompatActivity {
         wProgress = findViewById(R.id.workprog);
         hProgress = findViewById(R.id.homeprog);
         oProgress = findViewById(R.id.otherprog);
+
+        backhome = (Button) findViewById(R.id.bkhome);
 
         pProgress.setMax((int)PBud);
         wProgress.setMax((int)WBud);
@@ -90,7 +98,12 @@ public class BudgetingViewActivity extends AppCompatActivity {
         }
 
 
-
+        backhome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BudgetingViewActivity.this, BudgetingActivity.class));
+            }
+        });
 
 
 
@@ -107,34 +120,16 @@ public class BudgetingViewActivity extends AppCompatActivity {
                     P = response.getDouble("Personal");
                     Pin.setText(Double.toString(P));
                 }
-                else
-                {
-                    P = 0.0;
-                    Pin.setText(Double.toString(P));
-                }
                 if (response.has("Work")) {
                     W = response.getDouble("Work");
-                    Win.setText(Double.toString(W));
-                }
-                else
-                {
-                    W = 0.0;
                     Win.setText(Double.toString(W));
                 }
                 if (response.has("Home")) {
                     H = response.getDouble("Home");
                     Hin.setText(Double.toString(H));
                 }
-                else {
-                    H = 0.0;
-                    Hin.setText(Double.toString(H));
-                }
                 if (response.has("Other")) {
                     O = response.getDouble("Other");
-                    Oin.setText(Double.toString(O));
-                }
-                else{
-                    O = 0.0;
                     Oin.setText(Double.toString(O));
                 }
 

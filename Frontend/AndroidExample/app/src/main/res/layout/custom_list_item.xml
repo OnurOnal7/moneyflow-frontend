@@ -16,9 +16,11 @@
     <!-- Progress bar -->
     <ProgressBar
         android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
         android:progress="0"
-        style = "@android:style/Widget.ProgressBar.Horizontal"/>
+        android:progressDrawable="@android:drawable/progress_horizontal" />
 
 </LinearLayout>

@@ -177,10 +177,10 @@ public class FirstPageActivity extends AppCompatActivity {
         String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
-            postData.put("personal", 1000.0); // Default budget for personal expenses
-            postData.put("work", 1000.0);     // Default budget for work-related expenses
-            postData.put("home", 1000.0);     // Default budget for home expenses
-            postData.put("other", 1000.0);    // Default budget for other expenses
+            postData.put("personalLimit", 1000.0); // Default budget for personal expenses
+            postData.put("workLimit", 1000.0);     // Default budget for work-related expenses
+            postData.put("homeLimit", 1000.0);     // Default budget for home expenses
+            postData.put("otherLimit", 1000.0);    // Default budget for other expenses
         } catch (JSONException e) {
             e.printStackTrace();
         }
