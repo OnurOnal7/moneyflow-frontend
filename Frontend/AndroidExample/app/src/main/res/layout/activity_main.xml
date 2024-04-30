@@ -82,6 +82,15 @@
             android:layout_below="@id/pieChart"
             android:layout_marginTop="-316dp" />
 
+        <Spinner
+            android:id="@+id/spinner_financial_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner_family_members"
+            android:layout_alignStart="@id/spinner_family_members"
+            android:layout_marginTop="320dp" />
+
+
         <EditText
             android:id="@+id/editText_amount"
             android:layout_width="wrap_content"
