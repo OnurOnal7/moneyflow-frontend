@@ -16,6 +16,15 @@ public class Goal {
     @Column(name = "goal_string")
     private String goalString;
 
+    @Column(name = "amount")
+    private double amount;  // The financial target of the goal
+
+    @Column(name = "time_frame")
+    private int timeFrame;  // The timeframe in months
+
+    @Column(name = "is_completed")
+    private boolean isCompleted;  // Status of the goal
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,6 +47,30 @@ public class Goal {
 
     public void setGoalString(String goalString) {
         this.goalString = goalString;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public int getTimeFrame() {
+        return timeFrame;
+    }
+
+    public void setTimeFrame(int timeFrame) {
+        this.timeFrame = timeFrame;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public User getUser() {

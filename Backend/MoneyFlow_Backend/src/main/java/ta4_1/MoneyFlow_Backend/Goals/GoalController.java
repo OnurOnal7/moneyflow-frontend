@@ -26,6 +26,7 @@ public class GoalController {
     public ResponseEntity<Goal> createGoal(@PathVariable UUID userId, @RequestBody Goal goal) {
         return userRepository.findById(userId).map(user -> {
             goal.setUser(user);
+            goal.setCompleted(false);  // Initially, the goal is not completed
             return ResponseEntity.ok(goalRepository.save(goal));
         }).orElse(ResponseEntity.notFound().build());
     }
@@ -40,6 +41,9 @@ public class GoalController {
     public ResponseEntity<Goal> updateGoal(@PathVariable UUID goalId, @RequestBody Goal goalDetails) {
         return goalRepository.findById(goalId).map(goal -> {
             goal.setGoalString(goalDetails.getGoalString());
+            goal.setAmount(goalDetails.getAmount());
+            goal.setTimeFrame(goalDetails.getTimeFrame());
+            goal.setCompleted(goalDetails.isCompleted());
             return ResponseEntity.ok(goalRepository.save(goal));
         }).orElse(ResponseEntity.notFound().build());
     }
