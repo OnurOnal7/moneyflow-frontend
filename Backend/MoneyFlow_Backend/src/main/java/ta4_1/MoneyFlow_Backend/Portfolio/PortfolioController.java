@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
+import javax.sound.sampled.Port;
 import java.util.*;
 
 /**
@@ -97,11 +98,7 @@ public class PortfolioController {
                 .map(user -> {
                     Portfolio portfolio = user.getPortfolio();
                     if (portfolio != null) {
-                        Map<String, Double> values = new HashMap<>();
-                        values.put("Apple", portfolio.getValueOfAppleStock());
-                        values.put("Amazon", portfolio.getValueOfAmazonStock());
-                        values.put("Bitcoin", portfolio.getValueOfBitcoin());
-                        values.put("Dogecoin", portfolio.getValueOfDogecoin());
+                        Map<String, Double> values = portfolioService.mapPortfolioValues(portfolio);
                         return ResponseEntity.ok(values);
                     } else {
                         return ResponseEntity.notFound().build();
