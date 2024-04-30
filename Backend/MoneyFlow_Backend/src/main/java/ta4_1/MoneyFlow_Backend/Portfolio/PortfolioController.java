@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import javax.sound.sampled.Port;
+import java.util.*;
 
 /**
  * Controller for managing portfolios.
@@ -86,6 +84,27 @@ public class PortfolioController {
         user.setPortfolio(savedPortfolio);
         userRepository.save(user);
         return ResponseEntity.ok(Map.of("portfolioId", portfolio.getId()));
+    }
+
+    /**
+     * Get the detailed portfolio values of a user.
+     *
+     * @param id The ID of the user.
+     * @return ResponseEntity containing the portfolio values.
+     */
+    @GetMapping("/{id}/detailedValues")
+    public ResponseEntity<?> getDetailedPortfolioValues(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    Portfolio portfolio = user.getPortfolio();
+                    if (portfolio != null) {
+                        Map<String, Double> values = portfolioService.mapPortfolioValues(portfolio);
+                        return ResponseEntity.ok(values);
+                    } else {
+                        return ResponseEntity.notFound().build();
+                    }
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
