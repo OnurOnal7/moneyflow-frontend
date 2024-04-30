@@ -78,6 +78,8 @@ public class FirstPageActivity extends AppCompatActivity {
                         GetUserTypeRequest();
                         // Send initial expenses after creating the guest user
                         sendInitialExpenses(UUID.fromString(response.replace("\"", "")));
+                        setInitialPortfolio(UUID.fromString(response.replace("\"", "")));
+                        sendInitialBudget(UUID.fromString(response.replace("\"", "")));
                         // Redirect to MainActivity
                         Intent intent = new Intent(FirstPageActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -112,6 +114,80 @@ public class FirstPageActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> Log.d("InitialExpenses", "Expenses added successfully"),
                 error -> Log.e("InitialExpenses", "Error adding expenses: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    private void setInitialPortfolio(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+
+            postData.put("AAPLShares", 0.0);
+            postData.put("AMZNShares", 0.0);
+            postData.put("BTCUSDTShares", 0.0);
+            postData.put("DOGEUSDTShares", 0.0);
+            postData.put("AAPLPrice", 0.0);
+            postData.put("AMZNPrice", 0.0);
+            postData.put("BTCUSDTPrice", 0.0);
+            postData.put("DOGEUSDTPrice", 0.0);
+            postData.put("portfoliovalue", 0.0);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    Log.d("InitialExpenses", "Portfolio set");
+                    // Automatically log in the user after successful signup and initial expenses setup
+                },
+                error -> Log.e("InitialExpenses", "Error: " + error.getMessage())) {
+            @Override
+            public byte[] getBody() {
+                return postData.toString().getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    private void sendInitialBudget(UUID userId) {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("personal", 1000.0); // Default budget for personal expenses
+            postData.put("work", 1000.0);     // Default budget for work-related expenses
+            postData.put("home", 1000.0);     // Default budget for home expenses
+            postData.put("other", 1000.0);    // Default budget for other expenses
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> Log.d("InitialBudget", "Budget set successfully"),
+                error -> Log.e("InitialBudget", "Error setting initial budget: " + error.getMessage())) {
             @Override
             public byte[] getBody() {
                 return postData.toString().getBytes();

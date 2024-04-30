@@ -181,6 +181,22 @@ public class Portfolio {
         return bd.doubleValue();
     }
 
+    public double getValueOfAppleStock() {
+        return roundToTwoDecimalPlaces(AAPLShares * AAPLPrice);
+    }
+
+    public double getValueOfAmazonStock() {
+        return roundToTwoDecimalPlaces(AMZNShares * AMZNPrice);
+    }
+
+    public double getValueOfBitcoin() {
+        return roundToTwoDecimalPlaces(BTCUSDTShares * BTCUSDTPrice);
+    }
+
+    public double getValueOfDogecoin() {
+        return roundToTwoDecimalPlaces(DOGEUSDTShares * DOGEUSDTPrice);
+    }
+
     @Override
     public String toString() {
         return "Portfolio{" +
