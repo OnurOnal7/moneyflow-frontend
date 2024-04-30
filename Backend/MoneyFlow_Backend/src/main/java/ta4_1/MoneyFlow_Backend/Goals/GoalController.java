@@ -2,6 +2,7 @@ package ta4_1.MoneyFlow_Backend.Goals;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ta4_1.MoneyFlow_Backend.Users.UserRepository;
@@ -37,16 +38,33 @@ public class GoalController {
         return ResponseEntity.ok(goals);
     }
 
-    @PutMapping("/{goalId}")
-    public ResponseEntity<Goal> updateGoal(@PathVariable UUID goalId, @RequestBody Goal goalDetails) {
-        return goalRepository.findById(goalId).map(goal -> {
-            goal.setGoalString(goalDetails.getGoalString());
-            goal.setAmount(goalDetails.getAmount());
-            goal.setTimeFrame(goalDetails.getTimeFrame());
-            goal.setCompleted(goalDetails.isCompleted());
-            return ResponseEntity.ok(goalRepository.save(goal));
+    @PutMapping("/user/{userId}/goal/{goalId}/progress/{amount}/{timeFrame}")
+    public ResponseEntity<?> updateGoalProgress(@PathVariable UUID userId, @PathVariable UUID goalId, @PathVariable double amount, @PathVariable int timeFrame) {
+        return userRepository.findById(userId).map(user -> {
+            return goalRepository.findById(goalId).map(goal -> {
+                if (!goal.getUser().getId().equals(user.getId())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Goal does not belong to this user.");
+                }
+
+                double newRemainingAmount = Math.max(0, goal.getAmount() - amount);
+                int newRemainingTimeFrame = Math.max(0, goal.getTimeFrame() - timeFrame);
+
+                goal.setAmount(newRemainingAmount);
+                goal.setTimeFrame(newRemainingTimeFrame);
+
+                goal.updateGoalString();
+
+                if (newRemainingAmount == 0 || newRemainingTimeFrame == 0) {
+                    goal.setCompleted(true);
+                }
+
+                goalRepository.save(goal);
+                return ResponseEntity.ok(goal);
+            }).orElse(ResponseEntity.notFound().build());
         }).orElse(ResponseEntity.notFound().build());
     }
+
+
 
     @DeleteMapping("/{goalId}")
     public ResponseEntity<Void> deleteGoal(@PathVariable UUID goalId) {

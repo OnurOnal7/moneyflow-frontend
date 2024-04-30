@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ta4_1.MoneyFlow_Backend.Users.User;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "goals")
@@ -71,6 +73,31 @@ public class Goal {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public void updateGoalString() {
+        this.goalString = replaceNumericalValues(this.goalString, this.amount, this.timeFrame);
+    }
+
+    private String replaceNumericalValues(String originalString, double amount, int timeFrame) {
+        Pattern pattern = Pattern.compile("(\\d+\\.?\\d*)"); // Matches integers and decimals
+        Matcher matcher = pattern.matcher(originalString);
+
+        StringBuffer newString = new StringBuffer();
+
+        // Replace the first occurrence with the amount
+        if (matcher.find()) {
+            matcher.appendReplacement(newString, String.format("%.2f", amount));
+        }
+
+        // Replace the second occurrence with the timeframe
+        if (matcher.find()) {
+            matcher.appendReplacement(newString, Integer.toString(timeFrame));
+        }
+
+        matcher.appendTail(newString); // Append the rest of the original string
+
+        return newString.toString();
     }
 
     public User getUser() {
