@@ -31,7 +31,7 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
     private String category;
     private String prompt_response;
 
-    private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
+        private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
 
     private String amt, months;
 
@@ -67,6 +67,9 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
         e_amt = findViewById(R.id.editAmt);
         e_Mon = findViewById(R.id.editMon);
 
+
+
+
         redirect = (Button) findViewById(R.id.set_goal);
 
         redirect.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +102,9 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
 
                 try {
                     jsonObject.put("goalString", prompt_response);
+                    jsonObject.put("amount", Double.parseDouble(amt));
+                    jsonObject.put("months", Double.parseDouble(months));
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -114,6 +120,7 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
     }
 
     private void sendPostRequest(JSONObject json) {
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, json,
                 response -> {
                     Toast.makeText(Goal_Add_Activity2.this, "Goal Created!", Toast.LENGTH_LONG).show();

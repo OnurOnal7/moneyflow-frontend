@@ -27,6 +27,8 @@ public class BudgetingAddActivity extends AppCompatActivity {
 
     private EditText Pin, Win, Oin, Hin;
 
+    private double P, W, O, H;
+
     private String SelectedCat;
 
     private final String URL = "http://coms-309-056.class.las.iastate.edu:8080/budget/"+ LoginActivity.UUID.replace("\"", "");
@@ -38,11 +40,17 @@ public class BudgetingAddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgeting_add);
+        GetRequest();
         CreateBudget = (Button) findViewById(R.id.budg_create_btn);
         Hin = (EditText) findViewById(R.id.Home_Lim);
         Pin = (EditText)findViewById(R.id.personal_lim);
         Win = (EditText) findViewById(R.id.Work_Lim);
         Oin = (EditText) findViewById(R.id.Other_Lim);
+
+
+
+
+
 
 
         CreateBudget.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +93,34 @@ public class BudgetingAddActivity extends AppCompatActivity {
         }
 
     }
+
+    private void GetRequest() {
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + LoginActivity.UUID.replace("\"", "");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            try {
+                P = response.getDouble("personalLimit");
+                W = response.getDouble("workLimit");
+                H = response.getDouble("homeLimit");
+                O = response.getDouble("otherLimit");
+
+                // Update EditText fields after fetching values
+                Pin.setText(Double.toString(P));
+                Hin.setText(Double.toString(H));
+                Win.setText(Double.toString(W));
+                Oin.setText(Double.toString(O));
+            } catch (JSONException e) {
+                e.printStackTrace(); // Instead of throwing a runtime exception, just print the error
+            }
+        }, error -> {
+            Toast.makeText(BudgetingAddActivity.this, "Failed: " + error.toString(), Toast.LENGTH_LONG).show();
+            error.printStackTrace(); // Print error details for debugging
+        });
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+
 
 
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BudgetingActivity extends AppCompatActivity{
 
-    private Button cr_btn, hm_btn;
+    private Button cr_btn, hm_btn, v_btn;
 
 
     @Override
@@ -20,6 +20,7 @@ public class BudgetingActivity extends AppCompatActivity{
 
         cr_btn = findViewById(R.id.budg_create_btn);
         hm_btn = findViewById(R.id.budget_hm);
+        v_btn = findViewById(R.id.budg_view_btn);
 
 
         cr_btn.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +34,12 @@ public class BudgetingActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(BudgetingActivity.this, MainActivity.class));
+            }
+        });
+        v_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BudgetingActivity.this, BudgetingViewActivity.class));
             }
         });
 
