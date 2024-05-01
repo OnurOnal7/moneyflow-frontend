@@ -55,7 +55,7 @@ public class BudgetingViewActivity extends AppCompatActivity {
     }
 
     private void GetRequest() {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/check/" + LoginActivity.UUID.replace("\"", "");
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/check/" + MainActivity.selectedMemberId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
@@ -86,7 +86,7 @@ public class BudgetingViewActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
     private void GetExpensesRequest() {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + LoginActivity.UUID.replace("\"", "");
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + MainActivity.selectedMemberId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
@@ -119,7 +119,7 @@ public class BudgetingViewActivity extends AppCompatActivity {
     }
 
     private void GetBudgetsRequest() {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + LoginActivity.UUID.replace("\"", "");
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + MainActivity.selectedMemberId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
