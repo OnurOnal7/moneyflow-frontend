@@ -155,7 +155,7 @@ public class PortfolioControllerTest {
         String updatedPricesJson = mapper.writeValueAsString(updatedPrices);
 
         // Act
-        mockMvc.perform(patch("/portfolio/{id}", userId)
+        mockMvc.perform(put("/portfolio/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updatedPricesJson))
                 .andExpect(status().isOk())

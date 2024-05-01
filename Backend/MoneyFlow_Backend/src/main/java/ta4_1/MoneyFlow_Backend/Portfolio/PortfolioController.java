@@ -173,7 +173,7 @@ public class PortfolioController {
      * @param updatedPrices A map of the updated prices.
      * @return ResponseEntity with the updated portfolio.
      */
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Portfolio> updateStockPrices(@PathVariable UUID id, @RequestBody Map<String, Double> updatedPrices) {
         return userRepository.findById(id)
                 .map(user -> {
