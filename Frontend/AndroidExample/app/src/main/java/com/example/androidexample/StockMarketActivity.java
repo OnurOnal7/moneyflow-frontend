@@ -139,6 +139,7 @@ public class StockMarketActivity extends AppCompatActivity {
         try {
             for (Map.Entry<String, StockData> entry : stockDataBuffer.entrySet()) {
                 stockPrices.put(entry.getKey() + "Price", entry.getValue().getPrice());
+            }
             Log.d("StockMarketActivity", "JSON to send: " + stockPrices.toString());  // Log the full JSON payload
         } catch (JSONException e) {
             Log.e("StockMarketActivity", "Failed to build JSON for stock updates", e);
