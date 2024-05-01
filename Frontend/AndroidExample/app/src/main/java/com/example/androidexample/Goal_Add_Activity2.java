@@ -102,20 +102,15 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
                 try {
                     jsonObject.put("goalString", prompt_response);
                     jsonObject.put("amount", Double.parseDouble(amt));
+                    jsonObject.put("Totalamount", Double.parseDouble(amt));
                     jsonObject.put("timeFrame", Integer.parseInt(days));
                     jsonObject.put("isCompleted", TaskComplete);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-
                 sendPostRequest(jsonObject);
-
             }
         });
-
-
-
-
     }
 
     private void sendPostRequest(JSONObject json) {
