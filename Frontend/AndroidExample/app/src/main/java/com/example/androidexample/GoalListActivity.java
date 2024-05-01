@@ -58,7 +58,7 @@ public class GoalListActivity extends AppCompatActivity {
         rtn_home = findViewById(R.id.return_home);
         clr_a = findViewById(R.id.clr_all);
 
-        itemsAdapter = new CustomArrayAdapter(this, items, goalID, goalStrings, finalamts, amts, MainActivity.selectedMemberId);
+        itemsAdapter = new CustomArrayAdapter(this, items, goalID, goalStrings, finalamts, amts, LoginActivity.UUID.replace("\"", ""));
         recyclerView.setAdapter(itemsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
