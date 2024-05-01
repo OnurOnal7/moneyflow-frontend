@@ -21,6 +21,9 @@ public class Goal {
     @Column(name = "amount")
     private double amount;  // The financial target of the goal
 
+    @Column(name = "total_amount")
+    private double totalAmount;  // The original financial target of the goal
+
     @Column(name = "time_frame")
     private int timeFrame;  // The timeframe in months
 
@@ -73,6 +76,15 @@ public class Goal {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    // Standard getters and setters
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public void updateGoalString() {
