@@ -27,6 +27,7 @@ public class GoalController {
     public ResponseEntity<Goal> createGoal(@PathVariable UUID userId, @RequestBody Goal goal) {
         return userRepository.findById(userId).map(user -> {
             goal.setUser(user);
+            goal.setTotalAmount(goal.getAmount());
             goal.setCompleted(false);  // Initially, the goal is not completed
             return ResponseEntity.ok(goalRepository.save(goal));
         }).orElse(ResponseEntity.notFound().build());
