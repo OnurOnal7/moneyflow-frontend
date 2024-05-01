@@ -36,11 +36,11 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     private List<StockData> stocksList;
     private Context context;
 
-    public StockAdapter(List<StockData> stocksList, Context context) {
+    public StockAdapter(List <StockData> stocksList, Context context) {
         this.stocksList = stocksList;
         this.context = context;
     }
-    private static final Map<String, String> symbolMap;
+    static final Map<String, String> symbolMap;
     static {
         symbolMap = new HashMap<>();
         symbolMap.put("binance:btcusdt", "bitcoin");

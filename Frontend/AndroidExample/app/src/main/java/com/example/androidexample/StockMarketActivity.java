@@ -1,9 +1,12 @@
 package com.example.androidexample;
 
+import static com.example.androidexample.StockAdapter.symbolMap;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,9 +48,9 @@ public class StockMarketActivity extends AppCompatActivity {
             for (StockData stock : stockDataBuffer.values()) {
                 updateStockData(stock, false);
             }
+            sendStockUpdatesToBackend(); // Send the updates to backend
             stockDataBuffer.clear(); // Clear the buffer after processing
             stockAdapter.notifyDataSetChanged(); // Notify the adapter to refresh the view
-            sendStockUpdatesToBackend(); // Send the updates to backend
             handler.postDelayed(this, 5000); // Schedule next update after 5 seconds
         }
     };
@@ -133,43 +136,68 @@ public class StockMarketActivity extends AppCompatActivity {
 
     private void sendStockUpdatesToBackend() {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID.replace("\"", "");
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID.replace("\"", ""); // Ensure this URL is correct.
 
         JSONObject stockPrices = new JSONObject();
         try {
+            Log.d("StockMarketActivity", "Preparing to send updated stock prices:");
             for (Map.Entry<String, StockData> entry : stockDataBuffer.entrySet()) {
-                stockPrices.put(entry.getKey() + "Price", entry.getValue().getPrice());
+                String backendSymbol = getBackendSymbol(entry.getKey());
+                double price = entry.getValue().getPrice();
+                stockPrices.put(backendSymbol + "Price", price);
+                Log.d("StockMarketActivity", "Adding to JSON: " + backendSymbol + "Price: " + price);
             }
-            Log.d("StockMarketActivity", "JSON to send: " + stockPrices.toString());  // Log the full JSON payload
+            Log.d("StockMarketActivity", "JSON to send: " + stockPrices.toString());
         } catch (JSONException e) {
             Log.e("StockMarketActivity", "Failed to build JSON for stock updates", e);
             return;
         }
 
         RequestBody body = RequestBody.create(stockPrices.toString(), MediaType.parse("application/json; charset=utf-8"));
-        Request request = new Request.Builder()
-                .url(url)
-                .patch(body)
-                .build();
-
-        Log.d("StockMarketActivity", "Sending request to URL: " + request.url());  // Log the URL
+        Request request = new Request.Builder().url(url).patch(body).build();
+        Log.d("StockMarketActivity", "Sending request to URL: " + request.url());
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("StockMarketActivity", "Failed to send updates to backend", e);
+                Log.e("StockMarketActivity", "Network call failed", e);
+                performPostFailureAction("Network error: " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    Log.e("StockMarketActivity", "Backend update failed: " + response);
+                    Log.e("StockMarketActivity", "Network call unsuccessful with response code: " + response.code() + " and body: " + response.body().string());
+                    performPostFailureAction("Server error: " + response.code() + " - " + response.body().string());
                 } else {
                     Log.d("StockMarketActivity", "Successfully updated stock prices: " + response.body().string());
+                    performPostSuccessAction("Update successful");
                 }
             }
         });
     }
+
+    private boolean isCrypto(String stockSymbol) {
+        return stockSymbol.contains(":");
+    }
+
+    private String getBackendSymbol(String stockSymbol) {
+        // Assume a similar mapping is needed as in StockAdapter.
+        if (symbolMap.containsKey(stockSymbol.toLowerCase())) {
+            return symbolMap.get(stockSymbol.toLowerCase());
+        }
+        return stockSymbol;
+    }
+
+    private void performPostSuccessAction(String message) {
+        runOnUiThread(() -> Toast.makeText(StockMarketActivity.this, message, Toast.LENGTH_LONG).show());
+    }
+
+    private void performPostFailureAction(String message) {
+        runOnUiThread(() -> Toast.makeText(StockMarketActivity.this, message, Toast.LENGTH_LONG).show());
+    }
+
+
 
 
     @Override
