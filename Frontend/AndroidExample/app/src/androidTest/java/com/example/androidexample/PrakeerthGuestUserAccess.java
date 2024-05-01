@@ -5,9 +5,11 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -20,10 +22,12 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +39,11 @@ public class PrakeerthGuestUserAccess {
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
     public void prakeerthGuestUserAccess() {
@@ -60,13 +69,40 @@ public class PrakeerthGuestUserAccess {
         pressBack();
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_chat), withText("Chat"),
+                allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 8)));
         materialButton3.perform(scrollTo(), click());
+
+        pressBack();
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                2)));
+        materialButton4.perform(scrollTo(), click());
+
+        ViewInteraction button = onView(
+                allOf(withId(R.id.btn_Goals), withText("Goals"),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class))),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.btn_Goals), withText("Goals"),
+                        childAtPosition(
+                                withClassName(is("android.widget.LinearLayout")),
+                                4),
+                        isDisplayed()));
+        materialButton5.perform(click());
+
+        pressBack();
     }
 
     private static Matcher<View> childAtPosition(
