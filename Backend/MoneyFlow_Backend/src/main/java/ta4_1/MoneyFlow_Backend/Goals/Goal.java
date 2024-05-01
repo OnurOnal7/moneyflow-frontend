@@ -88,7 +88,12 @@ public class Goal {
     }
 
     public void updateGoalString() {
-        this.goalString = replaceNumericalValues(this.goalString, this.amount, this.timeFrame);
+        if (this.goalString != null) {
+            this.goalString = replaceNumericalValues(this.goalString, this.amount, this.timeFrame);
+        } else {
+            // Handle the null case, e.g., log an error, throw an exception, or initialize it
+            this.goalString = "Initial goal description not set."; // Example of initialization
+        }
     }
 
     private String replaceNumericalValues(String originalString, double amount, int timeFrame) {
