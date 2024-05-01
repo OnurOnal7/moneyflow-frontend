@@ -136,7 +136,7 @@ public class StockMarketActivity extends AppCompatActivity {
 
     private void sendStockUpdatesToBackend() {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID.replace("\"", ""); // Ensure this URL is correct.
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID.replace("\"", "");
 
         JSONObject stockPrices = new JSONObject();
         try {
@@ -154,7 +154,7 @@ public class StockMarketActivity extends AppCompatActivity {
         }
 
         RequestBody body = RequestBody.create(stockPrices.toString(), MediaType.parse("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(url).patch(body).build();
+        Request request = new Request.Builder().url(url).put(body).build();
         Log.d("StockMarketActivity", "Sending request to URL: " + request.url());
 
         client.newCall(request).enqueue(new Callback() {
@@ -175,10 +175,6 @@ public class StockMarketActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private boolean isCrypto(String stockSymbol) {
-        return stockSymbol.contains(":");
     }
 
     private String getBackendSymbol(String stockSymbol) {
