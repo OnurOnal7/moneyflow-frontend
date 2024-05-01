@@ -178,16 +178,16 @@ public class PortfolioController {
                     Portfolio currentPortfolio = user.getPortfolio();
                     updatedPrices.forEach((key, value) -> {
                         switch (key) {
-                            case "AAPLPrice":
+                            case "applePrice":
                                 currentPortfolio.setApplePrice(value);
                                 break;
-                            case "AMZNPrice":
+                            case "amazonPrice":
                                 currentPortfolio.setAmazonPrice(value);
                                 break;
-                            case "BTCUSDTPrice":
+                            case "bitcoinPrice":
                                 currentPortfolio.setBitcoinPrice(value);
                                 break;
-                            case "DOGEUSDTPrice":
+                            case "dogecoinPrice":
                                 currentPortfolio.setDogecoinPrice(value);
                                 break;
                             default:
