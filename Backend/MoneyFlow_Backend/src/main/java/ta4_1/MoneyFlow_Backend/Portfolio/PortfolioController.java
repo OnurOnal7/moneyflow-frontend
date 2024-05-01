@@ -131,7 +131,6 @@ public class PortfolioController {
                     currentPortfolio.setDogecoin(currentPortfolio.getDogecoin() + updatedPortfolio.getDogecoin());
                     currentPortfolio.setPortfolioValue(portfolioService.updatePortfolioValue(currentPortfolio));
 
-                    portfolioRepository.save(currentPortfolio);
                     return ResponseEntity.ok(currentPortfolio);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -160,7 +159,6 @@ public class PortfolioController {
                     currentPortfolio.setDogecoin(Math.max(currentPortfolio.getDogecoin() - updatedPortfolio.getDogecoin(), 0));
                     currentPortfolio.setPortfolioValue(portfolioService.updatePortfolioValue(currentPortfolio));
 
-                    portfolioRepository.save(currentPortfolio);
                     return ResponseEntity.ok(currentPortfolio);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
