@@ -82,8 +82,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         public CardViewHolder(View view) {
             super(view);
             cardNumberTextView = view.findViewById(R.id.cardNumberTextView);
-            editButton = view.findViewById(R.id.editButton);
-            useButton = view.findViewById(R.id.useButton);
+            editButton = view.findViewById(R.id.addProg);
+            useButton = view.findViewById(R.id.CompleteAct);
             deleteButton = view.findViewById(R.id.deleteButton);
             defaultButton = view.findViewById(R.id.defaultButton);
         }

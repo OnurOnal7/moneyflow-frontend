@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.androidexample.MainActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +42,8 @@ public class GoalListActivity extends AppCompatActivity {
     private ArrayAdapter<String> itemsadapter;
     private ListView listView;
     private Button button, rtn_home, clr_a;
+
+    private double GoalAmount;
     public String goalString;
     private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
     private final String DelAllURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/deleteAll/"+LoginActivity.UUID.replace("\"", "");
@@ -60,26 +63,7 @@ public class GoalListActivity extends AppCompatActivity {
         button = findViewById(R.id.addButton);
         rtn_home = findViewById(R.id.return_home);
         clr_a = findViewById(R.id.clr_all);
-        itemsadapter = new ArrayAdapter<String>(this, R.layout.custom_list_item, items) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-                // Find views within custom list item layout
-                TextView goalTextView = view.findViewById(R.id.goalText);
-                ProgressBar progressBar = view.findViewById(R.id.progressBar);
-
-                // Set text to goalTextView
-                goalTextView.setText(items.get(position));
-
-                // Set progress value to progressBar (assuming you have a progress value associated with each goal)
-                int progressValue = calculateProgressForGoal(position); // You need to implement this method
-                progressBar.setProgress(progressValue);
-
-                return view;
-            }
-        };
+        itemsadapter = new CustomArrayAdapter(this, items, goalID, MainActivity.selectedMemberId);
         listView.setAdapter(itemsadapter);
         setUpListViewListener();
 
@@ -107,14 +91,6 @@ public class GoalListActivity extends AppCompatActivity {
         });
     }
 
-    private int calculateProgressForGoal(int position) {
-        //String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
-
-
-        return 0;
-
-
-    }
 
 
     private void GetRequest()
@@ -126,6 +102,8 @@ public class GoalListActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject jsonObject = response.getJSONObject(i);
                     goalString = jsonObject.getString("goalString");
+                    GoalAmount = jsonObject.getDouble("amount");
+
                     String goalIDSTRING = jsonObject.getString("id");
                     items.add(goalString);
                     goalID.add(goalIDSTRING);
@@ -174,6 +152,7 @@ public class GoalListActivity extends AppCompatActivity {
 
     private void deleteGoal(String goalId) {
         String deleteURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + goalId;
+
 
         StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, deleteURL,
                 new Response.Listener<String>() {
