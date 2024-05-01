@@ -3,6 +3,8 @@ package com.example.androidexample;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +13,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
@@ -33,12 +41,14 @@ public class StockMarketActivity extends AppCompatActivity {
     private final Runnable updateStocksRunnable = new Runnable() {
         @Override
         public void run() {
+            // Process each stock data for UI update
             for (StockData stock : stockDataBuffer.values()) {
                 updateStockData(stock, false);
             }
-            stockDataBuffer.clear();
-            stockAdapter.notifyDataSetChanged();
-            handler.postDelayed(this, 5000);
+            stockDataBuffer.clear(); // Clear the buffer after processing
+            stockAdapter.notifyDataSetChanged(); // Notify the adapter to refresh the view
+            sendStockUpdatesToBackend(); // Send the updates to backend
+            handler.postDelayed(this, 5000); // Schedule next update after 5 seconds
         }
     };
 
@@ -53,7 +63,7 @@ public class StockMarketActivity extends AppCompatActivity {
         stocksRecyclerView.setAdapter(stockAdapter);
 
         startWebSocket();
-        handler.postDelayed(updateStocksRunnable, 5000);
+        handler.postDelayed(updateStocksRunnable, 5000); // Start periodic updates
     }
 
     private void startWebSocket() {
@@ -62,9 +72,9 @@ public class StockMarketActivity extends AppCompatActivity {
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-                // Subscribe to symbols
-                webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");   // Apple Inc.
-                webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AMZN\"}");  // Amazon.com Inc.
+                // Subscribe to stock symbols
+                webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");
+                webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AMZN\"}");
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:DOGEUSDT\"}");
             }
@@ -120,6 +130,46 @@ public class StockMarketActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void sendStockUpdatesToBackend() {
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + LoginActivity.UUID.replace("\"", "");
+
+        JSONObject stockPrices = new JSONObject();
+        try {
+            for (Map.Entry<String, StockData> entry : stockDataBuffer.entrySet()) {
+                stockPrices.put(entry.getKey() + "Price", entry.getValue().getPrice());
+            Log.d("StockMarketActivity", "JSON to send: " + stockPrices.toString());  // Log the full JSON payload
+        } catch (JSONException e) {
+            Log.e("StockMarketActivity", "Failed to build JSON for stock updates", e);
+            return;
+        }
+
+        RequestBody body = RequestBody.create(stockPrices.toString(), MediaType.parse("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(url)
+                .patch(body)
+                .build();
+
+        Log.d("StockMarketActivity", "Sending request to URL: " + request.url());  // Log the URL
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("StockMarketActivity", "Failed to send updates to backend", e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e("StockMarketActivity", "Backend update failed: " + response);
+                } else {
+                    Log.d("StockMarketActivity", "Successfully updated stock prices: " + response.body().string());
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onDestroy() {
