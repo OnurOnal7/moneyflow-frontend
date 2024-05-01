@@ -18,8 +18,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -88,7 +87,7 @@ public class CardControllerTest {
 
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/cards/id/{userId}/{cardId}", userId, cardId)
+        mockMvc.perform(put("/cards/id/{userId}/{cardId}", userId, cardId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Updated Visa\",\"cardNumber\":\"9999888877776666\",\"expirationDate\":\"01/31\",\"cvv\":\"999\"}"))
                 .andExpect(status().isOk())
@@ -149,6 +148,79 @@ public class CardControllerTest {
 
         // Verify that the card is removed from the user's list of cards
         assertTrue(user.getCards().isEmpty());
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void testGetAllCards() throws Exception {
+        Card card1 = new Card("Visa", "1111222233334444", "12/25", "123");
+        Card card2 = new Card("MasterCard", "5555666677778888", "11/26", "456");
+        user.addCard(card1);
+        user.addCard(card2);
+
+        given(userRepository.findAll()).willReturn(Arrays.asList(user));
+
+        mockMvc.perform(get("/cards"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0]", hasSize(2)))
+                .andExpect(jsonPath("$[0][0].cardNumber").value("1111222233334444"))
+                .andExpect(jsonPath("$[0][1].cardNumber").value("5555666677778888"));
+
+        verify(userRepository).findAll();
+    }
+
+    @Test
+    void testGetAllCardsOfUser() throws Exception {
+        Card card1 = new Card("Visa", "1111222233334444", "12/25", "123");
+        Card card2 = new Card("MasterCard", "5555666677778888", "11/26", "456");
+        user.addCard(card1);
+        user.addCard(card2);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        mockMvc.perform(get("/cards/userId/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].cardNumber").value("1111222233334444"))
+                .andExpect(jsonPath("$[1].cardNumber").value("5555666677778888"));
+
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void testGetCard() throws Exception {
+        UUID cardId = UUID.randomUUID();
+        Card card = new Card("Visa", "1111222233334444", "12/25", "123");
+        card.setId(cardId);
+        user.addCard(card);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        mockMvc.perform(get("/cards/id/{userId}/{cardId}", userId, cardId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.cardNumber").value("1111222233334444"));
+
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    void testGetDefaultCard() throws Exception {
+        Card card1 = new Card("Visa", "1111222233334444", "12/25", "123");
+        Card card2 = new Card("MasterCard", "5555666677778888", "11/26", "456");
+        card2.setIsDefault(true);
+        user.addCard(card1);
+        user.addCard(card2);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        mockMvc.perform(get("/cards/userId/{id}/default", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.cardNumber").value("5555666677778888"));
+
         verify(userRepository).findById(userId);
     }
 }
