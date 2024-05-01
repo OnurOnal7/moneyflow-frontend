@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,84 +18,33 @@ import org.json.JSONException;
 
 public class BudgetingViewActivity extends AppCompatActivity {
 
-    private double P,W, H, O;
-    private double PBud,WBud, HBud, OBud;
-
-    private double Personal, Work, Home, Other;
+    private double P, W, H, O;
+    private double PBud, WBud, HBud, OBud;
+    private int Personal, Work, Home, Other;
     private TextView Pin, Win, Oin, Hin;
-
-
     private Button backhome;
-
     private ProgressBar pProgress, wProgress, hProgress, oProgress;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgeting_view);
 
-        GetRequest();
-        GetExpensesRequest();
-        GetBudgetsRequest();
+        // Initialize views
         Hin = findViewById(R.id.HomLim);
         Pin = findViewById(R.id.persLim);
-        Win =  findViewById(R.id.WorkLim);
+        Win = findViewById(R.id.WorkLim);
         Oin = findViewById(R.id.OthLim);
         pProgress = findViewById(R.id.personalprog);
         wProgress = findViewById(R.id.workprog);
         hProgress = findViewById(R.id.homeprog);
         oProgress = findViewById(R.id.otherprog);
+        backhome = findViewById(R.id.bkhome);
 
-        backhome = (Button) findViewById(R.id.bkhome);
-
-        pProgress.setMax((int)PBud);
-        wProgress.setMax((int)WBud);
-        hProgress.setMax((int)HBud);
-        oProgress.setMax((int)OBud);
-
-        pProgress.setMin(Integer.MIN_VALUE);
-        wProgress.setMin(Integer.MIN_VALUE);
-        hProgress.setMin(Integer.MIN_VALUE);
-        oProgress.setMin(Integer.MIN_VALUE);
-
-        pProgress.setProgress((int)Personal);
-        wProgress.setProgress((int) Work);
-        hProgress.setProgress((int) Home);
-        oProgress.setProgress((int) Other);
-
-
-        if ((int)Personal == (int)PBud) {
-            pProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_completed));
-        } else if ((int)Personal >= (int)PBud * 0.9) { // Change color when approaching max value
-            pProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_approaching_max));
-        } else {
-            pProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar));
-        }
-
-        if ((int)Work == (int)WBud) {
-            wProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_completed));
-        } else if ((int)Work >= (int)WBud * 0.9) { // Change color when approaching max value
-            wProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_approaching_max));
-        } else {
-            wProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar));
-        }
-
-        if ((int)Home == (int)HBud) {
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_completed));
-        } else if ((int)Home >= (int)HBud * 0.9) { // Change color when approaching max value
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_approaching_max));
-        } else {
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar));
-        }
-
-        if ((int)Home == (int)HBud) {
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_completed));
-        } else if ((int)Home >= (int)HBud * 0.9) { // Change color when approaching max value
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar_approaching_max));
-        } else {
-            hProgress.setProgressDrawable(getResources().getDrawable(R.drawable.custom_progress_bar));
-        }
-
+        // Fetch data and set progress
+        GetRequest();
+        GetExpensesRequest();
+        GetBudgetsRequest();
 
         backhome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,17 +52,12 @@ public class BudgetingViewActivity extends AppCompatActivity {
                 startActivity(new Intent(BudgetingViewActivity.this, BudgetingActivity.class));
             }
         });
-
-
-
     }
 
-    private void GetRequest()
-    {
+    private void GetRequest() {
         String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/check/" + LoginActivity.UUID.replace("\"", "");
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response ->{
-
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
                 if (response.has("Personal")) {
                     P = response.getDouble("Personal");
@@ -132,72 +75,49 @@ public class BudgetingViewActivity extends AppCompatActivity {
                     O = response.getDouble("Other");
                     Oin.setText(Double.toString(O));
                 }
-
-
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-
-
         }, error -> {
             Toast.makeText(BudgetingViewActivity.this, "Failed: " + error.toString(), Toast.LENGTH_LONG).show();
             error.printStackTrace(); // Print error details for debugging
-
         });
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-
     }
-
-    private void GetExpensesRequest()
-    {
+    private void GetExpensesRequest() {
         String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + LoginActivity.UUID.replace("\"", "");
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response ->{
-
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
                 if (response.has("personal")) {
-                    Personal = response.getDouble("personal");
-                }
-                else
-                {
-                    Personal = 0.0;
+                    Personal = (int) Math.round(response.getDouble("personal"));
                 }
                 if (response.has("work")) {
-                    Work = response.getDouble("work");
-                }
-                else
-                {
-                    Work = 0.0;
+                    Work = (int) Math.round(response.getDouble("work"));
                 }
                 if (response.has("home")) {
-                    Home = response.getDouble("home");
-                }
-                else {
-                    Home = 0.0;
+                    Home = (int) Math.round(response.getDouble("home"));
                 }
                 if (response.has("other")) {
-                    Other = response.getDouble("other");
-                }
-                else{
-                    Other = 0.0;
+                    Other = (int) Math.round(response.getDouble("other"));
                 }
 
+                // After expenses are fetched, fetch budgets
+                GetBudgetsRequest();
 
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
+                Toast.makeText(BudgetingViewActivity.this, "Failed to parse expenses data", Toast.LENGTH_SHORT).show();
             }
-
-
         }, error -> {
-            Toast.makeText(BudgetingViewActivity.this, "Failed: " + error.toString(), Toast.LENGTH_LONG).show();
-            error.printStackTrace(); // Print error details for debugging
-
+            error.printStackTrace();
+            Toast.makeText(BudgetingViewActivity.this, "Failed to fetch expenses data", Toast.LENGTH_SHORT).show();
         });
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
-
     }
+
     private void GetBudgetsRequest() {
         String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + LoginActivity.UUID.replace("\"", "");
 
@@ -208,15 +128,32 @@ public class BudgetingViewActivity extends AppCompatActivity {
                 HBud = response.getDouble("homeLimit");
                 OBud = response.getDouble("otherLimit");
 
+                // After budgets are fetched, set progress
+                setProgress();
+
             } catch (JSONException e) {
-                e.printStackTrace(); // Instead of throwing a runtime exception, just print the error
+                e.printStackTrace();
+                Toast.makeText(BudgetingViewActivity.this, "Failed to parse budgets data", Toast.LENGTH_SHORT).show();
             }
         }, error -> {
-            Toast.makeText(BudgetingViewActivity.this, "Failed: " + error.toString(), Toast.LENGTH_LONG).show();
-            error.printStackTrace(); // Print error details for debugging
+            error.printStackTrace();
+            Toast.makeText(BudgetingViewActivity.this, "Failed to fetch budgets data", Toast.LENGTH_SHORT).show();
         });
 
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
+    private void setProgress() {
+        // Calculate percentages
+        double pPercentage = (double) Personal / PBud * 100;
+        double wPercentage = (double) Work / WBud * 100;
+        double hPercentage = (double) Home / HBud * 100;
+        double oPercentage = (double) Other / OBud * 100;
+
+        // Set progress
+        pProgress.setProgress((int) pPercentage);
+        wProgress.setProgress((int) wPercentage);
+        hProgress.setProgress((int) hPercentage);
+        oProgress.setProgress((int) oPercentage);
+    }
 }

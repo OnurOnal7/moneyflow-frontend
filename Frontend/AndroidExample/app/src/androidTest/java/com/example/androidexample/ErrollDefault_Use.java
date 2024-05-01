@@ -167,7 +167,7 @@ public class ErrollDefault_Use {
         materialButton7.perform(click());
 
         ViewInteraction materialButton8 = onView(
-                allOf(withId(R.id.useButton), withText("Use"),
+                allOf(withId(R.id.CompleteAct), withText("Use"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),

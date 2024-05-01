@@ -9,8 +9,9 @@
         android:id="@+id/cardNumberTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="**** **** **** 1234"
-        android:gravity="center_vertical"/>
+        android:autoSizeTextType="none"
+        android:gravity="center_vertical"
+        android:text="**** **** **** 1234" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,14 +20,14 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/editButton"
+            android:id="@+id/addProg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Edit"/>
 
         <Button
-            android:id="@+id/useButton"
+            android:id="@+id/CompleteAct"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

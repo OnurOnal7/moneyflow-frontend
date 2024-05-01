@@ -2,24 +2,20 @@ package com.example.androidexample;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +27,11 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
     private String category;
     private String prompt_response;
 
+    private boolean TaskComplete = false;
+
         private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
 
-    private String amt, months;
+    private String amt, days;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +43,22 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
 
         switch (category) {
             case "savings":
-                prompt_d.setText("I want to save [amount] in the next [timeframe] months.");
+                prompt_d.setText("I want to save [amount] in the next [timeframe] days.");
                 break;
             case "investment":
-                prompt_d.setText("I aim to invest [amount] over the course of [timeframe] months.");
+                prompt_d.setText("I aim to invest [amount] over the course of [timeframe] days.");
                 break;
             case "vacation":
-                prompt_d.setText("I plan to save [amount] every [timeframe] months for a vacation.");
+                prompt_d.setText("I plan to save [amount] every [timeframe] days for a vacation.");
                 break;
             case "education":
-                prompt_d.setText("I will save [amount] every [timeframe] months for education costs.");
+                prompt_d.setText("I will save [amount] every [timeframe] days for education costs.");
                 break;
             case "charity":
-                prompt_d.setText("I plan to donate [amount] every [timeframe] months to a chosen charity.");
+                prompt_d.setText("I plan to donate [amount] every [timeframe] days to a chosen charity.");
                 break;
             case "lifestyle":
-                prompt_d.setText("For lifestyle upgrades, I will allocate [amount] every [timeframe] months.");
+                prompt_d.setText("For lifestyle upgrades, I will allocate [amount] every [timeframe] days.");
                 break;
         }
 
@@ -76,35 +74,36 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 amt = e_amt.getText().toString();
-                months = e_Mon.getText().toString();
+                days = e_Mon.getText().toString();
 
                 switch (category) {
                     case "savings":
-                        prompt_response = "I want to save " + amt + " in the next " + months + " months.";
+                        prompt_response = "I want to save " + amt + " in the next " + days + " days.";
                         break;
                     case "investment":
-                        prompt_response = "I aim to invest " + amt + " over the course of " + months + " months.";
+                        prompt_response = "I aim to invest " + amt + " over the course of " + days + " days.";
                         break;
                     case "vacation":
-                        prompt_response = "I plan to save " + amt + " every " + months + " months for a vacation.";
+                        prompt_response = "I plan to save " + amt + " every " + days + " days for a vacation.";
                         break;
                     case "education":
-                        prompt_response = "I will save " + amt + " every " + months + " months for education costs.";
+                        prompt_response = "I will save " + amt + " every " + days + " days for education costs.";
                         break;
                     case "charity":
-                        prompt_response = "I plan to donate " + amt + " every " + months + " months to a chosen charity.";
+                        prompt_response = "I plan to donate " + amt + " every " + days + " days to a chosen charity.";
                         break;
                     case "lifestyle":
-                        prompt_response = "For lifestyle upgrades, I will allocate " + amt + " every " + months + " months.";
+                        prompt_response = "For lifestyle upgrades, I will allocate " + amt + " every " + days + " days.";
                         break;
                 }
+                TaskComplete = false;
                 JSONObject jsonObject = new JSONObject();
 
                 try {
                     jsonObject.put("goalString", prompt_response);
                     jsonObject.put("amount", Double.parseDouble(amt));
-                    jsonObject.put("months", Double.parseDouble(months));
-
+                    jsonObject.put("timeFrame", Integer.parseInt(days));
+                    jsonObject.put("isCompleted", TaskComplete);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
