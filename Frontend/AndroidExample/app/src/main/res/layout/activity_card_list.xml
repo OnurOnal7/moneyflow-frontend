@@ -16,8 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#1A2561"
-        android:backgroundTint="#1A2561"
+        android:backgroundTint="@color/deep_blue"
         android:text="Add Card"
         android:textColor="@android:color/white" />
 
