@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#791296</color>
     <color name="purple_200">#B200FF</color>
+    <color name="status_bar_color">#1A2561</color>
 </resources>

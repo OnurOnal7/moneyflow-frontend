@@ -80,7 +80,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="#FFFFFF">
+            android:backgroundTint="#FFFFFF"
+            android:touchscreenBlocksFocus="true">
 
             <TextView
                 android:id="@+id/p_display"
@@ -247,6 +248,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </RelativeLayout>
 </ScrollView>
