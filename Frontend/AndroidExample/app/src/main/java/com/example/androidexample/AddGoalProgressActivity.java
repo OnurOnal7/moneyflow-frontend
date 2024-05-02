@@ -1,5 +1,6 @@
 package com.example.androidexample;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,7 @@ public class AddGoalProgressActivity extends AppCompatActivity {
     private Button Sb;
     private EditText amtChange, dayPass;
 
-    private String goalId;
+    private String goalId, prompt;
 
 
     private double amount;
@@ -38,19 +39,15 @@ public class AddGoalProgressActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             goalId = intent.getStringExtra("goalId");
+            prompt = intent.getStringExtra("goalString");
         }
-
 
         promptview = findViewById(R.id.prompt_display2);
         amtChange = findViewById(R.id.editTextText);
         dayPass = findViewById(R.id.editTextText2);
         Sb = findViewById(R.id.button);
 
-
-        amount = Double.parseDouble(amtChange.getText().toString());
-        timeFrame = Integer.parseInt(dayPass.getText().toString());
-
-
+        promptview.setText(prompt);
 
         Sb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +63,7 @@ public class AddGoalProgressActivity extends AppCompatActivity {
                     timeFrame = Integer.parseInt(timeFrameText);
 
                     // Make the PATCH request
-                    PatchRequest();
+                    PutRequest();
                     startActivity(new Intent(AddGoalProgressActivity.this, GoalListActivity.class));
                 } else {
                     // Display a toast message indicating that fields are empty
@@ -74,38 +71,35 @@ public class AddGoalProgressActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
     }
 
 
-    private void PatchRequest()
+
+    private void PutRequest()
     {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080goals/user/"+MainActivity.selectedMemberId+"/goal/"+goalId+"/progress/"+amount+"/"+timeFrame;
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/goals/user/" + LoginActivity.UUID.replace("\"", "") + "/goal/" + goalId + "/progress/" + amount + "/" + timeFrame;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PATCH, url, null, response -> {
-
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
+            // Handle successful response
             Toast.makeText(getApplicationContext(), "Goal Updated!", Toast.LENGTH_LONG).show();
 
-        }, error ->
-        {
-            Toast.makeText(getApplicationContext(), "Error: ", Toast.LENGTH_LONG).show();
+            // Pass the updated progress amount back to CustomArrayAdapter
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("positionToUpdate", getIntent().getIntExtra("positionToUpdate", -1)); // Pass the position
+            resultIntent.putExtra("updatedProgress", amount); // Pass the updated progress amount
+            setResult(Activity.RESULT_OK, resultIntent);
+
+            // Finish the activity
+            finish();
+        }, error -> {
+            // Handle error
+            Toast.makeText(getApplicationContext(), "Error: " + error.toString(), Toast.LENGTH_LONG).show();
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
 
     }
-
-
-
-
-
-
-
-
 
 
 

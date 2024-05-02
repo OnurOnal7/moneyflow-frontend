@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthBudgeting {
+public class PrakeerthBudgetingViewAndAdd {
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
@@ -47,7 +47,7 @@ public class PrakeerthBudgeting {
                     "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
-    public void prakeerthBudgeting() {
+    public void prakeerthBudgetingViewAndAdd() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -87,6 +87,7 @@ public class PrakeerthBudgeting {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.btn_show_popup), withText("Menu"),
@@ -116,44 +117,84 @@ public class PrakeerthBudgeting {
         materialButton5.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.personal_lim),
+                allOf(withId(R.id.personal_lim), withText("100000.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("1.0"));
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.Home_Lim),
+                allOf(withId(R.id.personal_lim), withText("1.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        appCompatEditText4.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.Home_Lim), withText("100000.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 8),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("200"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("1.0"));
 
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.Work_Lim),
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.Home_Lim), withText("1.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                8),
+                        isDisplayed()));
+        appCompatEditText6.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.Work_Lim), withText("100000.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText7.perform(replaceText("1.0"));
 
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.Other_Lim),
+        ViewInteraction appCompatEditText8 = onView(
+                allOf(withId(R.id.Work_Lim), withText("1.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatEditText8.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText9 = onView(
+                allOf(withId(R.id.Other_Lim), withText("100000.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText6.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText9.perform(replaceText("1.0"));
+
+        ViewInteraction appCompatEditText10 = onView(
+                allOf(withId(R.id.Other_Lim), withText("1.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatEditText10.perform(closeSoftKeyboard());
 
         ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.budg_create_btn), withText("Set Budget"),
@@ -164,16 +205,73 @@ public class PrakeerthBudgeting {
                                 0),
                         isDisplayed()));
         materialButton6.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.budg_view_btn), withText("Go"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.bkhome), withText("Return"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                8),
+                        isDisplayed()));
+        materialButton8.perform(click());
+
+        ViewInteraction materialButton9 = onView(
                 allOf(withId(R.id.budget_hm), withText("Home"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                3),
+                                5),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton9.perform(click());
+
+        ViewInteraction appCompatEditText11 = onView(
+                allOf(withId(R.id.editText_amount),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                7)));
+        appCompatEditText11.perform(scrollTo(), replaceText("1"), closeSoftKeyboard());
+
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(R.id.btn_submit), withText("Submit"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                8)));
+        materialButton10.perform(scrollTo(), click());
+
+        ViewInteraction materialButton11 = onView(
+                allOf(withId(R.id.btn_submit), withText("Submit"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                8)));
+        materialButton11.perform(scrollTo(), click());
+
+        ViewInteraction materialButton12 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton12.perform(scrollTo(), click());
 
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.spinner_categories),
@@ -188,63 +286,113 @@ public class PrakeerthBudgeting {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(2);
+                .atPosition(1);
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.editText_amount),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                6)));
-        appCompatEditText7.perform(scrollTo(), replaceText("100"), closeSoftKeyboard());
-
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction materialButton13 = onView(
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
-                                7)));
-        materialButton8.perform(scrollTo(), click());
+                                8)));
+        materialButton13.perform(scrollTo(), click());
 
-        ViewInteraction materialButton9 = onView(
-                allOf(withId(R.id.btn_submit), withText("Submit"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                7)));
-        materialButton9.perform(scrollTo(), click());
-
-        ViewInteraction materialButton10 = onView(
+        ViewInteraction materialButton14 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton10.perform(scrollTo(), click());
+        materialButton14.perform(scrollTo(), click());
 
-        ViewInteraction materialButton11 = onView(
+        ViewInteraction appCompatSpinner2 = onView(
+                allOf(withId(R.id.spinner_categories),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                4)));
+        appCompatSpinner2.perform(scrollTo(), click());
+
+        DataInteraction appCompatCheckedTextView2 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(2);
+        appCompatCheckedTextView2.perform(click());
+
+        ViewInteraction materialButton15 = onView(
+                allOf(withId(R.id.btn_submit), withText("Submit"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                8)));
+        materialButton15.perform(scrollTo(), click());
+
+        ViewInteraction materialButton16 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton16.perform(scrollTo(), click());
+
+        ViewInteraction appCompatSpinner3 = onView(
+                allOf(withId(R.id.spinner_categories),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                4)));
+        appCompatSpinner3.perform(scrollTo(), click());
+
+        DataInteraction appCompatCheckedTextView3 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(3);
+        appCompatCheckedTextView3.perform(click());
+
+        ViewInteraction materialButton17 = onView(
+                allOf(withId(R.id.btn_submit), withText("Submit"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                8)));
+        materialButton17.perform(scrollTo(), click());
+
+        ViewInteraction materialButton18 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton18.perform(scrollTo(), click());
+
+        ViewInteraction materialButton19 = onView(
                 allOf(withId(R.id.btn_show_popup), withText("Menu"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 2)));
-        materialButton11.perform(scrollTo(), click());
+        materialButton19.perform(scrollTo(), click());
 
-        ViewInteraction materialButton12 = onView(
+        ViewInteraction materialButton20 = onView(
                 allOf(withId(R.id.btn_Budget), withText("Budgeting"),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 5),
                         isDisplayed()));
-        materialButton12.perform(click());
+        materialButton20.perform(click());
 
-        ViewInteraction materialButton13 = onView(
+        ViewInteraction materialButton21 = onView(
                 allOf(withId(R.id.budg_create_btn), withText("Go"),
                         childAtPosition(
                                 childAtPosition(
@@ -252,49 +400,89 @@ public class PrakeerthBudgeting {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton13.perform(click());
+        materialButton21.perform(click());
 
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.personal_lim),
+        ViewInteraction appCompatEditText12 = onView(
+                allOf(withId(R.id.personal_lim), withText("1.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatEditText8.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText12.perform(replaceText("100000.0"));
 
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.Home_Lim),
+        ViewInteraction appCompatEditText13 = onView(
+                allOf(withId(R.id.personal_lim), withText("100000.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        appCompatEditText13.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText14 = onView(
+                allOf(withId(R.id.Home_Lim), withText("1.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 8),
                         isDisplayed()));
-        appCompatEditText9.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText14.perform(replaceText("100000.0"));
 
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.Work_Lim),
+        ViewInteraction appCompatEditText15 = onView(
+                allOf(withId(R.id.Home_Lim), withText("100000.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                8),
+                        isDisplayed()));
+        appCompatEditText15.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText16 = onView(
+                allOf(withId(R.id.Work_Lim), withText("1.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText10.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText16.perform(replaceText("100000.0"));
 
-        ViewInteraction appCompatEditText11 = onView(
-                allOf(withId(R.id.Other_Lim),
+        ViewInteraction appCompatEditText17 = onView(
+                allOf(withId(R.id.Work_Lim), withText("100000.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatEditText17.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText18 = onView(
+                allOf(withId(R.id.Other_Lim), withText("1.0"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText11.perform(replaceText("100000"), closeSoftKeyboard());
+        appCompatEditText18.perform(replaceText("100000.0"));
 
-        ViewInteraction materialButton14 = onView(
+        ViewInteraction appCompatEditText19 = onView(
+                allOf(withId(R.id.Other_Lim), withText("100000.0"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatEditText19.perform(closeSoftKeyboard());
+
+        ViewInteraction materialButton22 = onView(
                 allOf(withId(R.id.budg_create_btn), withText("Set Budget"),
                         childAtPosition(
                                 childAtPosition(
@@ -302,7 +490,7 @@ public class PrakeerthBudgeting {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton14.perform(click());
+        materialButton22.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

@@ -21,6 +21,9 @@ public class Goal {
     @Column(name = "amount")
     private double amount;  // The financial target of the goal
 
+    @Column(name = "total_amount")
+    private double totalAmount;  // The original financial target of the goal
+
     @Column(name = "time_frame")
     private int timeFrame;  // The timeframe in months
 
@@ -75,8 +78,22 @@ public class Goal {
         isCompleted = completed;
     }
 
+    // Standard getters and setters
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     public void updateGoalString() {
-        this.goalString = replaceNumericalValues(this.goalString, this.amount, this.timeFrame);
+        if (this.goalString != null) {
+            this.goalString = replaceNumericalValues(this.goalString, this.amount, this.timeFrame);
+        } else {
+            // Handle the null case, e.g., log an error, throw an exception, or initialize it
+            this.goalString = "Initial goal description not set."; // Example of initialization
+        }
     }
 
     private String replaceNumericalValues(String originalString, double amount, int timeFrame) {
