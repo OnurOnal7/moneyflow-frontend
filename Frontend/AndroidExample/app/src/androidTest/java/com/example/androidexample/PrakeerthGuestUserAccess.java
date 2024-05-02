@@ -5,11 +5,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -27,7 +25,6 @@ import androidx.test.rule.GrantPermissionRule;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,9 +58,9 @@ public class PrakeerthGuestUserAccess {
                 allOf(withId(R.id.btn_upload), withText("Upload"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                7)));
         materialButton2.perform(scrollTo(), click());
 
         pressBack();
@@ -72,35 +69,21 @@ public class PrakeerthGuestUserAccess {
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                8)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                3)));
         materialButton3.perform(scrollTo(), click());
 
         pressBack();
 
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_chat), withText("Chat"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                2)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                0)));
         materialButton4.perform(scrollTo(), click());
-
-        ViewInteraction button = onView(
-                allOf(withId(R.id.btn_Goals), withText("Goals"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class))),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.btn_Goals), withText("Goals"),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                4),
-                        isDisplayed()));
-        materialButton5.perform(click());
 
         pressBack();
     }

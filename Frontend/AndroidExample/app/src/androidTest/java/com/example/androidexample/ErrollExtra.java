@@ -47,7 +47,7 @@ public class ErrollExtra {
                     "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
-    public void errollExtra() {
+    public void errollCurrency() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -87,32 +87,33 @@ public class ErrollExtra {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.editText_amount),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                7)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                4)));
         appCompatEditText3.perform(scrollTo(), replaceText("1"), closeSoftKeyboard());
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                8)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                3)));
         materialButton3.perform(scrollTo(), click());
 
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.spinner_categories),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                4)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                5)));
         appCompatSpinner.perform(scrollTo(), click());
 
         DataInteraction appCompatCheckedTextView = onData(anything())
@@ -126,27 +127,18 @@ public class ErrollExtra {
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                8)));
-        materialButton4.perform(scrollTo(), click());
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 3)));
-        materialButton5.perform(scrollTo(), click());
+        materialButton4.perform(scrollTo(), click());
 
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.spinner_categories),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                4)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                5)));
         appCompatSpinner2.perform(scrollTo(), click());
 
         DataInteraction appCompatCheckedTextView2 = onData(anything())
@@ -156,31 +148,22 @@ public class ErrollExtra {
                 .atPosition(2);
         appCompatCheckedTextView2.perform(click());
 
-        ViewInteraction materialButton6 = onView(
+        ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                8)));
-        materialButton6.perform(scrollTo(), click());
-
-        ViewInteraction materialButton7 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 3)));
-        materialButton7.perform(scrollTo(), click());
+        materialButton5.perform(scrollTo(), click());
 
         ViewInteraction appCompatSpinner3 = onView(
                 allOf(withId(R.id.spinner_categories),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                4)));
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                5)));
         appCompatSpinner3.perform(scrollTo(), click());
 
         DataInteraction appCompatCheckedTextView3 = onData(anything())
@@ -190,90 +173,46 @@ public class ErrollExtra {
                 .atPosition(3);
         appCompatCheckedTextView3.perform(click());
 
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.btn_submit), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                8)));
-        materialButton8.perform(scrollTo(), click());
-
-        ViewInteraction materialButton9 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 3)));
-        materialButton9.perform(scrollTo(), click());
+        materialButton6.perform(scrollTo(), click());
 
-        ViewInteraction materialButton10 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+        ViewInteraction appCompatSpinner4 = onView(
+                allOf(withId(R.id.spinner_financial_details),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                2)));
-        materialButton10.perform(scrollTo(), click());
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                6)));
+        appCompatSpinner4.perform(scrollTo(), click());
 
-        ViewInteraction materialButton11 = onView(
-                allOf(withId(R.id.btn_Budget), withText("Budgeting"),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                5),
-                        isDisplayed()));
-        materialButton11.perform(click());
+        DataInteraction appCompatCheckedTextView4 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        appCompatCheckedTextView4.perform(click());
 
-        ViewInteraction materialButton12 = onView(
-                allOf(withId(R.id.budg_view_btn), withText("Go"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        materialButton12.perform(click());
-
-        ViewInteraction materialButton13 = onView(
-                allOf(withId(R.id.bkhome), withText("Return"),
+        ViewInteraction appCompatSpinner5 = onView(
+                allOf(withId(R.id.spinner_financial_details),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                8),
-                        isDisplayed()));
-        materialButton13.perform(click());
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                6)));
+        appCompatSpinner5.perform(scrollTo(), click());
 
-        ViewInteraction materialButton14 = onView(
-                allOf(withId(R.id.budg_create_btn), withText("Go"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialButton14.perform(click());
-
-        ViewInteraction materialButton15 = onView(
-                allOf(withId(R.id.budg_create_btn), withText("Set Budget"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialButton15.perform(click());
-
-        ViewInteraction materialButton16 = onView(
-                allOf(withId(R.id.budget_hm), withText("Home"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
-        materialButton16.perform(click());
+        DataInteraction appCompatCheckedTextView5 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(2);
+        appCompatCheckedTextView5.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

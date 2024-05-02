@@ -5,9 +5,10 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -48,7 +49,7 @@ public class PrakeerthUserGoalInteraction {
                     "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
-    public void prakeerthUserGoalInteraction() {
+    public void prakeerthUserGoalInteraction() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -79,16 +80,6 @@ public class PrakeerthUserGoalInteraction {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.login_password_edt), withText("1"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(pressImeActionButton());
-
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.login_login_btn), withText("Login"),
                         childAtPosition(
@@ -98,13 +89,14 @@ public class PrakeerthUserGoalInteraction {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_show_popup), withText("≡"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 2)));
         materialButton3.perform(scrollTo(), click());
 
@@ -117,6 +109,16 @@ public class PrakeerthUserGoalInteraction {
         materialButton4.perform(click());
 
         ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.clr_all), withText("Clear all"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        materialButton5.perform(click());
+
+        ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.addButton), withText("Add Goal"),
                         childAtPosition(
                                 childAtPosition(
@@ -124,7 +126,58 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton5.perform(click());
+        materialButton6.perform(click());
+
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.n_phase), withText("Next"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.editAmt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("200"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.editMon),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                6),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("2"), closeSoftKeyboard());
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.set_goal), withText("Set Goal"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        materialButton8.perform(click());
+        Thread.sleep(2000);
+
+        ViewInteraction materialButton9 = onView(
+                allOf(withId(R.id.addButton), withText("Add Goal"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton9.perform(click());
 
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.goalcat),
@@ -140,10 +193,10 @@ public class PrakeerthUserGoalInteraction {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(3);
+                .atPosition(4);
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction materialButton6 = onView(
+        ViewInteraction materialButton10 = onView(
                 allOf(withId(R.id.n_phase), withText("Next"),
                         childAtPosition(
                                 childAtPosition(
@@ -151,9 +204,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton6.perform(click());
+        materialButton10.perform(click());
 
-        ViewInteraction appCompatEditText4 = onView(
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.editAmt),
                         childAtPosition(
                                 childAtPosition(
@@ -161,9 +214,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("20000"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("2003"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText5 = onView(
+        ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.editMon),
                         childAtPosition(
                                 childAtPosition(
@@ -171,9 +224,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 6),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("30"), closeSoftKeyboard());
+        appCompatEditText6.perform(replaceText("21"), closeSoftKeyboard());
 
-        ViewInteraction materialButton7 = onView(
+        ViewInteraction materialButton11 = onView(
                 allOf(withId(R.id.set_goal), withText("Set Goal"),
                         childAtPosition(
                                 childAtPosition(
@@ -181,9 +234,26 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton11.perform(click());
+        Thread.sleep(2000);
 
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.recyclerView),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                2)));
+        recyclerView.perform(actionOnItemAtPosition(0, longClick()));
+
+        ViewInteraction materialButton12 = onView(
+                allOf(withId(android.R.id.button1), withText("Yes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton12.perform(scrollTo(), click());
+
+        ViewInteraction materialButton13 = onView(
                 allOf(withId(R.id.addProg), withText("Add Progress"),
                         childAtPosition(
                                 childAtPosition(
@@ -191,9 +261,9 @@ public class PrakeerthUserGoalInteraction {
                                         2),
                                 0),
                         isDisplayed()));
-        materialButton8.perform(click());
+        materialButton13.perform(click());
 
-        ViewInteraction appCompatEditText6 = onView(
+        ViewInteraction appCompatEditText7 = onView(
                 allOf(withId(R.id.editTextText),
                         childAtPosition(
                                 childAtPosition(
@@ -201,9 +271,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 5),
                         isDisplayed()));
-        appCompatEditText6.perform(replaceText("15000"), closeSoftKeyboard());
+        appCompatEditText7.perform(replaceText("2003"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText7 = onView(
+        ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.editTextText2),
                         childAtPosition(
                                 childAtPosition(
@@ -211,9 +281,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText7.perform(replaceText("25"), closeSoftKeyboard());
+        appCompatEditText8.perform(replaceText("21"), closeSoftKeyboard());
 
-        ViewInteraction materialButton9 = onView(
+        ViewInteraction materialButton14 = onView(
                 allOf(withId(R.id.button), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
@@ -221,76 +291,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 6),
                         isDisplayed()));
-        materialButton9.perform(click());
+        materialButton14.perform(click());
 
-        ViewInteraction materialButton10 = onView(
-                allOf(withId(R.id.addButton), withText("Add Goal"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialButton10.perform(click());
-
-        ViewInteraction appCompatSpinner2 = onView(
-                allOf(withId(R.id.goalcat),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner2.perform(click());
-
-        DataInteraction appCompatCheckedTextView2 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(4);
-        appCompatCheckedTextView2.perform(click());
-
-        ViewInteraction materialButton11 = onView(
-                allOf(withId(R.id.n_phase), withText("Next"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        materialButton11.perform(click());
-
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.editAmt),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
-        appCompatEditText8.perform(replaceText("2000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.editMon),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatEditText9.perform(replaceText("12"), closeSoftKeyboard());
-
-        ViewInteraction materialButton12 = onView(
-                allOf(withId(R.id.set_goal), withText("Set Goal"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        materialButton12.perform(click());
-
-        ViewInteraction materialButton13 = onView(
+        ViewInteraction materialButton15 = onView(
                 allOf(withId(R.id.clr_all), withText("Clear all"),
                         childAtPosition(
                                 childAtPosition(
@@ -298,9 +301,9 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 4),
                         isDisplayed()));
-        materialButton13.perform(click());
+        materialButton15.perform(click());
 
-        ViewInteraction materialButton14 = onView(
+        ViewInteraction materialButton16 = onView(
                 allOf(withId(R.id.return_home), withText("Home"),
                         childAtPosition(
                                 childAtPosition(
@@ -308,7 +311,7 @@ public class PrakeerthUserGoalInteraction {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton14.perform(click());
+        materialButton16.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

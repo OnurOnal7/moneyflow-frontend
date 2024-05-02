@@ -21,6 +21,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -36,6 +37,11 @@ public class PrakeerthRecommendation {
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
     public void prakeerthRecommendation() throws InterruptedException {
@@ -78,26 +84,26 @@ public class PrakeerthRecommendation {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
-        Thread.sleep(6000);
+        Thread.sleep(2000);
 
-        ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(R.id.btn_show_popup), withText("≡"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 2)));
-        materialButton3.perform(scrollTo(), click());
+        materialButton10.perform(scrollTo(), click());
 
-        ViewInteraction materialButton4 = onView(
+        ViewInteraction materialButton11 = onView(
                 allOf(withId(R.id.btn_recommend), withText("Recommendations"),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 2),
                         isDisplayed()));
-        materialButton4.perform(click());
+        materialButton11.perform(click());
 
-        ViewInteraction materialButton5 = onView(
+        ViewInteraction materialButton12 = onView(
                 allOf(withId(R.id.start), withText("Recommend"),
                         childAtPosition(
                                 childAtPosition(
@@ -105,10 +111,10 @@ public class PrakeerthRecommendation {
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton5.perform(click());
+        materialButton12.perform(click());
         Thread.sleep(6000);
 
-        ViewInteraction materialButton6 = onView(
+        ViewInteraction materialButton13 = onView(
                 allOf(withId(R.id.save_b), withText("Save"),
                         childAtPosition(
                                 childAtPosition(
@@ -116,10 +122,10 @@ public class PrakeerthRecommendation {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton6.perform(click());
-        Thread.sleep(6000);
+        materialButton13.perform(click());
+        Thread.sleep(2000);
 
-        ViewInteraction materialButton7 = onView(
+        ViewInteraction materialButton14 = onView(
                 allOf(withId(R.id.previous_rec), withText("History"),
                         childAtPosition(
                                 childAtPosition(
@@ -127,9 +133,9 @@ public class PrakeerthRecommendation {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton14.perform(click());
 
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction materialButton15 = onView(
                 allOf(withId(R.id.btn_view), withText("View"),
                         childAtPosition(
                                 childAtPosition(
@@ -137,8 +143,27 @@ public class PrakeerthRecommendation {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton8.perform(click());
-        Thread.sleep(6000);
+        materialButton15.perform(click());
+
+        ViewInteraction materialButton16 = onView(
+                allOf(withId(R.id.return_rec), withText("Back"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        materialButton16.perform(click());
+
+        ViewInteraction materialButton17 = onView(
+                allOf(withId(R.id.return_b), withText("Return"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        materialButton17.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
