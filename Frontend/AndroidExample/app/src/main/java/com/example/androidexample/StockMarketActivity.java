@@ -1,7 +1,5 @@
 package com.example.androidexample;
 
-import static com.example.androidexample.StockAdapter.symbolMap;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,7 +52,7 @@ public class StockMarketActivity extends AppCompatActivity {
             sendStockUpdatesToBackend(); // Send the updates to backend
             stockDataBuffer.clear(); // Clear the buffer after processing
             stockAdapter.notifyDataSetChanged(); // Notify the adapter to refresh the view
-            handler.postDelayed(this, 10000); // Schedule next update after 5 seconds
+            handler.postDelayed(this, 5000); // Schedule next update after 5 seconds
         }
     };
 
@@ -69,7 +67,7 @@ public class StockMarketActivity extends AppCompatActivity {
         stocksRecyclerView.setAdapter(stockAdapter);
 
         startWebSocket();
-        handler.postDelayed(updateStocksRunnable, 10000);
+        handler.postDelayed(updateStocksRunnable, 5000);
 
         Button backToMainButton = findViewById(R.id.btnBackToMain);
         backToMainButton.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +86,7 @@ public class StockMarketActivity extends AppCompatActivity {
         Request request = new Request.Builder().url("wss://ws.finnhub.io?token=co7n979r01qgik2hbdkgco7n979r01qgik2hbdl0").build();
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
-            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+            public void onOpen(WebSocket webSocket, Response response) {
                 // Subscribe to stock symbols
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}");
                 webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"AMZN\"}");
@@ -111,18 +109,18 @@ public class StockMarketActivity extends AppCompatActivity {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("WebSocket", "Error parsing data", e);
                 }
             }
 
             @Override
-            public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
-                // Handle failure
+            public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+                Log.e("WebSocket", "Error during WebSocket communication", t);
             }
 
             @Override
             public void onClosed(WebSocket webSocket, int code, String reason) {
-                // Handle the closing of the WebSocket
+                Log.d("WebSocket", "WebSocket closed: " + reason);
             }
         });
     }
@@ -150,78 +148,44 @@ public class StockMarketActivity extends AppCompatActivity {
 
     private void sendStockUpdatesToBackend() {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + MainActivity.selectedMemberId; // Ensure this URL is correct.
+        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + MainActivity.selectedMemberId;
 
         JSONObject stockPrices = new JSONObject();
         try {
-            Log.d("StockMarketActivity", "Preparing to send updated stock prices:");
             for (Map.Entry<String, StockData> entry : stockDataBuffer.entrySet()) {
-                String backendSymbol = getBackendSymbol(entry.getKey());
-                double price = entry.getValue().getPrice();
-                stockPrices.put(backendSymbol + "Price", price);
-                Log.d("StockMarketActivity", "Adding to JSON: " + backendSymbol + "Price: " + price);
-            }
-            Log.d("StockMarketActivity", "JSON to send: " + stockPrices.toString());
-        } catch (JSONException e) {
-            Log.e("StockMarketActivity", "Failed to build JSON for stock updates", e);
-            return;
-        }
-
-        RequestBody body = RequestBody.create(stockPrices.toString(), MediaType.parse("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(url).put(body).build();
-        Log.d("StockMarketActivity", "Sending request to URL: " + request.url());
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("StockMarketActivity", "Network call failed", e);
-                performPostFailureAction("Network error: " + e.getMessage());
+                stockPrices.put(entry.getKey() + "Price", entry.getValue().getPrice());
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    Log.e("StockMarketActivity", "Network call unsuccessful with response code: " + response.code() + " and body: " + response.body().string());
-                    performPostFailureAction("Server error: " + response.code() + " - " + response.body().string());
-                } else {
-                    Log.d("StockMarketActivity", "Successfully updated stock prices: " + response.body().string());
-                    performPostSuccessAction("Update successful");
+            RequestBody body = RequestBody.create(stockPrices.toString(), MediaType.parse("application/json; charset=utf-8"));
+            Request request = new Request.Builder().url(url).put(body).build();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("StockMarketActivity", "Failed to send stock updates", e);
+                    runOnUiThread(() -> Toast.makeText(StockMarketActivity.this, "Failed to update stocks on backend", Toast.LENGTH_SHORT).show());
                 }
-            }
-        });
-    }
 
-    private String getBackendSymbol(String stockSymbol) {
-        // Assume a similar mapping is needed as in StockAdapter.
-        if (symbolMap.containsKey(stockSymbol.toLowerCase())) {
-            return symbolMap.get(stockSymbol.toLowerCase());
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        Log.e("StockMarketActivity", "Error: " + response.code() + " " + response.body().string());
+                    } else {
+                        Log.i("StockMarketActivity", "Stock updates successfully sent to the backend.");
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            Log.e("StockMarketActivity", "JSON building error", e);
         }
-        return stockSymbol;
     }
-
-    private void performPostSuccessAction(String message) {
-        runOnUiThread(() -> Toast.makeText(StockMarketActivity.this, message, Toast.LENGTH_LONG).show());
-    }
-
-    private void performPostFailureAction(String message) {
-        runOnUiThread(() -> Toast.makeText(StockMarketActivity.this, message, Toast.LENGTH_LONG).show());
-    }
-
-
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         handler.removeCallbacks(updateStocksRunnable);
         if (webSocket != null) {
-            // Unsubscribe from all symbols before closing the WebSocket
-            webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"AAPL\"}");
-            webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"AMZN\"}");
-            webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}");
-            webSocket.send("{\"type\":\"unsubscribe\",\"symbol\":\"BINANCE:DOGEUSDT\"}");
-            webSocket.close(5001, "Activity destroyed");
+            webSocket.close(1000, "Activity destroyed");
+            webSocket = null;
         }
     }
 }
