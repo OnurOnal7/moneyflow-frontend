@@ -6,11 +6,9 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -31,7 +29,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//PrakeerthBudgeting
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class PrakeerthChatAccess {
@@ -46,7 +44,7 @@ public class PrakeerthChatAccess {
                     "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
-    public void prakeerthChatAccess() {
+    public void prakeerthChatAccess() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -86,15 +84,16 @@ public class PrakeerthChatAccess {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
+        Thread.sleep(2000);
 
-        ViewInteraction materialButton3 = onView(
+        ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.btn_chat), withText("Chat"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                9)));
-        materialButton3.perform(scrollTo(), click());
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
+                                0)));
+        materialButton4.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.msgEdt),
@@ -104,9 +103,9 @@ public class PrakeerthChatAccess {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("Hello"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("Hello!"), closeSoftKeyboard());
 
-        ViewInteraction materialButton4 = onView(
+        ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.sendBtn), withText("Send"),
                         childAtPosition(
                                 childAtPosition(
@@ -114,15 +113,9 @@ public class PrakeerthChatAccess {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton4.perform(click());
+        materialButton5.perform(click());
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.backMainBtn), withText("Back to Main"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
-        ViewInteraction materialButton5 = onView(
+        ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.backMainBtn), withText("Back to Main"),
                         childAtPosition(
                                 childAtPosition(
@@ -130,7 +123,7 @@ public class PrakeerthChatAccess {
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton5.perform(click());
+        materialButton6.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

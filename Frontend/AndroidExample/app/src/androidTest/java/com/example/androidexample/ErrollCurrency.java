@@ -4,7 +4,6 @@ package com.example.androidexample;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -22,6 +21,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,6 +37,11 @@ public class ErrollCurrency {
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.READ_EXTERNAL_STORAGE");
 
     @Test
     public void errollCurrency() throws InterruptedException {
@@ -70,16 +75,6 @@ public class ErrollCurrency {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.login_password_edt), withText("1"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(pressImeActionButton());
-
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.login_login_btn), withText("Login"),
                         childAtPosition(
@@ -92,11 +87,11 @@ public class ErrollCurrency {
         Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_show_popup), withText("≡"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 2)));
         materialButton3.perform(scrollTo(), click());
 
@@ -119,12 +114,12 @@ public class ErrollCurrency {
         materialCheckBox.perform(click());
 
         ViewInteraction materialCheckBox2 = onView(
-                allOf(withId(R.id.checkBoxCHF), withText("CHF"),
+                allOf(withId(R.id.checkBoxCAD), withText("CAD"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                6),
+                                5),
                         isDisplayed()));
         materialCheckBox2.perform(click());
 
@@ -139,11 +134,11 @@ public class ErrollCurrency {
         materialButton5.perform(click());
 
         ViewInteraction materialButton6 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_show_popup), withText("≡"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 2)));
         materialButton6.perform(scrollTo(), click());
 
@@ -156,22 +151,22 @@ public class ErrollCurrency {
         materialButton7.perform(click());
 
         ViewInteraction materialCheckBox3 = onView(
-                allOf(withId(R.id.checkBoxNZD), withText("NZD"),
+                allOf(withId(R.id.checkBoxJPY), withText("JPY"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                2),
                         isDisplayed()));
         materialCheckBox3.perform(click());
 
         ViewInteraction materialCheckBox4 = onView(
-                allOf(withId(R.id.checkBoxEUR), withText("EUR"),
+                allOf(withId(R.id.checkBoxGBP), withText("GBP"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                0),
+                                3),
                         isDisplayed()));
         materialCheckBox4.perform(click());
 

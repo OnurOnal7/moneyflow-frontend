@@ -21,6 +21,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -29,20 +30,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Random;
-
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PrakeerthUserAddFamilyProcess {
-    Random random = new Random();
-    int Randomnum;
+public class Errollcard_Default {
 
     @Rule
     public ActivityScenarioRule<FirstPageActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(FirstPageActivity.class);
 
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.READ_EXTERNAL_STORAGE");
+
     @Test
-    public void prakeerthUserAddFamilyProcess() throws InterruptedException {
+    public void errollcard_Default() throws InterruptedException {
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.startup_login_btn), withText("Login"),
                         childAtPosition(
@@ -82,125 +84,104 @@ public class PrakeerthUserAddFamilyProcess {
                                 0),
                         isDisplayed()));
         materialButton2.perform(click());
-        Thread.sleep(6000);
+        Thread.sleep(2000);
 
         ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.btn_show_popup), withText("Menu"),
+                allOf(withId(R.id.btn_show_popup), withText("≡"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1),
                                 2)));
         materialButton3.perform(scrollTo(), click());
 
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.btn_Family_Plan), withText("Family Plan"),
+                allOf(withId(R.id.btn_prime_user), withText("Prime User"),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
-                                3),
+                                0),
                         isDisplayed()));
         materialButton4.perform(click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.fam_first),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("Jane"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.fam_last),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        Randomnum = random.nextInt(999)+1;
-        appCompatEditText4.perform(replaceText("Jackie0"+Randomnum), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.fam_mon),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        3),
-                                0),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("27000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.fam_ann),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        7),
-                                1),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("123456"), closeSoftKeyboard());
-
         ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.btn_confirm), withText("confirm"),
+                allOf(withId(R.id.btn_add_card), withText("Add Card"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                1),
                         isDisplayed()));
         materialButton5.perform(click());
 
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.fam_personal),
+        ViewInteraction cardEditText = onView(
+                allOf(withId(com.braintreepayments.cardform.R.id.bt_card_form_card_number),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
                                         0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText7.perform(replaceText("120"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.fam_work),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText8.perform(replaceText("120"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.fam_home),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        3),
                                 0),
                         isDisplayed()));
-        appCompatEditText9.perform(replaceText("120"), closeSoftKeyboard());
+        cardEditText.perform(replaceText("5275200025196521"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.fam_other),
+        ViewInteraction expirationDateEditText = onView(
+                allOf(withId(com.braintreepayments.cardform.R.id.bt_card_form_expiration),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        7),
-                                1),
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        0),
+                                0),
                         isDisplayed()));
-        appCompatEditText10.perform(replaceText("120"), closeSoftKeyboard());
+        expirationDateEditText.perform(replaceText("062028"), closeSoftKeyboard());
+
+        ViewInteraction cvvEditText = onView(
+                allOf(withId(com.braintreepayments.cardform.R.id.bt_card_form_cvv),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        cvvEditText.perform(replaceText("123"), closeSoftKeyboard());
+
+        ViewInteraction cardholderNameEditText = onView(
+                allOf(withId(com.braintreepayments.cardform.R.id.bt_card_form_cardholder_name),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        cardholderNameEditText.perform(replaceText("test9"), closeSoftKeyboard());
 
         ViewInteraction materialButton6 = onView(
-                allOf(withId(R.id.btn_conf_fam), withText("confirm"),
+                allOf(withId(R.id.btn_save_card), withText("Save Card"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                0),
                         isDisplayed()));
         materialButton6.perform(click());
+
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.defaultButton), withText("Default"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                0),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.deleteButton), withText("Delete"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                1),
+                        isDisplayed()));
+        materialButton8.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
