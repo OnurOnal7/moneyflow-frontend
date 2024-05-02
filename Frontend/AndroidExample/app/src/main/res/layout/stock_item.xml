@@ -23,6 +23,7 @@
         android:id="@+id/buttonBuy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buy"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#1A2561"
+        android:text="Buy" />
 </LinearLayout>

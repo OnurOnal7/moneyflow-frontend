@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="31dp"
-        android:background="@color/purple_200"
+        android:background="#1A2561"
+        android:backgroundTint="#1A2561"
         android:text="Save Card"
         android:textColor="@android:color/white" />
 

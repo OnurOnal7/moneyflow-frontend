@@ -169,6 +169,7 @@
         android:id="@+id/btn_confirm"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#1A2561"
         android:text="confirm"
         android:textColor="#ffffff"
         android:textSize="20sp"
