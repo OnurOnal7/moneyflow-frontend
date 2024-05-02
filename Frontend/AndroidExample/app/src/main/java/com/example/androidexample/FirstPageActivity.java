@@ -72,7 +72,6 @@ public class FirstPageActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GuestURL,
                 response -> {
                     if (response != null && !response.isEmpty()) {
-                        Toast.makeText(FirstPageActivity.this, "Login Response: " + response, Toast.LENGTH_LONG).show();
                         LoginActivity.UUID = response;
                         ID = response;
                         GetUserTypeRequest();
