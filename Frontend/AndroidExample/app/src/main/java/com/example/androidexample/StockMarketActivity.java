@@ -51,7 +51,7 @@ public class StockMarketActivity extends AppCompatActivity {
             sendStockUpdatesToBackend(); // Send the updates to backend
             stockDataBuffer.clear(); // Clear the buffer after processing
             stockAdapter.notifyDataSetChanged(); // Notify the adapter to refresh the view
-            handler.postDelayed(this, 5000); // Schedule next update after 5 seconds
+            handler.postDelayed(this, 10000); // Schedule next update after 5 seconds
         }
     };
 
@@ -66,7 +66,7 @@ public class StockMarketActivity extends AppCompatActivity {
         stocksRecyclerView.setAdapter(stockAdapter);
 
         startWebSocket();
-        handler.postDelayed(updateStocksRunnable, 5000); // Start periodic updates
+        handler.postDelayed(updateStocksRunnable, 10000); // Start periodic updates
     }
 
     private void startWebSocket() {
