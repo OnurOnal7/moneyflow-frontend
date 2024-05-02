@@ -2,10 +2,13 @@ package com.example.androidexample;
 
 import static com.example.androidexample.StockAdapter.symbolMap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +69,18 @@ public class StockMarketActivity extends AppCompatActivity {
         stocksRecyclerView.setAdapter(stockAdapter);
 
         startWebSocket();
-        handler.postDelayed(updateStocksRunnable, 10000); // Start periodic updates
+        handler.postDelayed(updateStocksRunnable, 10000);
+
+        Button backToMainButton = findViewById(R.id.btnBackToMain);
+        backToMainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate back to MainActivity
+                Intent intent = new Intent(StockMarketActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+        });
     }
 
     private void startWebSocket() {
