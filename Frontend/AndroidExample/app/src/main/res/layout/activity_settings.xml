@@ -17,5 +17,10 @@
     <CheckBox android:id="@+id/checkBoxSEK" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SEK" />
     <CheckBox android:id="@+id/checkBoxNZD" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NZD" />
 
-    <Button android:id="@+id/btnApplyChanges" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Apply Changes" />
+    <Button
+        android:id="@+id/btnApplyChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#1A2561"
+        android:text="Apply Changes" />
 </LinearLayout>

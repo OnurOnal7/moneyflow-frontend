@@ -19,11 +19,11 @@ android:layout_height="wrap_content"
 android:hint="Enter number of shares"
 android:inputType="numberDecimal" />
 
-<Button
-android:id="@+id/buttonBuy"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginTop="8dp"
-android:backgroundTint="#1A2561"
-android:text="Buy" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/buttonBuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#1A2561"
+        android:text="Buy" />
+</LinearLayout>
