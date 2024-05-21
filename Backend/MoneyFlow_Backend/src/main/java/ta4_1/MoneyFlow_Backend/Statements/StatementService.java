@@ -15,13 +15,14 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class StatementService {
 
     private final ExpensesRepository expensesRepository;
 
-    private HashMap<String, Double> financialMap;
+    private Map<String, Double> financialMap;
 
     // Constructor to set all financials to 0.
     @Autowired

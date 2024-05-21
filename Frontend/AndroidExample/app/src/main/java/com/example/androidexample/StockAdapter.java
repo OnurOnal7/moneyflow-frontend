@@ -111,7 +111,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         RequestBody body = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json; charset=utf-8"));
 
         Request request = new Request.Builder()
-                .url("http://coms-309-056.class.las.iastate.edu:8080/portfolio/"+ MainActivity.selectedMemberId +"/buy")
+                .url("http://192.168.1.64:8080/portfolio/"+ MainActivity.selectedMemberId +"/buy")
                 .put(body)
                 .build();
         Log.d("StockAdapter", "Sending request to URL: " + request.url());

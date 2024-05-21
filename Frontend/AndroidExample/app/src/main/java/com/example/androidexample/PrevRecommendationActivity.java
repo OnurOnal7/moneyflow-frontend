@@ -28,8 +28,8 @@ import java.util.ArrayList;
 
 public class PrevRecommendationActivity extends AppCompatActivity {
 
-    private String DATE_URL = "http://coms-309-056.class.las.iastate.edu:8080/recommendations/userId/" + LoginActivity.UUID.replace("\"", "") + "/dates";
-    private String REC_URL = "http://coms-309-056.class.las.iastate.edu:8080/recommendations/userId/" + LoginActivity.UUID.replace("\"", "") + "/byDate";
+    private String DATE_URL = "http://192.168.1.64:8080/recommendations/userId/" + LoginActivity.UUID.replace("\"", "") + "/dates";
+    private String REC_URL = "http://192.168.1.64:8080/recommendations/userId/" + LoginActivity.UUID.replace("\"", "") + "/byDate";
     private ArrayList<String> DateArr = new ArrayList<String>();
     public String date;
     public String Rec;

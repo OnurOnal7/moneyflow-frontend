@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class FamilyPlanActivity extends AppCompatActivity {
 
-    private String fam_URL = "http://coms-309-056.class.las.iastate.edu:8080/family/addMember/" + LoginActivity.UUID.replace("\"", "");
+    private String fam_URL = "http://192.168.1.64:8080/family/addMember/" + LoginActivity.UUID.replace("\"", "");
     private EditText fn, ln, m, a;
     private Button confirm;
 
@@ -56,7 +56,7 @@ public class FamilyPlanActivity extends AppCompatActivity {
     }
 
     private void setInitialPortfolio(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        String url = "http://192.168.1.64:8080/portfolio/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
 
@@ -98,7 +98,7 @@ public class FamilyPlanActivity extends AppCompatActivity {
     }
 
     private void sendInitialBudget(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        String url = "http://192.168.1.64:8080/budget/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
             postData.put("personalLimit", 1000.0); // Default budget for personal expenses

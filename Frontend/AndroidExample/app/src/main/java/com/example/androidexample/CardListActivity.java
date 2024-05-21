@@ -75,7 +75,7 @@ public class CardListActivity extends AppCompatActivity {
     }
 
     private void fetchCards() {
-        String cardsUrl = "http://coms-309-056.class.las.iastate.edu:8080/cards/userId/" + userId;
+        String cardsUrl = "http://192.168.1.64:8080/cards/userId/" + userId;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, cardsUrl,
                 new Response.Listener<String>() {
                     @Override

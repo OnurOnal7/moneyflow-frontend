@@ -22,9 +22,9 @@ import java.util.Collections;
 
 public class IncomeActivity extends AppCompatActivity {
 
-    private static final String INCOME_PATCH_URL = "http://coms-309-056.class.las.iastate.edu:8080/users/" + MainActivity.selectedMemberId + "/income";
+    private static final String INCOME_PATCH_URL = "http://192.168.1.64:8080/users/" + MainActivity.selectedMemberId + "/income";
 
-    private static final String INCOME_M_URL = "http://coms-309-056.class.las.iastate.edu:8080/users/" + MainActivity.selectedMemberId + "/income";
+    private static final String INCOME_M_URL = "http://192.168.1.64:8080/users/" + MainActivity.selectedMemberId + "/income";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

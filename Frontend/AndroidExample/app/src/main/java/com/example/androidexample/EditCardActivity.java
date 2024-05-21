@@ -127,9 +127,9 @@ public class EditCardActivity extends AppCompatActivity {
 
         // Determine if this is an add or update operation based on whether a card ID is available
         if (cardId == null || cardId.isEmpty()) {
-            url = "http://coms-309-056.class.las.iastate.edu:8080/cards/" + userId;
+            url = "http://192.168.1.64:8080/cards/" + userId;
         } else {
-            url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId;
+            url = "http://192.168.1.64:8080/cards/id/" + userId + "/" + cardId;
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(

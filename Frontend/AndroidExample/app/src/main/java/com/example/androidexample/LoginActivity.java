@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     public Button loginButton;
     public String check;
     private Button signupButton;
-    private static final String URL = "http://coms-309-056.class.las.iastate.edu:8080/login";
+    private static final String URL = "http://192.168.1.64:8080/login";
 
     public static String UUID;
     private String id;
@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void GetUserTypeRequest() {
         if (UUID != null) {
-            final String type_URL = "http://coms-309-056.class.las.iastate.edu:8080/userType/" + UUID.replace("\"", "");
+            final String type_URL = "http://192.168.1.64:8080/userType/" + UUID.replace("\"", "");
             RequestQueue queue = Volley.newRequestQueue(this);
             StringRequest stringRequest = new StringRequest(
                     Request.Method.GET,

@@ -148,7 +148,7 @@ public class StockMarketActivity extends AppCompatActivity {
 
     private void sendStockUpdatesToBackend() {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + MainActivity.selectedMemberId;
+        String url = "http://192.168.1.64:8080/portfolio/" + MainActivity.selectedMemberId;
 
         JSONObject stockPrices = new JSONObject();
         try {

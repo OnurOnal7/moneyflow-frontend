@@ -29,7 +29,7 @@ public class Goal_Add_Activity2 extends AppCompatActivity {
 
     private boolean TaskComplete = false;
 
-        private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
+        private String URL = "http://192.168.1.64:8080/goals/" + LoginActivity.UUID.replace("\"", "");
 
     private String amt, days;
 

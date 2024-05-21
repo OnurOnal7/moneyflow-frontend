@@ -77,7 +77,7 @@ public class AddGoalProgressActivity extends AppCompatActivity {
 
     private void PutRequest()
     {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/goals/user/" + LoginActivity.UUID.replace("\"", "") + "/goal/" + goalId + "/progress/" + amount + "/" + timeFrame;
+        String url = "http://192.168.1.64:8080/goals/user/" + LoginActivity.UUID.replace("\"", "") + "/goal/" + goalId + "/progress/" + amount + "/" + timeFrame;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
             // Handle successful response

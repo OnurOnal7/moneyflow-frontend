@@ -96,7 +96,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         notifyItemRangeChanged(position, cardList.size());
     }
     public void deleteCard(Card card, int position) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + LoginActivity.UUID.replace("\"", "") + "/" + card.getId();
+        String url = "http://192.168.1.64:8080/cards/id/" + LoginActivity.UUID.replace("\"", "") + "/" + card.getId();
 
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url,
                 response -> {
@@ -114,7 +114,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         Volley.newRequestQueue(activity).add(stringRequest);
     }
     public void useCard(String userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/upgradeType/" + userId;
+        String url = "http://192.168.1.64:8080/upgradeType/" + userId;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
@@ -132,7 +132,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     }
 
     public void setDefaultCard(String userId, String cardId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/cards/id/" + userId + "/" + cardId + "/setDefault";
+        String url = "http://192.168.1.64:8080/cards/id/" + userId + "/" + cardId + "/setDefault";
 
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
                 response -> {

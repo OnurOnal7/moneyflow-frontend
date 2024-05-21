@@ -31,7 +31,7 @@ public class BudgetingAddActivity extends AppCompatActivity {
 
     private String SelectedCat;
 
-    private final String URL = "http://coms-309-056.class.las.iastate.edu:8080/budget/"+ MainActivity.selectedMemberId;
+    private final String URL = "http://192.168.1.64:8080/budget/"+ MainActivity.selectedMemberId;
 
 
 
@@ -95,7 +95,7 @@ public class BudgetingAddActivity extends AppCompatActivity {
     }
 
     private void GetRequest() {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + MainActivity.selectedMemberId;
+        String url = "http://192.168.1.64:8080/budget/" + MainActivity.selectedMemberId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {

@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         // Join the selected currencies with a comma to match the backend's expected format
         String selectedSettings = TextUtils.join(",", selectedCurrencies);
 
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/" + LoginActivity.UUID.replace("\"", "") + "/setCurrency/" + selectedSettings;
+        String url = "http://192.168.1.64:8080/" + LoginActivity.UUID.replace("\"", "") + "/setCurrency/" + selectedSettings;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> Toast.makeText(SettingsActivity.this, "Settings updated successfully!", Toast.LENGTH_SHORT).show(),

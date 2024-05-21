@@ -50,7 +50,7 @@ public class AddFamilyExpensesActivity extends AppCompatActivity {
     }
 
     private void sendPostRequest(JSONObject jsonBody) {
-        String exp_URL = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + FamilyPlanActivity.famID;
+        String exp_URL = "http://192.168.1.64:8080/expenses/" + FamilyPlanActivity.famID;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, exp_URL,
                 response -> {

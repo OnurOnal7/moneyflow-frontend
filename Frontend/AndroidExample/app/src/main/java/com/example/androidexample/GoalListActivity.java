@@ -43,8 +43,8 @@ public class GoalListActivity extends AppCompatActivity {
 
     private double GoalAmount;
     public String goalString;
-    private String URL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + LoginActivity.UUID.replace("\"", "");
-    private final String DelAllURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/deleteAll/" + LoginActivity.UUID.replace("\"", "");
+    private String URL = "http://192.168.1.64:8080/goals/" + LoginActivity.UUID.replace("\"", "");
+    private final String DelAllURL = "http://192.168.1.64:8080/goals/deleteAll/" + LoginActivity.UUID.replace("\"", "");
     private AlertDialog.Builder builder;
 
     @Override
@@ -152,7 +152,7 @@ public class GoalListActivity extends AppCompatActivity {
     }
 
     private void deleteGoal(String goalId) {
-        String deleteURL = "http://coms-309-056.class.las.iastate.edu:8080/goals/" + goalId;
+        String deleteURL = "http://192.168.1.64:8080/goals/" + goalId;
 
         StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, deleteURL,
                 new Response.Listener<String>() {

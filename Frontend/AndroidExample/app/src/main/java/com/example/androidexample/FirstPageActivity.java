@@ -28,7 +28,7 @@ public class FirstPageActivity extends AppCompatActivity {
     private Button loginButton;
     private Button signupButton;
     private Button guestButton;
-    private final String GuestURL = "http://coms-309-056.class.las.iastate.edu:8080/login/type/guest";
+    private final String GuestURL = "http://192.168.1.64:8080/login/type/guest";
     private String userType;
     public static String ID;
 
@@ -99,7 +99,7 @@ public class FirstPageActivity extends AppCompatActivity {
     }
 
     private void sendInitialExpenses(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + userId.toString();
+        String url = "http://192.168.1.64:8080/expenses/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
             postData.put("personal", 0.0);
@@ -131,7 +131,7 @@ public class FirstPageActivity extends AppCompatActivity {
     }
 
     private void setInitialPortfolio(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        String url = "http://192.168.1.64:8080/portfolio/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
 
@@ -173,7 +173,7 @@ public class FirstPageActivity extends AppCompatActivity {
     }
 
     private void sendInitialBudget(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        String url = "http://192.168.1.64:8080/budget/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
             postData.put("personalLimit", 1000.0); // Default budget for personal expenses
@@ -207,7 +207,7 @@ public class FirstPageActivity extends AppCompatActivity {
 
     private void GetUserTypeRequest() {
         if(ID != null) {
-            final String type_URL = "http://coms-309-056.class.las.iastate.edu:8080/userType/" + ID.replace("\"", "");
+            final String type_URL = "http://192.168.1.64:8080/userType/" + ID.replace("\"", "");
 
             RequestQueue queue = Volley.newRequestQueue(this);
             StringRequest stringRequest = new StringRequest(

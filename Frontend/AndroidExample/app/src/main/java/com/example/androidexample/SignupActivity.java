@@ -33,7 +33,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText monthly;
     private EditText annual;
 
-    private static final String URL = "http://coms-309-056.class.las.iastate.edu:8080/signup";
+    private static final String URL = "http://192.168.1.64:8080/signup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void sendInitialExpenses(UUID userId, JSONObject userCredentials) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/expenses/" + userId.toString();
+        String url = "http://192.168.1.64:8080/expenses/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
             postData.put("personal", 0.0);
@@ -138,7 +138,7 @@ public class SignupActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(stringRequest);
     }
     private void setInitialPortfolio(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/portfolio/" + userId.toString();
+        String url = "http://192.168.1.64:8080/portfolio/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
 
@@ -180,7 +180,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void sendInitialBudget(UUID userId) {
-        String url = "http://coms-309-056.class.las.iastate.edu:8080/budget/" + userId.toString();
+        String url = "http://192.168.1.64:8080/budget/" + userId.toString();
         JSONObject postData = new JSONObject();
         try {
             postData.put("personalLimit", 1000.0); // Default budget for personal expenses
@@ -213,7 +213,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
     private void loginUser(String email, String password) {
-        String loginUrl = "http://coms-309-056.class.las.iastate.edu:8080/login" + "?email=" + email + "&password=" + password;
+        String loginUrl = "http://192.168.1.64:8080/login" + "?email=" + email + "&password=" + password;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, loginUrl,
                 response -> {
                     LoginActivity.UUID = response;
@@ -225,7 +225,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void GetUserTypeRequest(String userId) {
-        final String type_URL = "http://coms-309-056.class.las.iastate.edu:8080/userType/" + userId.replace("\"", "");
+        final String type_URL = "http://192.168.1.64:8080/userType/" + userId.replace("\"", "");
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
