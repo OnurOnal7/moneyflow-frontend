@@ -9,9 +9,10 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
-.idea/
->>>>>>> c53f2da29f0d39067bdc0a1573b7829594900d52
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+/app/build/
+/gradle/wrapper/gradle-wrapper.jar
+.env
